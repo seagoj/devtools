@@ -29,10 +29,10 @@ namespace Devtools;
  * @license  http://www.opensource.org/licenses/mit-license.html  MIT License
  * @link     http://github.com/seagoj/Devtools/MysqlModel.php
  **/
-class MysqlModel implements IModel
+class MysqlModel extends Model
 {
     /**
-     * MysqlModel::__construct
+     * __construct
      *
      * Uses passed connection or establishes connection with defaults
      *
@@ -44,7 +44,7 @@ class MysqlModel implements IModel
     public function __construct(\PDO $connection=null)
     {
         if (is_null($connection)) {
-            $connection = \Devtools\MysqlModel::connect(
+            $connection = $this->connect(
                 array(
                     'type'     => 'mysql',
                     'host'     => 'localhost',
@@ -58,24 +58,16 @@ class MysqlModel implements IModel
     }
 
     /**
-     * MysqlModel::connect
+     * connect
      *
      * Establish connection if one is not passed
-     *
-     * @param array $options Options array [
-     *     'type':     'mysql',     // Type of DB connection
-     *     'host':     'localhost', // DB Host
-     *     'db':       'database',  // DB Name
-     *     'username': 'username',  // DB User
-     *     'password': 'password',  // DB Password
-     * ]
      *
      * @return void
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public static function connect($options)
+    public function connect()
     {
-        $keys = array_keys($options);
+        $keys = array_keys($this->options);
         if (in_array('type',  $keys)
             && in_array('host', $keys)
             && in_array('db', $keys)
@@ -85,12 +77,12 @@ class MysqlModel implements IModel
             return  new \PDO(
                 sprintf(
                     "%s:host=%s;dbname=%s",
-                    $options['type'],
-                    $options['host'],
-                    $options['db']
+                    $this->options['type'],
+                    $this->options['host'],
+                    $this->options['db']
                 ),
-                $options['username'],
-                $options['password']
+                $this->options['username'],
+                $this->options['password']
             );
         } else {
             throw new \Exception('Invalid connection options.');
@@ -98,7 +90,7 @@ class MysqlModel implements IModel
     }
 
     /**
-     * MysqlModel::get
+     * get
      *
      * Retrieve value from Model based on passed variables
      *
@@ -158,7 +150,7 @@ class MysqlModel implements IModel
     }
 
     /**
-     * MysqlModel::query
+     * query
      *
      * Query DB object
      *
@@ -184,7 +176,7 @@ class MysqlModel implements IModel
     }
 
     /**
-     * MysqlModel::getAll
+     * getAll
      *
      * Return all values based on collection and where
      *
@@ -200,7 +192,7 @@ class MysqlModel implements IModel
     }
 
     /**
-     * MysqlModel::set
+     * set
      *
      * Set values in DB
      *
@@ -233,7 +225,7 @@ class MysqlModel implements IModel
     }
 
     /**
-     * MysqlModel::sanitize
+     * sanitize
      *
      * Sanitizes inputs for queries
      *
@@ -249,7 +241,7 @@ class MysqlModel implements IModel
     }
 
     /**
-     * MysqlModel::reduceResult
+     * reduceResult
      *
      * Reduce result
      *
@@ -266,34 +258,5 @@ class MysqlModel implements IModel
         } else {
             return $result;
         }
-    }
-
-    /**
-     * MysqlModel::stringify
-     *
-     * Properly inserts quotes for insertion into sql query
-     *
-     * @param array   $array     Array of strings to be converted
-     * @param boolean $force     Force quotes on each element
-     * @param string  $quotation Quote mark to use
-     *
-     * @return string
-     * @author Jeremy Seago <seagoj@gmail.com>
-     **/
-    function stringify($array, $force = false, $quotation="'")
-    {
-        $ret = "";
-        if (!is_array($array)) {
-            $array = array($array);
-        }
-        foreach ($array as $element) {
-            if (!empty($ret)) {
-                $ret .= ",";
-            }
-            $ret .= (!$force && is_numeric($element))
-                ? $element
-                : $quotation.$element.$quotation;
-        }
-        return $ret;
     }
 }

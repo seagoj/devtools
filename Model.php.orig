@@ -36,13 +36,20 @@ namespace Devtools;
  * @method    string hgetall(string $collection);
  * @method    string expire(string $key, string $collection);
  */
-abstract class Model
+<<<<<<< HEAD
+abstract class Model implements IModel
 {
+    public $connected;
+=======
+class Model {
     /**
      * Class configuration
      *
      * Stores type of datastore to make the connection to
      **/
+    private $config;
+>>>>>>> 5feaa96502aed34bb46d335cbf78061cb3f80f7b
+
     private $config;
     private $connection;
 
@@ -51,7 +58,8 @@ abstract class Model
     public abstract function set($key, $value, $collection);
     public abstract function query($queryString);
     public static abstract function sanitize($queryString);
-    public abstract function connect();
+
+    abstract function connect();
 
     /**
      * connectFirebird
@@ -145,34 +153,5 @@ abstract class Model
             array_push($result, $row);
         }
         return $result;
-    }
-
-    /**
-     * stringify
-     *
-     * Properly inserts quotes for insertion into sql query
-     *
-     * @param array   $array     Array of strings to be converted
-     * @param boolean $force     Force quotes on each element
-     * @param string  $quotation Quote mark to use
-     *
-     * @return string
-     * @author Jeremy Seago <seagoj@gmail.com>
-     **/
-    public function stringify($array, $force = false, $quotation="'")
-    {
-        $ret = "";
-        if (!is_array($array)) {
-            $array = array($array);
-        }
-        foreach ($array as $element) {
-            if (!empty($ret)) {
-                $ret .= ",";
-            }
-            $ret .= (!$force && is_numeric($element))
-                ? $element
-                : $quotation.$element.$quotation;
-        }
-        return $ret;
     }
 }

@@ -68,6 +68,14 @@ class FirebirdModel extends Model
         }
     }
 
+    /**
+     * connect
+     *
+     * Connect to Firebird database
+     *
+     * @return boolean Status of connection
+     * @author Jeremy Seago <seagoj@gmail.com>
+     **/
     public function connect()
     {
         if (!$this->connection = \ibase_pconnect(
@@ -85,7 +93,6 @@ class FirebirdModel extends Model
         return $this->connected = isset($this->connection);
     }
 
-
     /**
      * query
      *
@@ -100,11 +107,10 @@ class FirebirdModel extends Model
     public function query($sql, $reduce=false)
     {
         $sql = \Devtools\FirebirdModel::sanitize($sql);
-        /* if (gettype($this->connection) === 'resource') { */
-            $q = ibase_query($this->connection, $sql);
+            $q = \ibase_query($this->connection, $sql);
             if (!(is_bool($q) || is_int($q))) {
                 $result = array();
-                while ($row = ibase_fetch_assoc($q, IBASE_TEXT)) {
+                while ($row = \ibase_fetch_assoc($q, IBASE_TEXT)) {
                     array_push($result, $row);
                 }
                 ibase_free_result($q);
@@ -112,9 +118,6 @@ class FirebirdModel extends Model
                 $result = $q;
             }
             return $reduce ? $this->reduceResult($result) : $result;
-        /* } else { */
-        /*     throw new \InvalidArgumentException('Invalid connection type.'); */
-        /* } */
     }
 
     /**
@@ -134,14 +137,33 @@ class FirebirdModel extends Model
         $sql = sprintf(
             "select %s
             from %s",
-            $this->sanitize($this->stringify($key, true, '`')),
+            $this->sanitize($key==='*' ? '*' : $this->stringify($key, true, '`')),
             $this->sanitize($collection)
-        );
-        if (!is_null($where)) {
-            foreach ($where as $key => $value) {
-                $sql .= " WHERE ".$this->stringify($key, true, '`')."=".$this->stringfy($value);
-            }
+        ) . $this->buildWhere($where);
+        return $this->query($sql, true);
+    }
+
+    /**
+     * buildWhere
+     *
+     * Builds where clause from array
+     *
+     * @param array $where Array of keys and values to create where clause
+     *
+     * @return string SQL representation of constructed where
+     * @author Jeremy Seago <seagoj@gmail.com>
+     **/
+    private function buildWhere($where)
+    {
+        if (is_null($where)) {
+            return '';
+        } else {
+            $sql = '';
         }
+        foreach ($where as $key => $value) {
+            $sql .= " where ".$this->stringify($key, true, '`')."=".$this->stringify($value);
+        }
+        return $sql;
     }
 
     /**
@@ -149,15 +171,15 @@ class FirebirdModel extends Model
      *
      * Return all values in $collection
      *
-     * @param String $collection Collection whose values are returned
+     * @param String     $collection Collection whose values are returned
+     * @param Array|Null $where      Optional: array of where clause
      *
      * @return Array Values in collection
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function getAll($collection)
+    public function getAll($collection, $where = null)
     {
-        /* pending */
-        return true;
+        return $this->get('*', $collection, $where);
     }
 
     /**
@@ -165,17 +187,18 @@ class FirebirdModel extends Model
      *
      * Set value of $key or $collection/$key
      *
-     * @param String $key        Name of parameter whose value is being set
-     * @param Mixed  $value      Value of parameter
+     * @param String $set        Array of keys and values to set in $collection
      * @param String $collection Collection in which $key will be set to $value
+     * @param Array  $where      Array describing where ckause
      *
      * @return boolean|null Status of assignment
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function set($key, $value, $collection)
+    public function set($set, $collection, $where = null)
     {
-        /* pending */
-        return true;
+        $sql = "insert into $collection (".$this->stringify(array_keys($set), true, '`').")
+            values (".$this->stringify(array_values($set), true). ") ".$this->buildWhere($where);
+        return $this->query($sql, true);
     }
 
     /**
