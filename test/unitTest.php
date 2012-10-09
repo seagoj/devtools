@@ -1,5 +1,4 @@
 <?php
-
 namespace seagoj\devtools;
 require_once('../lib/autoload/src/autoload.php');
 
