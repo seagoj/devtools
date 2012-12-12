@@ -15,11 +15,9 @@
 namespace NewProject;
 
 print "<div>BoF</div>";
-require_once '../lib/Devtools/Autoload.php';
-\Devtools\Autoload::register();
+require_once $_SERVER['DOCUMENT_ROOT'].'/autoload.php';
 
-$dbg = new \Devtools\Dbg($this);
-
+$dbg = new \Devtools\Dbg();
 $redis = new \Predis\Client();
 
 print "<div>EoF</div>";

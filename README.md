@@ -1,9 +1,14 @@
-All Projects will be structured in the following way:
+## Devtools
+Devtools is a collection of PHP libraries designed for rapid development and debugging.
 
-/Project - project name
-		/db	database installation scripts
-		/dep	installation files for dependancies that are not libraries
-		/doc	documentation
-		/lib	libraries referenced from source
-		/src	source code
-		README.md
+### Installation and reference
+Clone the repo to /lib/Devtools in your project file
+
+Copy dep/autoloader.php to the Document Root and reference it in your project files as below:
+    
+    require_once $_SERVER['DOCUMENT_ROOT'].'/autoload.php';
+
+#### Usage
+Calls to namespaces must be Fully-Qualified (must begin with a leading backspace)
+
+    $dbg = new \Devtools\Dbg();
