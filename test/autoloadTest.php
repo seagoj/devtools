@@ -1,23 +1,24 @@
 <?php
-namespace seagoj\devtools;
+/**
+ * General testing for Autoload class
+ *
+ * @name      index.php
+ * @category  Devtools
+ * @package   Seagoj\NewProject
+ * @author    Jeremy Seago <seagoj@gmail.com>
+ * @copyright 2012 Jeremy Seago
+ * @license   http://opensource.org/licenses/mit-license.php, MIT
+ * @version   1.0
+ * @link      https://github.com/seagoj/lib.autoload
+ */
 
-require_once('../lib/autoload/src/autoload.php');
+namespace NewProject;
 
-class autoloadTest extends unit
-{
-	private $config;
-	
-	function __construct() {
-		//$this->test(is_object($this));
-		//$this->unit = new unit(new autoload('dbg'),$this);
-		$this->config = new config($this);
-		print_r($this->config);
-	}
-	
-	public function __constructTest() {
-		dbg::dump("test");
-		return true;
-	}
-}
+print "<div>BoF</div>";
+require_once '../lib/Devtools/Autoload.php';
+\Devtools\Autoload::register();
 
-new autoloadTest();
+$dbg = new \Devtools\Dbg();
+$redis = new \Predis\Client();
+
+print "<div>EoF</div>";
