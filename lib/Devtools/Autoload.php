@@ -11,7 +11,7 @@
  * @copyright 2012 Jeremy Seago
  * @license   http://opensource.org/licenses/mit-license.php, MIT
  * @version   1.0
- * @link      https://github.com/seagoj/lib.autoload
+ * @link      https://github.com/seagoj/devtools
  */
 namespace Devtools;
 
@@ -25,7 +25,7 @@ namespace Devtools;
  * @author     Jeremy Seago    <seagoj@gmail.com>
  * @license    http://opensource.org/licenses/mit-license.php, MIT
  * @version    1.0
- * @link       https://github.com/seagoj/lib.autoload
+ * @link       https://github.com/seagoj/devtools
  */
 class Autoload
 {
