@@ -1,6 +1,8 @@
 <?php
-//require_once('../lib/autoload/src/autoload.php');
-namespace seagoj\devtools;
+
+namespace Config;
+
+
 
 class config
 {
