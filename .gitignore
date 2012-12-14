@@ -1,4 +1,5 @@
 config
+src/autoloader.php
 
 ############
 ## Git
