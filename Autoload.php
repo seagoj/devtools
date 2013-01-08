@@ -75,7 +75,7 @@ class Autoload
         // var_dump($class);
         // //namespace $class;
         if (is_file($file = $this->_getRelPath().implode(DIRECTORY_SEPARATOR, explode('\\', $class)).'.php')) {
-            print "<div>Include: $file</div>";
+            // print "<div>Include: $file</div>";
             include $file;
         } else {
             die("$file does not exist.");
