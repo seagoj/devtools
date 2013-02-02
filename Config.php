@@ -110,7 +110,7 @@ class Config
         );
 
         // $this->conn = mysql_connect($info['host'].':'.$info['port'], $info['user'], $info['pass']);
-        $this->conn = mysqli_connect($info['host'].':'.$info['port'], $info['user'], $info['pass']);
+        $this->conn = new mysqli($info['host'].':'.$info['port'], $info['user'], $info['pass'], 'demo');
 
         mysql_select_db($info['db'], $this->conn);
         return true;
