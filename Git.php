@@ -49,14 +49,13 @@ class Git
      */
     public function __construct($user=null,$host='github')
     {
-        $this->_debug = true;
+        $this->_debug = false;
         $this->_debug ? print "<div>".__METHOD__."</div>" : print "";
         if ($user!=null) {
             $this->user($user);
             $this->_setHash();
         }
         $this->_redis = new \Predis\Client();
-        die("called");
         $this->host($host);
     }
 
@@ -74,6 +73,7 @@ class Git
         $this->_debug ? print "<div>".__METHOD__."</div>" : print "";
         $this->_user = $user;
         $this->_setHash();
+        return true;
     }
 
     /**
