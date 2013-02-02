@@ -108,7 +108,7 @@ class Config
                 'host'=>'localhost',
                 'port'=>''
         );
-        $this->conn = mysql_connect($info['host'].':'.$info['port'], $info['user'], $info['pass']);
+        $this->conn = \mysql_connect($info['host'].':'.$info['port'], $info['user'], $info['pass']);
         mysql_select_db($info['db'], $this->conn);
         return true;
     }
