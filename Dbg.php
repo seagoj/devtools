@@ -199,7 +199,7 @@ class Dbg extends RandData
         $paramStr = implode(', ', $params);
 
         ob_start();
-        $result = call_user_func_array(array($object, $func), $params);
+        $result = call_user_func_array(array($object, $method), $params);
         if($result == null)
             $result = ob_get_contents();
         ob_end_clean();
