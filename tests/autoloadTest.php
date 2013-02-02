@@ -15,8 +15,7 @@
 namespace NewProject;
 
 print "<div>BoF</div>";
-// require_once '../lib/Devtools/Autoload.php';
-require_once '../Autoload.php';
+require_once '../lib/Devtools/Autoload.php';
 \Devtools\Autoload::register();
 
 $dbg = new \Devtools\Dbg();
