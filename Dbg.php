@@ -45,7 +45,7 @@ class Dbg extends RandData
      *
      * @return void
      */
-    public function __construct($enabled)
+    public function __construct($class)
     {
         $this->_config = new \Devtools\Config($class);
         $this->commentTags = array();
