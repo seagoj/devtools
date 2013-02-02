@@ -182,4 +182,28 @@ class Config
              'Devtools\Markdown\convert'=>"<h2>testLib</h2>\n",
             );
     }
+
+    private function _configGit()
+    {
+        $this->debug = false;
+        $this->test = array(
+            'Devtools\Git\user'=>true,
+            'Devtools\Git\host'=>true,
+            'Devtools\Git\listRepos'=>array(
+                "seagoj/bookmule",
+                "seagoj/cookbook-apt",
+                "seagoj/cookbook-bootstrap",
+                "seagoj/cookbook-lib",
+                "seagoj/cookbook-nginx",
+                "seagoj/cookbook-php5-fpm",
+                "seagoj/cookbook-redis",
+                "seagoj/cookbook-ruby",
+                "seagoj/cookbook-sass",
+                "seagoj/devtools",
+                "seagoj/dotfiles",
+                "seagoj/jarvis",
+                "seagoj/resume"
+                )
+            );
+    }
 }
