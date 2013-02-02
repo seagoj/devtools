@@ -50,7 +50,7 @@ class Model
      */
     public function __construct ($id, $tbl=NULL, $query=NULL, $dbtype='mysql')
     {
-    	$this->config = new \Devtools\Config();
+    	$this->config = new \Devtools\Config($this);
     	
         $this->setDbg(_DBG_);
         if(_DBG_) dbg::msg("dbg is in scope of model class");
