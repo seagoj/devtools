@@ -188,6 +188,7 @@ class Dbg extends RandData
     {
 
         $validOutput = $this->_config->test;
+        die($validOutput);
         $class = get_class($object);
 
         $output = $validOutput[$class.'\\'.$method];
