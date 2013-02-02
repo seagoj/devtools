@@ -53,8 +53,16 @@ class Config
             $class = substr($class, 0, strlen($class)-4);
         }
         $configFunc='_config'.ucfirst($class);
-        if($class!='')
+
+        if(method_exists($this, $configFunc))
             $this->config = $this->$configFunc();
+        else
+            $this->config = $this->_configDefault();
+            
+        // if($class!='')
+        //     $this->config = $this->$configFunc();
+
+
     }
 
     /**
@@ -67,6 +75,19 @@ class Config
     private function _configDbg()
     {
         $this->debug = true;
+        return true;
+    }
+
+    /**
+     * Config::_configDefault
+     *
+     * Defines configuration for undefined classes
+     *
+     * @return bool
+     */
+    private function _configDefault()
+    {
+        $this->debug = false;
         return true;
     }
 
