@@ -98,8 +98,8 @@ class Dbg extends RandData
             $output = "<div class='err'>";
             $label=='' ? print '' : $output .= "<span class='errLabel'>$label</span>: ";
             $output .= "<span class='errDesc'>$var";
-            $file=='' ? print '' : $output .= "in file $file ";
-            $line=='' ? print '' : $output .= "on line $line ";
+            $file=='' ? print '' : $output .= " in file $file";
+            $line=='' ? print '' : $output .= " on line $line";
             $output .= "</span></div>";
             print $output;
 
