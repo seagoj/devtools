@@ -75,7 +75,13 @@ class Config
     private function _configDbg()
     {
         $this->debug = true;
-        return true;
+        $this->test = array(
+            'Devtools\Dbg\msg'=>"<div class='err'><span class='errDesc'>#{0} in file #{4} on line #{5}</span></div>",
+            'Devtools\Dbg\dump'=>"<div class='err'><span class='errDesc'>'#{0}' in file #{4} on line #{5}</span></div>",
+            'Devtools\Dbg\test'=>true,
+            'Devtools\Dbg\setNoCache'=>"<META HTTP-EQUIV='CACHE-CONTROL' CONTENT='NO-CACHE'>\n<META HTTP-EQUIV='PRAGMA' CONTENT='NO-CACHE'>"
+            );
+        return isset($this->debug) && isset($this->test);
     }
 
     /**
