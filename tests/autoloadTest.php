@@ -18,7 +18,7 @@ print "<div>BoF</div>";
 require_once '../lib/Devtools/Autoload.php';
 \Devtools\Autoload::register();
 
-$dbg = new \Devtools\Dbg();
+$dbg = new \Devtools\Dbg(new Autoload());
 $redis = new \Predis\Client();
 
 print "<div>EoF</div>";

@@ -18,8 +18,6 @@
  * @TODO	Add ability to silence output except for unit tests and failures
  */
 namespace Devtools;
-//require 'Autoload.php';
-//Autoload::register();
 
 /**
  * dbg Class
@@ -47,7 +45,7 @@ class Dbg extends RandData
      *
      * @return void
      */
-    public function __construct($class)
+    public function __construct($enabled)
     {
         $this->_config = new \Devtools\Config($class);
         $this->commentTags = array();
@@ -70,7 +68,6 @@ class Dbg extends RandData
      */
     public function msg($message, $die=false, $method='', $exception=false, $file='', $line='')
     {
-        
         if ($this->_config->debug) {
             return dbg::dump($message, $die, $method, $exception, $file, $line, false);
         }
@@ -101,8 +98,8 @@ class Dbg extends RandData
             $output = "<div class='err'>";
             $label=='' ? print '' : $output .= "<span class='errLabel'>$label</span>: ";
             $output .= "<span class='errDesc'>$var";
-            $file=='' ? print '' : $output .= "in file $file";
-            $line=='' ? print '' : $output .= "on line $line";
+            $file=='' ? print '' : $output .= "in file $file ";
+            $line=='' ? print '' : $output .= "on line $line ";
             $output .= "</span></div>";
             print $output;
 
