@@ -14,9 +14,6 @@
  */
 namespace Devtools;
 
-//include_once '../../../config/config.php';
-//require_once('paths.php');
-
 /**
  * Model class for personal MVC framework
  * Only class with knowledge of the database connections
@@ -53,7 +50,7 @@ class Model
      */
     public function __construct ($id, $tbl=NULL, $query=NULL, $dbtype='mysql')
     {
-    	$this->config = new config();
+    	$this->config = new \Devtools\Config();
     	
         $this->setDbg(_DBG_);
         if(_DBG_) dbg::msg("dbg is in scope of model class");
