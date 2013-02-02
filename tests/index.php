@@ -9,17 +9,7 @@
  * @copyright 2012 Jeremy Seago
  * @license   http://opensource.org/licenses/mit-license.php, MIT
  * @version   1.0
- * @link      https://github.com/seagoj/lib.autoload
+ * @link      https://github.com/seagoj/devtools
  */
 
-namespace NewProject;
-
-print "<div>BoF</div>";
-// require_once '../lib/Devtools/Autoload.php';
-require_once '../Autoload.php';
-\Devtools\Autoload::register();
-
-$dbg = new \Devtools\Dbg();
-$redis = new \Predis\Client();
-
-print "<div>EoF</div>";
+require_once 'autoloadTest.php';
