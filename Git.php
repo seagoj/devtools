@@ -73,7 +73,7 @@ class Git
         $this->_debug ? print "<div>".__METHOD__."</div>" : print "";
         $this->_user = $user;
         $this->_setHash();
-        return true;
+        return $this->_user == $user;
     }
 
     /**
