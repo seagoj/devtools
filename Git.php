@@ -89,6 +89,7 @@ class Git
         $this->_host = $host;
         if(isset($this->_user))
             $this->_setHash();
+        return $this->_host == $host;
     }
 
     /**
