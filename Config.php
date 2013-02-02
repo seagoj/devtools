@@ -34,6 +34,7 @@ class Config
     public $debug;
     public $conn;
     public $config;
+    public $test;
 
     /**
      * public Config::__construct
