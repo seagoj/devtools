@@ -186,8 +186,9 @@ class Dbg extends RandData
      */
     public function unit ($object, $method, $params)
     {
+        $config = new \Devtools\Config($object);
 
-        $validOutput = $this->_config->test;
+        $validOutput = $config->test;
         // die(var_dump($this->_config->));
         $class = get_class($object);
 
