@@ -188,51 +188,28 @@ class Dbg extends RandData
     {
 
         $validOutput = $this->_config->test;
-    // $validOutput = array(
-    //     'Devtools\Dbg\msg'=>"<div class='err'><span class='errDesc'>#{0} in file #{4} on line #{5}</span></div>",
-    //     'Devtools\Dbg\dump'=>"<div class='err'><span class='errDesc'>'#{0}' in file #{4} on line #{5}</span></div>",
-    //     'Devtools\Dbg\test'=>true,
-    //     'Devtools\Dbg\setNoCache'=>"<META HTTP-EQUIV='CACHE-CONTROL' CONTENT='NO-CACHE'>\n<META HTTP-EQUIV='PRAGMA' CONTENT='NO-CACHE'>",
-    //     'Devtools\Markdown\convert'=>"<h2>testLib</h2>\n",
-    //     'Devtools\Git\user'=>true,
-    //     'Devtools\Git\host'=>true,
-    //     'Devtools\Git\listRepos'=>array(
-    //         "seagoj/bookmule",
-    //         "seagoj/cookbook-apt",
-    //         "seagoj/cookbook-bootstrap",
-    //         "seagoj/cookbook-lib",
-    //         "seagoj/cookbook-nginx",
-    //         "seagoj/cookbook-php5-fpm",
-    //         "seagoj/cookbook-redis",
-    //         "seagoj/cookbook-ruby",
-    //         "seagoj/cookbook-sass",
-    //         "seagoj/devtools",
-    //         "seagoj/dotfiles",
-    //         "seagoj/jarvis",
-    //         "seagoj/resume"
-    //         )
-    //     );
+        $class = get_class($object);
 
-    $output = $validOutput[get_class($object).'\\'.$func];
+        $output = $validOutput[$class.'\\'.$method];
 
-    for ($i=0; $i<count($params); $i++) {
-        $output = str_replace("#{".$i."}", $params[$i], $output);
+        for ($i=0; $i<count($params); $i++) {
+            $output = str_replace("#{".$i."}", $params[$i], $output);
+        }
+
+        $paramStr = implode(', ', $params);
+
+        ob_start();
+        $result = call_user_func_array(array($object, $func), $params);
+        if($result == null)
+            $result = ob_get_contents();
+        ob_end_clean();
+
+        if ($output==$result) {
+            print "<div>$class->$method($paramStr) test passed.</div>";
+            return true;
+        } else {
+            print "<div>$class->$method($paramStr) test failed.</div><div>\n\n$output\n\n</div><div>\n\n$result\n\n</div>";
+            return false;
+        }
     }
-
-    $paramStr = implode(', ', $params);
-
-    ob_start();
-    $result = call_user_func_array(array($object, $func), $params);
-    if($result == null)
-        $result = ob_get_contents();
-    ob_end_clean();
-
-    if ($output==$result) {
-        print "<div>".get_class($object)."->$func($paramStr) test passed.</div>";
-        return true;
-    } else {
-        print "<div>".get_class($object)."->$func($paramStr) test failed.</div><div>\n\n$output\n\n</div><div>\n\n$result\n\n</div>";
-        return false;
-    }
-}
 }
