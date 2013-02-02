@@ -174,4 +174,12 @@ class Config
         $this->debug = true;
         return true;
     }
+
+    private function _configMarkdown()
+    {
+        $this->debug = false;
+        $this->test = array(
+             'Devtools\Markdown\convert'=>"<h2>testLib</h2>\n",
+            );
+    }
 }
