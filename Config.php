@@ -59,11 +59,6 @@ class Config
             $this->config = $this->$configFunc();
         else
             $this->config = $this->_configDefault();
-            
-        // if($class!='')
-        //     $this->config = $this->$configFunc();
-
-
     }
 
     /**
@@ -175,6 +170,13 @@ class Config
         return true;
     }
 
+    /**
+     * Config::_configMarkdown()
+     *
+     * Defines configuration for the Markdown class
+     *
+     * @return bool
+     */    
     private function _configMarkdown()
     {
         $this->debug = false;
@@ -183,6 +185,13 @@ class Config
             );
     }
 
+    /**
+     * Config::_configGit()
+     *
+     * Defines configuration for the Git class
+     *
+     * @return bool
+     */    
     private function _configGit()
     {
         $this->debug = false;
