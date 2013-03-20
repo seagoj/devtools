@@ -43,3 +43,5 @@ class Log {
         return $content;
     }
 }
+
+new Log();
