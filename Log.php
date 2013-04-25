@@ -1,47 +1,41 @@
 <?php
+    class Log {
+        private $testCount;
 
-class Log {
-    private $type;
-    private $path;
-    private $testCount;
-    
-    public function __construct($location, $syntax='tap')
-    {
-        if($location=='console' || $location=='html' || $location=='sreen') {
-            $this->type = $location    
-        } else {
-            $this->type = 'file';
-            $this->path = $location;
+        public function __construct()
+        {
+            $this->logToFile(date("m-d-Y H:i:s"));
+            $this->testCount = 0;
         }
-    }
 
-    public function log($content, $test='EMPTY') {
-        $endline = "\r\n";
-        switch($this->syntax) {
-            case 'tap':
-                $content = $this->tapify($content, $test)
-                break;
-            deault:
-                die("$this->type is not a valid syntax type");
-                break;
-        };
-        switch($this->syntax)
+        private function logToFile($content, $result='EMPTY', $file="hook.log")
+        {
+            $endline = "\r\n";
+            $content = $this->tapify($content, $result);
 
-    }
+            print "<div>$content</div>";
+            return file_put_contents($file, $content.$endline, FILE_APPEND);
+        }
 
-    private function tapify($content, $test) {
-        $nextTest = $this->testCount+1;
-        $prefix = 'ok '.$nextTest.' - ';
+        private function tapify($content, $result) {
+            $nextTest = $this->testCount+1;
+            $prefix = 'ok '.$nextTest.' - ';
             
-        if($test!=='EMPTY') {
-            $this->testCount = $nextTest;
-            $content = $prefix.$content;
-            if(!$test) {
-                $content = 'not '.$content;
+            if($result!=='EMPTY') {
+                    $this->testCount = $nextTest;
+                    $content = $prefix.$content;
+                if(!$result) {
+                    $content = 'not '.$content;
+                }
             }
-        }
-        return $content;
-    }
-}
 
-new Log();
+            return $content;
+        }
+        
+        public function __destruct()
+        {
+            $postfix = '1..'.$this->testCount;
+            $this->logToFile($postfix);
+            $this->logToFile("\r\n");
+        }
+    }
