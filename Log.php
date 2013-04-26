@@ -12,7 +12,7 @@ class Log {
         $this->testCount = 0;
     }
 
-    private function logToFile($content, $result='EMPTY')
+    public function file($content, $result='EMPTY')
     {
         $endline = "\r\n";
         $content = $this->tapify($content, $result);
