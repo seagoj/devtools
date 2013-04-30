@@ -10,7 +10,7 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
     {
     }
 
-    public function AutoloadTest()
+    public function autoloadTest()
     {
         $this->assertTrue(true);
 //        $log = new \Devtools\Log();
