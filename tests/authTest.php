@@ -1,9 +1,30 @@
 <?php
-require_once 'autoloader.php';
 
-$auth = new \Devtools\Auth("user", "password");
+class HookTest extends PHPUnit_Framework_TestCase
+{
+    private $log;
 
-if($auth->validate("user", "not password"))
-	print "Valid";
-else
-	print "Not Valid";
+    public function setUp()
+    {
+        require "Log.php";
+        $this->log = new Log();
+    }
+
+    public function tearDown()
+    {
+    }
+
+    public function authTest()
+    {
+        $auth = new \Devtools\Auth("user", "password");
+        $this->assertInstanceOf('Auth', $auth);
+        $this->log->logToFile('$auth is instance of Auth','EMPTY','authTest.log');
+    }
+
+    public function validateTest()
+    {
+        $auth = new \Devtools\Auth("user", "password");
+        $this->assertTrue($auth->validate("user", "password"));
+        $this->assertFalse($auth->validate("user", "not password"));
+    }
+}

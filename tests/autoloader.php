@@ -12,6 +12,6 @@
  * @link      https://github.com/seagoj/devtools
  */
 
-require '../lib/Devtools/Autoload.php';
+require 'Autoload.php';
 
 Devtools\Autoload::register();

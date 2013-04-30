@@ -1,4 +1,4 @@
-## Devtools
+## Devtools - master:[![Build Status](https://travis-ci.org/seagoj/devtools.png?branch=master)](https://travis-ci.org/seagoj/devtools)
 Devtools is a collection of PHP libraries designed for rapid development and debugging.
 
 * **Autoload**:

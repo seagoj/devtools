@@ -1,0 +1,21 @@
+language: php
+
+php:
+#     - 5.2
+    - 5.3
+    - 5.4
+
+# env:
+#    DB=mysql
+#    DB=pgsql
+
+# before_script:
+#    - if [[ "$DB" == "pgsql" ]]; then psql -c "DROP DATABASE IF EXISTS hello_world_test;" -U postgres; fi
+#    - if [[ "$DB" == "pgsql" ]]; then psql -c "create database hello_world_test;" -U postgres; fi
+#    - if [[ "$DB" == "mysql" ]]; then mysql -e "create database IF NOT EXISTS hello_world_test;" -uroot; fi
+
+#script: phpunit --configuration phpunit_$DB.xml --coverage-text
+script: phpunit --configuration phpunit.xml
+
+# notifications:
+#    irc: "irc.freenode.org#travis"
