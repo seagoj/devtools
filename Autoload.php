@@ -59,8 +59,8 @@ class Autoload
     public static function register($prepend = false)
     {
 //        echo "call ".__METHOD__;
-        spl_autoload_register(array(new self, '_autoload'), true, $prepend);
-//          spl_autoload_register(array(new self, '_autoload'));
+//        spl_autoload_register(array(new self, '_autoload'), true, $prepend);
+          spl_autoload_register(array(new self, '_autoload'));
 
     }
 
