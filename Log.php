@@ -1,5 +1,7 @@
 <?php
-    class Log {
+namespace Devtools;
+
+class Log {
         private $testCount;
 
         public function __construct()
