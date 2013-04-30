@@ -61,8 +61,8 @@ class Autoload
 //        echo "call ".__METHOD__;
 //        spl_autoload_register(array(new self, '_autoload'), true, $prepend);
 
-        spl_autoload_register(array(new self, '_autoload'), true, true);
-        var_dump(spl_autoload_functions);
+        spl_autoload_register(array(new self, '_autoload'));
+//        var_dump(spl_autoload_functions);
 
 
     }
@@ -76,16 +76,11 @@ class Autoload
      */
     private function _autoload($class)
     {
-        // var_dump($class);
-        // $class = $this->_stripProjectNS($class);
-        // var_dump($class);
-        // //namespace $class;
-        if (is_file($file = $this->_getRelPath().implode(DIRECTORY_SEPARATOR, explode('\\', $class)).'.php')) {
-            // print "<div>Include: $file</div>";
-            include $file;
-        } else {
-            die("$file does not exist.");
-        }
+        //if (is_file($file = $this->_getRelPath().implode(DIRECTORY_SEPARATOR, explode('\\', $class)).'.php')) {
+        //    include $file;
+        //} else {
+        //    die("$file does not exist.");
+        //}
     }
 
     /**
