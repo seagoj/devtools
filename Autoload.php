@@ -44,6 +44,7 @@ class Autoload
     public function __construct($currentDir = __DIR__)
     {
         $this->_libPath = $this->_getPath($currentDir);
+        throw new \Exception($_SERVER['SCRIPT_FILENAME']);
         $this->_runPath = $this->_getPath($_SERVER['SCRIPT_FILENAME']);
     }
 
