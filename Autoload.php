@@ -62,7 +62,7 @@ class Autoload
         spl_autoload_register(array(new self, '_autoload'), true, $prepend);
 
 //        spl_autoload_register(array(new self, '_autoload'));
-        var_dump(var_export(spl_autoload_functions()));
+//        var_dump(var_export(spl_autoload_functions()));
 
 
     }
@@ -79,7 +79,7 @@ class Autoload
         if (is_file($file = $this->_getRelPath().implode(DIRECTORY_SEPARATOR, explode('\\', $class)).'.php')) {
             include $file;
         } else {
-            throw new \Exception(spl_autoload_functions());
+            throw new \Exception(var_export(spl_autoload_functions()));
         //    die("$file does not exist.");
         }
     }
