@@ -31,7 +31,6 @@ class Autoload
 {
     private $_libPath;
     private $_runPath;
-B
 
     /**
      * public Autoload::__construct
