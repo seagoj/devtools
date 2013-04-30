@@ -21,7 +21,7 @@ class LogTest extends PHPUnit_Framework_TestCase
 
     public function fileTest()
     {
-        $options = ['file'=>'tests/fileTest.log'];
+        $options = array('file'=>'tests/fileTest.log');
 
         $log = new \Devtools\Log($options);
         $log->file('Test');
