@@ -3,24 +3,51 @@ namespace Devtools;
     
 class Log {
     private $testCount;
+    private $_config;
+    private $_file;
 
-    public function __construct($file='Log.log')
+    public function __construct($options)
     {
-        $this->file = $file;
-        $this->file(date("m-d-Y H:i:s"));
-        $this->testCount = 0;
+        $this->_config($options);
+
+        switch($this->_config['type']) {
+            case 'file':    
+                $this->_file = $file;
+                $this->_file(date("m-d-Y H:i:s"));
+                $this->_testCount = 0;
+                break;
+            default:
+                throw new Exception($this->_config['type'].' is not a valid Log type');
+                break;
+        }
     }
 
     public function file($content, $result='EMPTY')
     {
         $endline = "\r\n";
-        $content = $this->tapify($content, $result);
+        $content = $this->_tapify($content, $result);
 
         print "<div>$content</div>";
-        return file_put_contents($this->file, $content.$endline, FILE_APPEND);
+        return file_put_contents($this->_file, $content.$endline, FILE_APPEND);
     }
 
-    private function tapify($content, $result) {
+    private function _config($options)
+    {
+        $defaults = [
+            'type'=>'file',
+            'file'=>'Log.log'''
+        ];
+
+        foreach($defaults as $default=>$value) {
+            if(in_array($default, $options)) {
+                $defaults[$default] = $options[$default];
+            }
+        }
+
+        $this->_config = $defaults;
+        
+    }
+    private function _tapify($content, $result) {
         $nextTest = $this->testCount+1;
         $prefix = 'ok '.$nextTest.' - ';
             
