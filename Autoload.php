@@ -31,6 +31,7 @@ class Autoload
 {
     private $_libPath;
     private $_runPath;
+B
 
     /**
      * public Autoload::__construct
@@ -59,9 +60,9 @@ class Autoload
     public static function register($prepend = false)
     {
 //        echo "call ".__METHOD__;
-        spl_autoload_register(array(new self, '_autoload'), true, $prepend);
+//        spl_autoload_register(array(new self, '_autoload'), true, $prepend);
 
-//        spl_autoload_register(array(new self, '_autoload'));
+        spl_autoload_register(array(new self, '_autoload'));
 //        var_dump(spl_autoload_functions);
 
 
