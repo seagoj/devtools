@@ -10,7 +10,7 @@ class LogTest extends PHPUnit_Framework_TestCase
     {
     }
 
-    public function LogTest()
+    public function logTest()
     {
         $log = new \Devtools\Log();
         $this->assertInstanceOf('Log', $log);
