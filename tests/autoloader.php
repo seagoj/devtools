@@ -14,4 +14,5 @@
 
 require 'Autoload.php';
 
-Devtools\Autoload::register();
+//Devtools\Autoload::register();
+NotAClass::register();
