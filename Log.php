@@ -8,7 +8,7 @@ class Log {
     public function __construct($file='Log.log')
     {
         $this->file = $file;
-        $this->logToFile(date("m-d-Y H:i:s"));
+        $this->file(date("m-d-Y H:i:s"));
         $this->testCount = 0;
     }
 
@@ -39,7 +39,7 @@ class Log {
     public function __destruct()
     {
         $postfix = '1..'.$this->testCount;
-        $this->logToFile($postfix);
-        $this->logToFile("\r\n");
+        $this->file($postfix);
+        $this->file("\r\n");
     }
 }
