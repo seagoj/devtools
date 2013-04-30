@@ -60,7 +60,10 @@ class Autoload
     {
 //        echo "call ".__METHOD__;
 //        spl_autoload_register(array(new self, '_autoload'), true, $prepend);
-//          spl_autoload_register(array(new self, '_autoload'));
+
+        spl_autoload_register(array(new self, '_autoload'));
+        var_dump(spl_autoload_functions);
+
 
     }
 
