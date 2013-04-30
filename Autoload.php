@@ -79,7 +79,7 @@ class Autoload
         if (is_file($file = $this->_getRelPath().implode(DIRECTORY_SEPARATOR, explode('\\', $class)).'.php')) {
             include $file;
         } else {
-            throw new \Exception(spl_autoload_functions);
+            throw new \Exception(spl_autoload_functions());
         //    die("$file does not exist.");
         }
     }
