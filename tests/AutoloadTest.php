@@ -2,7 +2,7 @@
 
 class AutoloadTest extends PHPUnit_Framework_TestCase
 {
-    public function TestAutoload()
+    public function testAutoload()
     {
         $this->assertTrue(false);
     }
