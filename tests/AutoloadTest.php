@@ -35,4 +35,13 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf("\Devtools\Log", $log);
         $this->assertTrue(true);
     }
+
+    public function testCheckEnv()
+    {
+        $_SERVER['SCRIPT_FILENAME'] == '/home/travis/build/seagoj/php/bin/phpunit';
+        $this->assertEqual(\Devtools\Autoload::checkEnv(), 'PHPUNIT_TRAVIS');
+
+        $_SERVER['SCRIPT_FILENAME'] == 'home/travis/build/seagoj';
+        $this->assertEqual(\Devtools\Autoload::checkEnv(), '');
+    }
 }
