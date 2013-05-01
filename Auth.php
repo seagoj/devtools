@@ -34,8 +34,13 @@ class Auth
 
 	public function hash($pass)
 	{
+        $salt = $this->email;
+        while(strlen($salt)<22) {
+            $salt.=$this->email;       
+        }
+
 		$options = [
-			'salt'=> $this->_email
+			'salt'=> $salt
 		];
 
 		return password_hash(Auth::sanitize($pass), PASSWORD_DEFAULT, $options);
