@@ -23,7 +23,8 @@ class Auth
             return $this->_email==$email_attempt &&
 		        password_verify($this->hash($pass_attempt), $this->_hash);
         else
-            return true;
+            return $this->_email==$email_attempt && $this->_hash ==
+            $pass_attempt;
 	}
 
 	public function sanitize($pass)
