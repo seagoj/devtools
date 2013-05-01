@@ -8,7 +8,12 @@ class Log {
 
     public function __construct($options=[])
     {
-        $this->_config($options);
+        $defaults = [
+            'type'=>'file',
+            'file'=>'Log.log'
+        ];
+
+        $this->_config = array_merge($defaults, $options);
 
         switch($this->_config['type']) {
             case 'file':    
@@ -31,22 +36,6 @@ class Log {
         return file_put_contents($this->_file, $content.$endline, FILE_APPEND);
     }
 
-    private function _config($options)
-    {
-        $defaults = [
-            'type'=>'file',
-            'file'=>'Log.log'
-        ];
-
-        foreach($defaults as $default=>$value) {
-            if(in_array($default, $options)) {
-                $defaults[$default] = $options[$default];
-            }
-        }
-
-        $this->_config = $defaults;
-        return $options;
-    }
     private function _tapify($content, $result) {
         $nextTest = $this->testCount+1;
         $prefix = 'ok '.$nextTest.' - ';
