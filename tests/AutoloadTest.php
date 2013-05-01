@@ -51,9 +51,25 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
         $method = new ReflectionMethod('Devtools\Autoload', '_getRelPath');
         $method->setAccessible(true);
         
-        $runPath = '/home/travis/build/seagoj/tests';
-        $libPath = '/home/travis/build/seagoj/lib';
 
-        $this->assertEquals('../lib/', $method->invoke(new \Devtools\Autoload, $runPath, $libPath));
-    }
+        $_runPath = '/home/travis/build/seagoj';
+        $_libPath = $_runPath.'/lib/lib';
+        $this->assertEquals('lib/lib/', $method->invoke(new \Devtools\Autoload, $_runPath, $_libPath));
+
+        $_runPath = '/home/travis/build/seagoj';
+        $_libPath = $_runPath.'/lib';
+        $this->assertEquals('lib/', $method->invoke(new \Devtools\Autoload, $_runPath, $_libPath));
+
+        $_runPath = '/home/travis/build/seagoj/tests';
+        $_libPath = '/home/travis/build/seagoj/lib';
+        $this->assertEquals('../lib/', $method->invoke(new \Devtools\Autoload, $_runPath, $_libPath));
+
+        $_runPath = '/home/travis/build/seagoj';
+        $_libPath = $_runPath;
+        $this->assertEquals('', $method->invoke(new \Devtools\Autoload, $_runPath, $_libPath));
+
+        $_runPath = '/home/travis/build/seagoj/tests/src';
+        $_libPath = '/home/travis/build/seagoj/lib';
+        $this->assertEquals('../../lib/', $method->invoke(new \Devtools\Autoload, $_runPath, $_libPath));
+   }
 }
