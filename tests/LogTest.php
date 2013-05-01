@@ -20,11 +20,19 @@ class LogTest extends PHPUnit_Framework_TestCase
     {
         $options = array('file'=>'test_config.log');
         $log = new \Devtools\Log($options);
+
         $this->assertAttributeEquals(
             array('type'=>'file', 'file'=>'test_config.log'),
             '_config',
             $log
         );
+    }
+
+    public function testWrongType()
+    {
+        $options = array('type'=>'invalid');
+        $this->setExpectedException('InvalidArgumentException');
+        $log = new \Devtools\Log($options);
     }
 
     public function testFile()
