@@ -45,4 +45,13 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
         $_SERVER['SCRIPT_FILENAME'] = 'home/travis/build/seagoj';
         $this->assertEquals($autoload->checkEnv(), '');
     }
+
+    public function test_getRelPath()
+    {
+        $method = new ReflectionMethod('Devtools\Autoload', '_getRelPath');
+
+        $method->setAccessible(true);
+
+        var_dump($method->invoke(new devtools\Autoload));
+    }
 }
