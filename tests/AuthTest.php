@@ -1,6 +1,6 @@
 <?php
 
-class HookTest extends PHPUnit_Framework_TestCase
+class AuthTest extends PHPUnit_Framework_TestCase
 {
     private $log;
 
