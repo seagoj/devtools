@@ -31,6 +31,7 @@ class Autoload
 {
     private $_libPath;
     private $_runPath;
+    private $_PHPUNIT_TRAVIS;
 
     /**
      * public Autoload::__construct
@@ -44,12 +45,20 @@ class Autoload
     public function __construct($currentDir = __DIR__)
     {
         $this->_libPath = $this->_getPath($currentDir);
-        $path = explode('/',$_SERVER['SCRIPT_FILENAME']);
-        var_dump($path);
-        if($path[2]=='travis' && $path[7]=='phpunit')
+        
+        $this->_phpUnitCheck();
+
+        if($this->_PHPUNIT_TRAVIS) 
             $this->_runPath = $this->_getPath($currentDir);
         else
             $this->_runPath = $this->_getPath($_SERVER['SCRIPT_FILENAME']);
+    }
+
+    private function _phpunitCheck();
+    {
+        $path = explode('/',$_SERVER['SCRIPT_FILENAME']);
+        if($path[2]=='travis' && $path[7]=='phpunit')
+            $this->_PHPUNIT_TRAVIS = true;
     }
 
     /**
