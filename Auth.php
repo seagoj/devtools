@@ -25,7 +25,7 @@ class Auth
 
 	public function sanitize($pass)
 	{
-		return(mysql_real_escape_string($pass));
+		return PDO::prepare($pass);
 	}
 
 	public function hash($pass)
