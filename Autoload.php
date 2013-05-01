@@ -143,7 +143,8 @@ class Autoload
                 }
             } else {
                 $i=0;
-                while ($runPathArray[$i]==$libPathArray[$i]) {
+
+                while ($runPathArray[$i]==$libPathArray[$i] && $i<$runPathDepth) {
                     $i++;
                 }
 
