@@ -12,7 +12,7 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
         var_dump(get_class($autoloadStack[9][0]));
 
 //        foreach ($autoloadStack[9][0] as $class=>$parameters) {
-        $class = array_keys($autoloadStack[9][0]));
+        $class = array_keys($autoloadStack[9][0]);
             $this->assertEqual($validClass, substr($class, 0, strlen($validClass)-1));
 //        }
     }
