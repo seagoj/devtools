@@ -76,8 +76,6 @@ class Autoload
     public static function register($prepend = false)
     {
         spl_autoload_register(array(new self, '_autoload'), true, $prepend);
-
-//        var_dump(var_export(spl_autoload_functions()));
     }
 
     /**
@@ -172,46 +170,4 @@ class Autoload
             return implode(DIRECTORY_SEPARATOR, $relPath).DIRECTORY_SEPARATOR;
         }
     }
-
-    // /**
-    //  * Autoload::_stripProjectNS()
-    //  *
-    //  * Strips project namespace when autoloading
-    //  *
-    //  * @param string $class Namespace include project namespace
-    //  *
-    //  * @return string Namespace without project namespace
-    //  */
-    // private function _stripProjectNS($class)
-    // {
-    //     $classArray = explode('\\', $class);
-    //     $dirs = array();
-
-    //     if ($handle = opendir($this->_libPath)) {
-    //         while (false !== ($entry = readdir($handle))) {
-    //             if ($entry!="." && $entry!="..") {
-    //                 array_push($dirs, $entry);
-    //             }
-    //         }
-    //         closedir($handle);
-    //     }
-
-    //     // var_dump($dirs);
-
-    //     while (!in_array($pop = array_pop($dirs), $classArray)) {
-    //     }
-        
-    //     $classArray = array_reverse($classArray);
-    //     //var_dump($classArray);
-    //     while (($classPop = array_pop($classArray)) != $pop) {
-    //     }
-    //     array_push($classArray, $classPop);
-    //     $classArray = array_reverse($classArray);
-    //     //var_dump($classArray);
-    //     //print $pop;
-
-    //     // var_dump($dirs);
-    //     //die(var_dump($classArray));
-    //     return implode("\\", $classArray);
-    // }
 }
