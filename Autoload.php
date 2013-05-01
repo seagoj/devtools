@@ -44,7 +44,6 @@ class Autoload
     public function __construct($currentDir = __DIR__)
     {
         $this->_libPath = $this->_getPath($currentDir);
-        throw new \Exception($_SERVER['SCRIPT_FILENAME']);
         $path = explode($_SERVER['SCRIPT_FILENAME']);
         if($path[1]=='travis' && $path[6]=='phpunit')
             $this->_runPath = $this->_getPath($currentDir);
