@@ -18,7 +18,8 @@ class LogTest extends PHPUnit_Framework_TestCase
 
     public function test_config()
     {
-        $log = new \Devtools\Log(array('file'=>'test_config.log'));
+        $options = array('file'=>'test_config.log');
+        $log = new \Devtools\Log($options);
         $this->assertAttributeEquals(
             array('type'=>'file', 'file'=>'test_config.log'),
             '_config',
@@ -34,7 +35,7 @@ class LogTest extends PHPUnit_Framework_TestCase
         $log->file('Test');
 
         $this->assertTrue(is_file($options['file']));
-        $this->assertTrue(file_get_contents($options)!=='');
+        $this->assertTrue(file_get_contents($options['file'])!=='');
     }
 
     public function test_tapify()
