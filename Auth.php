@@ -13,7 +13,7 @@ class Auth
 			$this->_email = $email;
 		}
 		if($pass!=null) {
-			$this->_hash = $pass;
+			$this->_hash = $this->hash($pass);
 		}
 	}
 
