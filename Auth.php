@@ -31,7 +31,7 @@ class Auth
 	public function hash($pass)
 	{
 		$options = [
-			$salt => $this->_email
+			'salt'=> $this->_email
 		];
 
 		return password_hash(Auth::sanitize($pass), PASSWORD_DEFAULT, $options);
