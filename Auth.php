@@ -25,7 +25,7 @@ class Auth
 
 	public function sanitize($pass)
 	{
-		return PDO::prepare($pass);
+		return \PDO::prepare($pass);
 	}
 
 	public function hash($pass)
