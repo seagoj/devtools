@@ -18,7 +18,7 @@ class LogTest extends PHPUnit_Framework_TestCase
 
     public function test_config()
     {
-        $log = \Devtools\Log(array('file'=>'test_config.log'));
+        $log = new \Devtools\Log(array('file'=>'test_config.log'));
         $this->assertAttributeEquals(
             array('type'=>'file', 'file'=>'test_config.log'),
             '_config',
