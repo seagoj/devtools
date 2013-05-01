@@ -12,7 +12,7 @@ class Log {
 
         switch($this->_config['type']) {
             case 'file':    
-                $this->_file = $file;
+                $this->_file = $this->_config['file'];
                 $this->_file(date("m-d-Y H:i:s"));
                 $this->_testCount = 0;
                 break;
