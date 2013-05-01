@@ -2,8 +2,8 @@
 
 class AutoloadTest extends PHPUnit_Framework_TestCase
 {
-    private registerValidClass;
-    private registerValidMethod;
+    private $registerValidClass;
+    private $registerValidMethod;
 
     public function setup()
     {
