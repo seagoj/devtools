@@ -34,9 +34,9 @@ class Auth
 
 	public function hash($pass)
 	{
-        $salt = $this->email;
+        $salt = $this->_email;
         while(strlen($salt)<22) {
-            $salt.=$this->email;       
+            $salt.=$this->_email;       
         }
 
 		$options = [
