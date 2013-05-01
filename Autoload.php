@@ -90,16 +90,15 @@ class Autoload
     private function _autoload($class)
     {
         if (is_file($file = $this->_getRelPath().implode(DIRECTORY_SEPARATOR, explode('\\', $class)).'.php')) {
-            //var_dump("File found");
             include $file;
-            //var_dump($file);
         } else {
-            $file = $class . '.php';
+        /*    $file = $class . '.php';
             if (file_exists($file)) {
                 require $file;
             } else if (file_exists('lib/Devtools/'.$file)) {
                 require 'lib/Devtools/'.$file;        
             }
+            */
         }
     }
 
