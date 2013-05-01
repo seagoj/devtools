@@ -16,6 +16,14 @@ class LogTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Devtools\Log', $log);
     }
 
+    public function test_config()
+    {
+        $method = new ReflectionMethod('Devtools\Log', _config);
+        $method->setAccessible(true);
+
+        var_dump($method->invoke(new \Devtools\Log(), array('file'=>'test_config.log')));
+    }
+
     public function testFile()
     {
         $options = array('file'=>'tests/fileTest.log');
@@ -25,11 +33,6 @@ class LogTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue(is_file($options['file']));
         $this->assertTrue(file_get_contents($options)!=='');
-    }
-
-    public function test_config()
-    {
-        
     }
 
     public function test_tapify()
