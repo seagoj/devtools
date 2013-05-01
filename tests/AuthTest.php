@@ -6,7 +6,7 @@ class AuthTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {i
-        $options = array('file'='AuthTest.log');
+        $options = array('file'=>'AuthTest.log');
         $this->log = new \Devtools\Log($options);
     }
 
