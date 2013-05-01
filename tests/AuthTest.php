@@ -13,14 +13,14 @@ class HookTest extends PHPUnit_Framework_TestCase
     {
     }
 
-    public function authTest()
+    public function testAuth()
     {
         $auth = new \Devtools\Auth("user", "password");
         $this->assertInstanceOf('Auth', $auth);
         $this->log->file('$auth is instance of Auth','EMPTY','authTest.log');
     }
 
-    public function validateTest()
+    public function testValidate()
     {
         $auth = new \Devtools\Auth("user", "password");
         $this->assertTrue($auth->validate("user", "password"));
