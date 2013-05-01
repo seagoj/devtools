@@ -25,7 +25,7 @@ class Auth
 
 	public function sanitize($pass)
 	{
-        $db = new \PDO();
+        $db = new \PDO('sqlite::memory:');
 		return $db->prepare($pass);
 	}
 
