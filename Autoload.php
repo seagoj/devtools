@@ -91,6 +91,8 @@ class Autoload
      */
     private function _autoload($class)
     {
+        var_dump("RelPath: ".implode(DIRECTORY_SEPARATOR, explode('\\', $class)).'.php');
+
         if (is_file($file = $this->_getRelPath().implode(DIRECTORY_SEPARATOR, explode('\\', $class)).'.php')) {
             include $file;
             var_dump($file);
