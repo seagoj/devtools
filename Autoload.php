@@ -117,14 +117,14 @@ class Autoload
      */
     private function _getRelPath($_runPath=null, $_libPath=null)
     {
-        if($_runPath != null) $this->_runPath = $_runPath;
-        if($_libPath != null) $this->_libPath = $_runPath;
+        if($_runPath == null) $_runPath = $this->_runPath;
+        if($_libPath == null) $_libPath = $this->_runPath;
 
-        if ($this->_runPath==$this->_libPath) {
+        if ($_runPath==$_libPath) {
             return '';
         } else {
-            $runPathArray = explode(DIRECTORY_SEPARATOR, $this->_runPath);
-            $libPathArray = explode(DIRECTORY_SEPARATOR, $this->_libPath);
+            $runPathArray = explode(DIRECTORY_SEPARATOR, $_runPath);
+            $libPathArray = explode(DIRECTORY_SEPARATOR, $_libPath);
             $runPathDepth = sizeof($runPathArray);
             $libPathDepth = sizeof($libPathArray);
             $poppedFromRun = $poppedFromLib = $relPath = array();
