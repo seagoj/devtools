@@ -33,7 +33,6 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
     {
         $log = new \Devtools\Log();
         $this->assertInstanceOf("\Devtools\Log", $log);
-        $this->assertTrue(true);
     }
 
     public function testCheckEnv()
@@ -54,22 +53,31 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
 
         $_runPath = '/home/travis/build/seagoj';
         $_libPath = $_runPath.'/lib/lib';
-        $this->assertEquals('lib/lib/', $method->invoke(new \Devtools\Autoload, $_runPath, $_libPath));
+        $this->assertEquals('lib/lib/', $method->invoke(new \Devtools\Autoload(), $_runPath, $_libPath));
 
         $_runPath = '/home/travis/build/seagoj';
         $_libPath = $_runPath.'/lib';
-        $this->assertEquals('lib/', $method->invoke(new \Devtools\Autoload, $_runPath, $_libPath));
+        $this->assertEquals('lib/', $method->invoke(new \Devtools\Autoload(), $_runPath, $_libPath));
 
         $_runPath = '/home/travis/build/seagoj/tests';
         $_libPath = '/home/travis/build/seagoj/lib';
-        $this->assertEquals('../lib/', $method->invoke(new \Devtools\Autoload, $_runPath, $_libPath));
+        $this->assertEquals('../lib/', $method->invoke(new \Devtools\Autoload(), $_runPath, $_libPath));
 
         $_runPath = '/home/travis/build/seagoj';
         $_libPath = $_runPath;
-        $this->assertEquals('', $method->invoke(new \Devtools\Autoload, $_runPath, $_libPath));
+        $this->assertEquals('', $method->invoke(new \Devtools\Autoload(), $_runPath, $_libPath));
 
         $_runPath = '/home/travis/build/seagoj/tests/src';
         $_libPath = '/home/travis/build/seagoj/lib';
-        $this->assertEquals('../../lib/', $method->invoke(new \Devtools\Autoload, $_runPath, $_libPath));
-   }
+        $this->assertEquals('../../lib/', $method->invoke(new \Devtools\Autoload(), $_runPath, $_libPath));
+    }
+
+    public function test_getPath()
+    {
+        $method = new ReflectionMethod('Devtools\Autoload', '_getPath');
+        $method->setAccessible(true);
+
+        $file = '/home/travis/build/seagoj/testFile.php';
+        var_dump($method->invoke(new \Devtools\Autoload(), $file));
+    }
 }
