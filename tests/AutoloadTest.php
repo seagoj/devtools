@@ -9,6 +9,8 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
         $validClass = "class Devtools\Autoload#";
         $validMethod = "_autoload";
 
+        var_dump(array_keys($autoloadStack[9][0]));
+
         foreach ($autoloadStack[9][0] as $class=>$parameters) {
             $this->assertEqual($validClass, substr($class, 0, strlen($validClass)-1));
         }
