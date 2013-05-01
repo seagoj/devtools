@@ -2,6 +2,12 @@
 
 class AutoloadTest extends PHPUnit_Framework_TestCase
 {
+    public function testRegister()
+    {
+        \Devtools\Autoload::register();
+        var_dump(spl_autoload_functions());
+    }
+
     public function testAutoload()
     {
         $log = new \Devtools\Log();
