@@ -35,7 +35,7 @@ class Log {
     {
         $defaults = [
             'type'=>'file',
-            'file'=>'Log.log'''
+            'file'=>'Log.log'
         ];
 
         foreach($defaults as $default=>$value) {
