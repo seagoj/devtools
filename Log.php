@@ -22,7 +22,7 @@ class Log {
                 $this->_testCount = 0;
                 break;
             default:
-                throw new Exception($this->_config['type'].' is not a valid Log type');
+                throw new \Exception($this->_config['type'].' is not a valid Log type');
                 break;
         }
     }
