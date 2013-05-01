@@ -91,6 +91,13 @@ class Autoload
         if (is_file($file = $this->_getRelPath().implode(DIRECTORY_SEPARATOR, explode('\\', $class)).'.php')) {
             include $file;
             var_dump($file);
+        } else {
+            $file = $class . '.php';
+            if (file_exists($file)) {
+                require $file;
+            } else if (file_exists('lib/Devtools/'.$file)) {
+                require 'lib/Devtools/'.$file;        
+            }
         }
         /*else {
             throw new \Exception("$file does not exist.");
