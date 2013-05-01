@@ -6,7 +6,7 @@ class Log {
     private $_config;
     private $_file;
 
-    public function __construct($options)
+    public function __construct($options=[])
     {
         $this->_config($options);
 
