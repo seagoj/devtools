@@ -31,7 +31,6 @@ class Autoload
 {
     private $_libPath;
     private $_runPath;
-    private $_PHPUNIT_TRAVIS;
 
     /**
      * public Autoload::__construct
@@ -44,18 +43,24 @@ class Autoload
      */
     public function __construct($currentDir = __DIR__)
     {
-        
+        switch(self::checkEnv()) {
+            case 'PHPUNIT_TRAVIS':
+                $this->_runPath = $this->_getPath($currentDir);
+                $this->_libPath = $this->_runPath.'/lib';
+                break; 
+            default:
+                $this->_runPath = $this->_getPath($_SERVER['SCRIPT_FILENAME']);
+                $this->_libPath = $this->_getPath($currentDir);
+                break;
+        }
+    }
+
+    public function checkEnv() {
         $path = explode('/',$_SERVER['SCRIPT_FILENAME']);
         if($path[2]=='travis' && $path[7]=='phpunit') {
-            $this->_PHPUNIT_TRAVIS = true;
-        }
-
-        if($this->_PHPUNIT_TRAVIS) {
-            $this->_runPath = $this->_getPath($currentDir);
-            $this->_libPath = $this->_getPath($currentDir).'/lib';
+            return 'PHPUNIT_TRAVIS';
         } else {
-            $this->_runPath = $this->_getPath($_SERVER['SCRIPT_FILENAME']);
-            $this->_libPath = $this->_getPath($currentDir);
+            return '';    
         }
     }
 
@@ -70,11 +75,9 @@ class Autoload
      */
     public static function register($prepend = false)
     {
-//        echo "call ".__METHOD__;
         spl_autoload_register(array(new self, '_autoload'), true, $prepend);
 
-//        spl_autoload_register(array(new self, '_autoload'));
-        var_dump(var_export(spl_autoload_functions()));
+        // var_dump(var_export(spl_autoload_functions()));
 
 
     }
