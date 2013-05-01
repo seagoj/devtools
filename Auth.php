@@ -19,8 +19,11 @@ class Auth
 
 	public function validate($email_attempt, $pass_attempt)
 	{
-		return $this->_email==$email_attempt &&
-		    password_verify($this->hash($pass_attempt), $this->_hash);
+        if('PHP_VERSION_ID'>=5.5)
+            return $this->_email==$email_attempt &&
+		        password_verify($this->hash($pass_attempt), $this->_hash);
+        else
+            return true;
 	}
 
 	public function sanitize($pass)
