@@ -115,8 +115,11 @@ class Autoload
      *
      * @return string Path to $file
      */
-    private function _getRelPath()
+    private function _getRelPath($_runPath=null, $_libPath=null)
     {
+        if($_runPath != null) $this->_runPath = $_runPath;
+        if($_libPath != null) $this->_libPath = $_runPath;
+
         if ($this->_runPath==$this->_libPath) {
             return '';
         } else {

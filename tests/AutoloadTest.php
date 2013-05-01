@@ -51,17 +51,9 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
         $method = new ReflectionMethod('Devtools\Autoload', '_getRelPath');
         $method->setAccessible(true);
         
-        $runPath = new ReflectionProperty($this->registerValidClass,'_runPath');
-        $runPath->setAccessible(true);
-        
-        $libPath = new ReflectionProperty($this->registerValidClass,'_libPath');
-        $libPath->setAccessible(true);
+        $runPath = '/home/travis/build/seagoj/tests';
+        $libPath = '/home/travis/build/seagoj/lib';
 
-        $runPath->setValue($method, '/home/travis/build/seagoj/tests');
-        $libPath->setValue($method, '/home/travis/build/seagoj/lib');
-
-        $this->assertEquals('../lib/', $method->invoke(new \Devtools\Autoload));
-
-        var_dump($method->invoke(new devtools\Autoload));
+        $this->assertEquals('../lib/', $method->invoke(new \Devtools\Autoload, $runPath, $libPath));
     }
 }
