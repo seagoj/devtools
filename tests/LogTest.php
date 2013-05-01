@@ -18,7 +18,7 @@ class LogTest extends PHPUnit_Framework_TestCase
 
     public function test_config()
     {
-        $method = new ReflectionMethod('Devtools\Log', _config);
+        $method = new ReflectionMethod('Devtools\Log', '_config');
         $method->setAccessible(true);
 
         var_dump($method->invoke(new \Devtools\Log(), array('file'=>'test_config.log')));
