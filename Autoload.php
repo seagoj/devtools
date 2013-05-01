@@ -77,7 +77,7 @@ class Autoload
     {
         spl_autoload_register(array(new self, '_autoload'), true, $prepend);
 
-        // var_dump(var_export(spl_autoload_functions()));
+        var_dump(var_export(spl_autoload_functions()));
 
 
     }
@@ -91,20 +91,20 @@ class Autoload
      */
     private function _autoload($class)
     {
-        var_dump("RelPath: ".$this->_getRelPath().implode(DIRECTORY_SEPARATOR, explode('\\', $class)).'.php');
+//        var_dump("RelPath: ".$this->_getRelPath().implode(DIRECTORY_SEPARATOR, explode('\\', $class)).'.php');
 
         if (is_file($file = $this->_getRelPath().implode(DIRECTORY_SEPARATOR, explode('\\', $class)).'.php')) {
-            var_dump("File found");
+            //var_dump("File found");
             include $file;
-            var_dump($file);
+            //var_dump($file);
         } else {
             $file = $class . '.php';
-            var_dump("Looking for $file");
+  //          var_dump("Looking for $file");
             if (file_exists($file)) {
                 require $file;
-                var_dump("Found $file");
+  //              var_dump("Found $file");
             } else if (file_exists('lib/Devtools/'.$file)) {
-                var_dump("found lib/Devtools/$file");
+  //              var_dump("found lib/Devtools/$file");
                 require 'lib/Devtools/'.$file;        
             }
         }
