@@ -77,9 +77,7 @@ class Autoload
     {
         spl_autoload_register(array(new self, '_autoload'), true, $prepend);
 
-        var_dump(var_export(spl_autoload_functions()));
-
-
+//        var_dump(var_export(spl_autoload_functions()));
     }
 
     /**
@@ -91,26 +89,18 @@ class Autoload
      */
     private function _autoload($class)
     {
-//        var_dump("RelPath: ".$this->_getRelPath().implode(DIRECTORY_SEPARATOR, explode('\\', $class)).'.php');
-
         if (is_file($file = $this->_getRelPath().implode(DIRECTORY_SEPARATOR, explode('\\', $class)).'.php')) {
             //var_dump("File found");
             include $file;
             //var_dump($file);
         } else {
             $file = $class . '.php';
-  //          var_dump("Looking for $file");
             if (file_exists($file)) {
                 require $file;
-  //              var_dump("Found $file");
             } else if (file_exists('lib/Devtools/'.$file)) {
-  //              var_dump("found lib/Devtools/$file");
                 require 'lib/Devtools/'.$file;        
             }
         }
-        /*else {
-            throw new \Exception("$file does not exist.");
-        }*/
     }
 
     /**
@@ -134,21 +124,18 @@ class Autoload
      *
      * @return string Path to $file
      */
-private function _getRelPath()
+    private function _getRelPath()
     {
         if ($this->_runPath==$this->_libPath) {
             return '';
         } else {
             $runPathArray = explode(DIRECTORY_SEPARATOR, $this->_runPath);
             $libPathArray = explode(DIRECTORY_SEPARATOR, $this->_libPath);
-//            print "<div>RunPath: ".var_dump($runPathArray)."</div>";
-//            print "<div>LibPath: ".var_dump($libPathArray)."</div>";
             $runPathDepth = sizeof($runPathArray);
             $libPathDepth = sizeof($libPathArray);
             $poppedFromRun = $poppedFromLib = $relPath = array();
 
             if ($runPathDepth==$libPathDepth) {
-//                print "<div>Same Depth</div>";
                 while ($runPathArray!=$libPathArray) {
                     array_push($poppedFromRun, array_pop($runPathArray));
                     array_push($poppedFromLib, array_pop($libPathArray));
@@ -161,8 +148,6 @@ private function _getRelPath()
                     $longArray = 'lib';
                     $shortArray = 'run';
                 }
-
-//                print $longArray."Path is deeper.";
 
                 $longArrayDepth = sizeof(${$longArray.'PathArray'});
                 $shortArrayDepth = sizeof(${$shortArray.'PathArray'});
@@ -175,72 +160,10 @@ private function _getRelPath()
                 if($runPathArray[$i]!==$libPathArray[$i])
                     $i--;
 
-//                print "<div>Same to index $i</div>";
-
                 for ($i; $i<$longArrayDepth-1; $i++) {
                     if($i<$shortArrayDepth-1) {
                         array_push(${"poppedFrom".ucfirst($shortArray)}, array_pop(${$shortArray."PathArray"}));
                     }
-                    array_push(${"poppedFrom".ucfirst($longArray)}, array_pop(${$longArray."PathArray"}));
-                }
-//                print "<div>PoppedFromRun: ".var_dump($poppedFromRun)."</div>";
-//                print "<div>PoppedFromLib: ".var_dump($poppedFromLib)."</div>";
-            }
-
-            foreach ($poppedFromRun AS $pop) {
-                array_push($relPath, "..");
-            }
-
-            foreach (array_reverse($poppedFromLib) AS $pop) {
-                array_push($relPath, $pop);
-            }
-            return implode(DIRECTORY_SEPARATOR, $relPath).DIRECTORY_SEPARATOR;
-        }
-    }
-
-
-
-
-    private function _getRelPath_OLD()
-    {
-        if ($this->_runPath==$this->_libPath) {
-            return '';
-        } else {
-            $runPathArray = explode(DIRECTORY_SEPARATOR, $this->_runPath);
-            $libPathArray = explode(DIRECTORY_SEPARATOR, $this->_libPath);
-            $runPathDepth = sizeof($runPathArray);
-            $libPathDepth = sizeof($libPathArray);
-            $poppedFromRun = $poppedFromLib = $relPath = array();
-
-            if ($runPathDepth==$libPathDepth) {
-                while ($runPathArray!=$libPathArray) {
-                    array_push($poppedFromRun, array_pop($runPathArray));
-                    array_push($poppedFromLib, array_pop($libPathArray));
-                }
-            } else {
-                $i=0;
-
-                while ($runPathArray[$i]==$libPathArray[$i] && $i<($runPathDepth-1)) {
-                    $i++;
-                }
-
-                if ($runPathDepth>$libPathDepth) {
-                    $longArray = 'run';
-                    $shortArray = 'lib';
-                } else {
-                    $longArray = 'lib';
-                    $shortArray = 'run';
-                }
-
-                $longArrayDepth = sizeof(${$longArray.'PathArray'});
-                $shortArrayDepth = sizeof(${$shortArray.'PathArray'});
-
-                for ($i; $i<$shortArrayDepth; $i++) {
-                    array_push($poppedFromRun, array_pop($runPathArray));
-                    array_push($poppedFromLib, array_pop($libPathArray));
-                }
-
-                for ($j=$shortArrayDepth; $j<$longArrayDepth; $j++) {
                     array_push(${"poppedFrom".ucfirst($longArray)}, array_pop(${$longArray."PathArray"}));
                 }
             }
