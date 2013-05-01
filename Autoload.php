@@ -96,9 +96,12 @@ class Autoload
             var_dump($file);
         } else {
             $file = $class . '.php';
+            var_dump("Looking for $file");
             if (file_exists($file)) {
                 require $file;
+                var_dump("Found $file");
             } else if (file_exists('lib/Devtools/'.$file)) {
+                var_dump("found lib/Devtools/$file");
                 require 'lib/Devtools/'.$file;        
             }
         }
