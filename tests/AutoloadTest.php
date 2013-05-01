@@ -78,6 +78,6 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
         $method->setAccessible(true);
 
         $file = '/home/travis/build/seagoj/testFile.php';
-        var_dump($method->invoke(new \Devtools\Autoload(), $file));
+        $this->assertEquals('/home/travis/build/seagoj', $method->invoke(new \Devtools\Autoload(), $file));
     }
 }
