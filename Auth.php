@@ -43,6 +43,8 @@ class Auth
 			'salt'=> $salt
 		];
 
-		return password_hash(Auth::sanitize($pass), PASSWORD_DEFAULT, $options);
+        if('PHP_VERSION_ID'>=5.5) 
+    		return password_hash(Auth::sanitize($pass), PASSWORD_DEFAULT, $options);
+        else return $pass;
 	}
 }
