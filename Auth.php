@@ -19,7 +19,7 @@ class Auth
 
 	public function validate($email_attempt, $pass_attempt)
 	{
-		return $this->$_email==$email_attempt &&
+		return $this->_email==$email_attempt &&
 			password_verify($pass_attempt, $this->_hash);
 	}
 
@@ -31,7 +31,7 @@ class Auth
 	public function hash($pass)
 	{
 		$options = [
-			$salt => $this->$_email
+			$salt => $this->_email
 		];
 
 		return password_hash(Auth::sanitize($pass), PASSWORD_DEFAULT, $options);
