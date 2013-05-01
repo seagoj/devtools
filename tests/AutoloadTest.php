@@ -16,8 +16,8 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
         \Devtools\Autoload::register();
         $autoloadStack = spl_autoload_functions();
 
-        $this->assertEqual($this->registerValidClass, get_class($autoloadStack[9][0]));
-        $this->assertEqual($this->registerValidMethod, $autoloadStack[9][1]);
+        $this->assertEquals($this->registerValidClass, get_class($autoloadStack[9][0]));
+        $this->assertEquals($this->registerValidMethod, $autoloadStack[9][1]);
     }
 
     public function testRegisterPrepend()
@@ -25,8 +25,8 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
         \Devtools\Autoload::register(true);
         $autoloadStack = spl_autoload_functions();
         
-        $this->assertEqual($this->registerValidClass, get_class($autoloadStack[0][0]));
-        $this->aseertEqual($this->registerValidMethod, $autoloadStack[0][1]);
+        $this->assertEquals($this->registerValidClass, get_class($autoloadStack[0][0]));
+        $this->aseertEquals($this->registerValidMethod, $autoloadStack[0][1]);
     }
 
     public function testAutoload()
@@ -39,9 +39,9 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
     public function testCheckEnv()
     {
         $_SERVER['SCRIPT_FILENAME'] == '/home/travis/build/seagoj/php/bin/phpunit';
-        $this->assertEqual(\Devtools\Autoload::checkEnv(), 'PHPUNIT_TRAVIS');
+        $this->assertEquals(\Devtools\Autoload::checkEnv(), 'PHPUNIT_TRAVIS');
 
         $_SERVER['SCRIPT_FILENAME'] == 'home/travis/build/seagoj';
-        $this->assertEqual(\Devtools\Autoload::checkEnv(), '');
+        $this->assertEquals(\Devtools\Autoload::checkEnv(), '');
     }
 }
