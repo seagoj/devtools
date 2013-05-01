@@ -54,7 +54,7 @@ class Autoload
             $this->_runPath = $this->_getPath($_SERVER['SCRIPT_FILENAME']);
     }
 
-    private function _phpunitCheck();
+    private function _phpUnitCheck();
     {
         $path = explode('/',$_SERVER['SCRIPT_FILENAME']);
         if($path[2]=='travis' && $path[7]=='phpunit')
