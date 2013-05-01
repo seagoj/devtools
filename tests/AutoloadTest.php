@@ -26,7 +26,7 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
         $autoloadStack = spl_autoload_functions();
         
         $this->assertEqual($this->registerValidClass, get_class($autoloadStack[0][0]));
-        $this->aseertEqual($this->registerValidMethod, $autoloadStack[0][1])
+        $this->aseertEqual($this->registerValidMethod, $autoloadStack[0][1]);
     }
 
     public function testAutoload()
