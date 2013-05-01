@@ -45,7 +45,7 @@ class Log {
         }
 
         $this->_config = $defaults;
-        return $defaults;
+        return $options;
     }
     private function _tapify($content, $result) {
         $nextTest = $this->testCount+1;
