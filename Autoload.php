@@ -136,7 +136,7 @@ class Autoload
      */
 private function _getRelPath()
     {
-        if ($this->_runPath==$$this->_libPath) {
+        if ($this->_runPath==$this->_libPath) {
             return '';
         } else {
             $runPathArray = explode(DIRECTORY_SEPARATOR, $this->_runPath);
