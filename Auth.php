@@ -20,12 +20,13 @@ class Auth
 	public function validate($email_attempt, $pass_attempt)
 	{
 		return $this->_email==$email_attempt &&
-		    password_verify($pass_attempt, $this->_hash);
+		    password_verify($this->hash($pass_attempt), $this->_hash);
 	}
 
 	public function sanitize($pass)
 	{
-		return \PDO::prepare($pass);
+        $db = new \PDO();
+		return $db->prepare($pass);
 	}
 
 	public function hash($pass)
