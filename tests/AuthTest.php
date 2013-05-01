@@ -16,7 +16,7 @@ class HookTest extends PHPUnit_Framework_TestCase
     public function testAuth()
     {
         $auth = new \Devtools\Auth("user", "password");
-        $this->assertInstanceOf('Auth', $auth);
+        $this->assertInstanceOf('Devtools\Auth', $auth);
         $this->log->file('$auth is instance of Auth','EMPTY','authTest.log');
     }
 
