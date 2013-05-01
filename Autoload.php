@@ -71,7 +71,7 @@ class Autoload
         spl_autoload_register(array(new self, '_autoload'), true, $prepend);
 
 //        spl_autoload_register(array(new self, '_autoload'));
-//        var_dump(var_export(spl_autoload_functions()));
+        var_dump(var_export(spl_autoload_functions()));
 
 
     }
