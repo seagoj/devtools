@@ -20,7 +20,7 @@ class Auth
 	public function validate($email_attempt, $pass_attempt)
 	{
 		return $this->_email==$email_attempt &&
-			password_verify($pass_attempt, $this->_hash);
+		    password_verify($pass_attempt, $this->_hash);
 	}
 
 	public function sanitize($pass)
