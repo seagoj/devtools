@@ -2,19 +2,18 @@
 
 class randDataTest extends PHPUnit_Framework_TestCase
 {
-	private $randData;
-	
 	public function __construct() {
-		$this->randData = new \Devtools\RandData();
+/*		$this->randData = new \Devtools\RandData();
 		$this->testing($this->randData);
 		$this->with($this);
 		$this->runTest();
+        */
 	}
 	public function __constructTest() {
-		return true;
+//		return true;
 	}
 	public function getTest() {
-		$types = array('string','array','integer','bool','double','null');
+/*		$types = array('string','array','integer','bool','double','null');
 		$result = true;
 		foreach($types AS $type) {
 			$func = 'is_'.$type;
@@ -22,7 +21,7 @@ class randDataTest extends PHPUnit_Framework_TestCase
 		}
 		
 		return $result;
+*/  
 	}
 }
 
-new randDataTest();
