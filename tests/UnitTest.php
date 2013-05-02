@@ -1,5 +1,5 @@
 <?php
-class unitTest extends PHPUnit_Framework_TestCase {
+class UnitTest extends PHPUnit_Framework_TestCase {
 	public function __construct() {
 	/*	$this->unit = new unit();
 		$this->testing($this->unit);
