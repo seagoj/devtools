@@ -12,7 +12,7 @@ class GitTest extends PHPUnit_Framework_TestCase
 
     public function tearDown()
     {
-        $this->unlink(__CLASS__.'.log');
+        unlink(__CLASS__.'.log');
     }
 
     public function testGit()
