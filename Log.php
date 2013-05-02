@@ -7,9 +7,9 @@ class Log {
     private $_headers;
     private $_footers;
 
-    public function __construct($options=array())
+    public function __construct($options=[])
     {
-        $defaults = [
+/*        $defaults = [
             'type'=>'file',
             'file'=>'Log.log',
             'format'=>'tap'
@@ -24,6 +24,7 @@ class Log {
         $this->_testCount = 0;
 
         $this->write($headers[$this->_config['format']]);
+
     }
 
     public function write($content, $result='EMPTY')
@@ -86,5 +87,6 @@ class Log {
         );
 
         $this->_write($footers[$this->_config['format']]);
+    */
     }
 }
