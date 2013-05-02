@@ -1,11 +1,12 @@
 <?php
 
 class ConfigTest extends PHPUnit_Framework_TestCase {
-	private $log;
+	private $_log;
 	
 	public function setup() {
-        $options = array('file'=>'ConfigTest.log');
-        $this->log($options);
+        $options = array('file'=>__CLASS__.'.log');
+        
+        $this->_log = new \Devtools\Log($options);
     }
 
     public function testConfig() {

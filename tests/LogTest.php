@@ -10,19 +10,36 @@ class LogTest extends PHPUnit_Framework_TestCase
     {
     }
 
-    public function testLog()
+    public function testInstanceOf()
     {
-        $log = new \Devtools\Log();
-        $this->assertInstanceOf('\Devtools\Log', $log);
+        $this->assertInstanceOf('Devtools\Log', new \Devtools\Log());
     }
 
-    public function test_config()
+    public function testDefaults()
     {
-        $options = array('file'=>'test_config.log');
+        $log = new \Devtools\Log();
+        $this->assertAttributeEquals(
+            array('type'=>'file', 'file'=>'Log.log', 'format'=>'tap'),
+            '_config',
+            $log
+        );
+        $this->assertTrue(is_file('Log.php'));
+        $this->assertTrue(file_get_contents('Log.php')!=='');
+    }
+
+    public function testCustomTypeValid()
+    {
+        $options = array('type'=>'stdout');
+        $log = new \Devtools\Log($options);       
+    }
+
+    public function testCustomFileValid()
+    {
+        $options = array('file'=>__METHOD__.'.log');
         $log = new \Devtools\Log($options);
 
         $this->assertAttributeEquals(
-            array('type'=>'file', 'file'=>'test_config.log'),
+            array('type'=>'file', 'file'=>__METHOD__.'.log', 'format'=>'tap'),
             '_config',
             $log
         );
@@ -37,7 +54,7 @@ class LogTest extends PHPUnit_Framework_TestCase
 
     public function testFile()
     {
-        $options = array('file'=>'tests/fileTest.log');
+        $options = array('file'=>__METHOD__.'.log');
 
         $log = new \Devtools\Log($options);
         $log->file('Test');

@@ -2,13 +2,16 @@
 
 class AutoloadTest extends PHPUnit_Framework_TestCase
 {
-    private $registerValidClass;
-    private $registerValidMethod;
+    private $_log;
+    private $_validClass;
+    private $_validMethod;
 
     public function setup()
     {
-        $this->registerValidClass = "Devtools\Autoload";
-        $this->registerValidMethod = "_autoload";
+        $options = array('file'=>__CLASS__.'.log');
+        $this->_log = \Devtools\Log($options);
+        $this->_validClass = "Devtools\Autoload";
+        $this->_validMethod = "_autoload";
     }
 
     public function testRegisterAppend()
@@ -16,8 +19,8 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
         \Devtools\Autoload::register();
         $autoloadStack = spl_autoload_functions();
 
-        $this->assertEquals($this->registerValidClass, get_class($autoloadStack[9][0]));
-        $this->assertEquals($this->registerValidMethod, $autoloadStack[9][1]);
+        $this->assertEquals($this->_validClass, get_class($autoloadStack[9][0]));
+        $this->assertEquals($this->_validMethod, $autoloadStack[9][1]);
     }
 
     public function testRegisterPrepend()
@@ -25,8 +28,8 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
         \Devtools\Autoload::register(true);
         $autoloadStack = spl_autoload_functions();
         
-        $this->assertEquals($this->registerValidClass, get_class($autoloadStack[0][0]));
-        $this->assertEquals($this->registerValidMethod, $autoloadStack[0][1]);
+        $this->assertEquals($this->_validClass, get_class($autoloadStack[0][0]));
+        $this->assertEquals($this->_validMethod, $autoloadStack[0][1]);
     }
 
     public function testAutoload()
@@ -79,5 +82,10 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
 
         $file = '/home/travis/build/seagoj/testFile.php';
         $this->assertEquals('/home/travis/build/seagoj', $method->invoke(new \Devtools\Autoload(), $file));
+    }
+
+    public function tearDown()
+    {
+        // unlink(__CLASS__.'.log');')
     }
 }

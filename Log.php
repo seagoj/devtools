@@ -2,38 +2,67 @@
 namespace Devtools;
     
 class Log {
-    private $testCount;
+    private $_testCount;
     private $_config;
-    private $_file;
+    private $_headers;
+    private $_footers;
 
     public function __construct($options=[])
     {
         $defaults = [
             'type'=>'file',
-            'file'=>'Log.log'
+            'file'=>'Log.log',
+            'format'=>'tap'
         ];
+
+        $headers = array(
+            'tap'=>date("m-d-Y H:i:s")
+        );
 
         $this->_config = array_merge($defaults, $options);
 
+        $this->_testCount = 0;
+
+        $this->write($headers[$this->_config['format']]);
+        }
+    }
+
+    public function write($content, $result='EMPTY')
+    {
+        switch($this->_config['format']) {
+            case 'tap':
+                $content = $this->_tapify($content, $result);
+                break;
+            default:
+                throw new \InvalidArgumentException($this->_config['format'].' is not a valid log format.');
+                break;
+        }
+
         switch($this->_config['type']) {
-            case 'file':    
-                $this->_file = $this->_config['file'];
-                $this->file(date("m-d-Y H:i:s"));
-                $this->_testCount = 0;
+            case 'file':
+                $this->_file($content);
+                break;
+            case 'html':
+                $this->_stdout($content);
                 break;
             default:
                 throw new \InvalidArgumentException($this->_config['type'].' is not a valid Log type');
                 break;
-        }
+        } 
     }
 
-    public function file($content, $result='EMPTY')
+
+    private function _file($content)
     {
         $endline = "\r\n";
-        $content = $this->_tapify($content, $result);
 
-        print "<div>$content</div>";
-        return file_put_contents($this->_file, $content.$endline, FILE_APPEND);
+        return file_put_contents($this->_config['file'], $content.$endline, FILE_APPEND);
+    }
+
+    private function _stdout($content)
+    {
+        $tag = 'div';
+        print "<$tag>$content</$tag>";
     }
 
     private function _tapify($content, $result) {
@@ -53,8 +82,10 @@ class Log {
         
     public function __destruct()
     {
-        $postfix = '1..'.$this->testCount;
-        $this->file($postfix);
-        $this->file("\r\n");
+        $footers = array(
+            'tap'=>'1..'.$this->_testCount."\r\n"
+        );
+
+        $this->_write($footers[$this->_config['format']]);
     }
 }

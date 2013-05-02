@@ -6,9 +6,14 @@
  */
 
 class DbgTest extends PHPUnit_Framework_TestCase {
-	private $unit;
-	private $dbg;
+    private $_log;
 
+    public function setup()
+    {
+        $options = array('file'=>__CLASS__'.log');
+        $this->$_log = new \Devtools\Log($options);
+    }
+    
 	public function __construct($class=NULL) {
     /*
         if($class!=NULL)
@@ -95,4 +100,9 @@ class DbgTest extends PHPUnit_Framework_TestCase {
 	public function getTest() {
 	//	return true;
 	}
+
+    public function tearDown()
+    {
+        // unlink(__CLASS__.'.log');    
+    }
 }
