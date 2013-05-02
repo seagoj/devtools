@@ -194,9 +194,17 @@ class Git
     private function _populate()
     {
 
-        curl_init();
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $this->_classHash['repos_url']);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
+        $raw = curl_exec($ch);
+        curl_close($ch);
 
-        $postdata = http_build_query(
+        $this->_log->write($raw);
+
+
+     /*   $postdata = http_build_query(
             array(
                 'user'=>'seagoj',
                 'u'=>'seagoj'
@@ -214,6 +222,7 @@ class Git
         $context = stream_context_create($opts);
 
         $raw = json_decode(file_get_contents($this->_classHash['repos_url'], false, $context));
+        */
 
         $list = array();
         foreach ($raw AS $data) {
