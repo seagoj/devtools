@@ -6,6 +6,9 @@ php:
 #    - 5.4
     - 5.5
 
+services:
+    - redis
+
 # env:
 #    DB=mysql
 #    DB=pgsql

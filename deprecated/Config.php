@@ -13,8 +13,6 @@
  *
  */
 namespace Devtools;
-// require 'Autoload.php';
-// Autoload::register();
 
 /**
  * Config: Defines configuration for current project
