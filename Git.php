@@ -101,6 +101,7 @@ class Git
         $this->_host = $host;
         if(isset($this->_user))
             $this->_setHash();
+        $this->_log->write("Host: ".$this->_host);
         return $this->_host == $host;
     }
 
