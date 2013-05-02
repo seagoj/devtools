@@ -8,7 +8,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase {
         $this->log($options);
     }
 
-    public function testConfig() {}
+    public function testConfig() {
         $config = new \Devtools\Config($this);
 
 	}
