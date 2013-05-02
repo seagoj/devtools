@@ -193,6 +193,9 @@ class Git
      */
     private function _populate()
     {
+
+        curl_init();
+
         $postdata = http_build_query(
             array(
                 'user'=>'seagoj',
