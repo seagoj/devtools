@@ -47,7 +47,6 @@ class Config
      */
     public function __construct($obj)
     {
-        //print get_class($obj);
         $class = explode('\\', get_class($obj));
         $class = $class[sizeof($class)-1];
         if (strpos($class, 'Test')===strlen($class)-4) {
