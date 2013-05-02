@@ -24,7 +24,6 @@ class Log {
         $this->_testCount = 0;
 
         $this->write($headers[$this->_config['format']]);
-        }
     }
 
     public function write($content, $result='EMPTY')
