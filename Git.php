@@ -56,6 +56,7 @@ class Git
 
         $config = array_merge($defaults, $options);
 
+        var_dump($config);
 //        $this->_debug = false;
 //        $this->_debug ? print "<div>".__METHOD__."</div>" : print "";
         if ($config['user']!=null) {
