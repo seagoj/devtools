@@ -9,7 +9,7 @@ class Log {
 
     public function __construct($options=[])
     {
-/*        $defaults = [
+        $defaults = [
             'type'=>'file',
             'file'=>'Log.log',
             'format'=>'tap'
@@ -87,6 +87,5 @@ class Log {
         );
 
         $this->_write($footers[$this->_config['format']]);
-    */
     }
 }

@@ -57,7 +57,7 @@ class LogTest extends PHPUnit_Framework_TestCase
         $options = array('file'=>__METHOD__.'.log');
 
         $log = new \Devtools\Log($options);
-        $log->file('Test');
+        $log->write('Test');
 
         $this->assertTrue(is_file($options['file']));
         $this->assertTrue(file_get_contents($options['file'])!=='');
