@@ -58,7 +58,7 @@ class Git
         $config = array_merge($defaults, $options);
 
         $logOpt = array('type'=>'html');
-        $this_>_log = new \Devtools\Log($logOpt);
+        $this->_log = new \Devtools\Log($logOpt);
 
         $this->_log->write(var_dump($config));
 //        $this->_debug = false;
