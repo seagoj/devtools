@@ -17,6 +17,6 @@ class GitTest extends PHPUnit_Framework_TestCase
 
     public function testGit()
     {
-
+        $git = new \Devtools\Git('seagoj');
     }
 }
