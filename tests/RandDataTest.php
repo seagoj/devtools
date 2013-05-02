@@ -1,8 +1,6 @@
 <?php
-namespace seagoj\devtools;
-require_once('../lib/autoload/src/autoload.php');
 
-class randDataTest extends unit
+class randDataTest extends PHPUnit_Framework_TestCase
 {
 	private $randData;
 	
