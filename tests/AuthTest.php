@@ -19,7 +19,7 @@ class AuthTest extends PHPUnit_Framework_TestCase
     {
         $auth = new \Devtools\Auth("user", "password");
         $this->assertInstanceOf('Devtools\Auth', $auth);
-        $this->log->file('$auth is instance of Auth','EMPTY','authTest.log');
+        $this->_log->write('$auth is instance of Auth','EMPTY','authTest.log');
     }
 
     public function testValidate()
