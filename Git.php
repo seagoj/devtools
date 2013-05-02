@@ -165,6 +165,7 @@ class Git
      * Returns value based on hash and key
      *
      * @param string $hash Hash to look for $key
+     B
      * @param string $key  Key for returned value
      * 
      * @return string
@@ -192,7 +193,24 @@ class Git
      */
     private function _populate()
     {
-        $raw = json_decode(file_get_contents($this->_classHash['repos_url']));
+        $postdata = http_build_query(
+            array(
+                'user'=>'seagoj',
+                'u'=>'seagoj'
+            )
+        );
+
+        $opts = array(
+            'https'=>array(
+                'method'=> 'POST',
+                'header'=>'Content-type: application/x-www-form-urlencoded',
+                'content'=>$postdata
+            )
+        );
+
+        $context = stream_context_create($opts);
+
+        $raw = json_decode(file_get_contents($this->_classHash['repos_url'], false, $context));
 
         $list = array();
         foreach ($raw AS $data) {
