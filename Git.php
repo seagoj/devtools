@@ -35,7 +35,7 @@ class Git
     private $_reposHash;
     private $_reposList;
     private $_redis;
-    private $_debug;
+//    private $_debug;
 
     /**
      * public Git.__construct()
@@ -47,16 +47,23 @@ class Git
      * 
      * @return void
      */
-    public function __construct($user=null,$host='github')
+    public function __construct($options)
     {
-        $this->_debug = false;
-        $this->_debug ? print "<div>".__METHOD__."</div>" : print "";
-        if ($user!=null) {
-            $this->user($user);
+        $defaults = array(
+            'user'=>null,
+            'host'=>'github'
+        );
+
+        $config = array_merge($defaults, $options);
+
+//        $this->_debug = false;
+//        $this->_debug ? print "<div>".__METHOD__."</div>" : print "";
+        if ($config['user']!=null) {
+            $this->user($config['user']);
             $this->_setHash();
         }
         $this->_redis = new \Predis\Client();
-        $this->host($host);
+        $this->host($config['host']);
     }
 
     /**
@@ -70,7 +77,7 @@ class Git
      */
     public function user($user)
     {
-        $this->_debug ? print "<div>".__METHOD__."</div>" : print "";
+  //      $this->_debug ? print "<div>".__METHOD__."</div>" : print "";
         $this->_user = $user;
         $this->_setHash();
         return $this->_user == $user;
@@ -85,7 +92,7 @@ class Git
      */
     public function host($host)
     {
-        $this->_debug ? print "<div>".__METHOD__."</div>" : print "";
+//        $this->_debug ? print "<div>".__METHOD__."</div>" : print "";
         $this->_host = $host;
         if(isset($this->_user))
             $this->_setHash();
@@ -103,7 +110,7 @@ class Git
      */
     private function _setHash()
     {
-        $this->_debug ? print "<div>".__METHOD__."</div>" : print "";
+//        $this->_debug ? print "<div>".__METHOD__."</div>" : print "";
         switch($this->_host) {
         case 'github':
             $this->_classHash = array('repos_url'=>'https://api.github.com/users/'.$this->_user.'/repos');
@@ -128,7 +135,7 @@ class Git
      */
     private function _checkRedis($hash, $key=null)
     {
-        $this->_debug ? print "<div>".__METHOD__."</div>" : print "";
+//        $this->_debug ? print "<div>".__METHOD__."</div>" : print "";
         if ($key==null) {
             $ret = $this->_redis->hgetall($hash);
         } else {
@@ -147,7 +154,7 @@ class Git
      */
     public function listRepos()
     {
-        $this->_debug ? print "<div>".__METHOD__."</div>" : print "";
+//        $this->_debug ? print "<div>".__METHOD__."</div>" : print "";
         if (!isset($this->reposList)) {
             $this->_populate();
         }
@@ -188,7 +195,7 @@ class Git
      */
     private function _populate()
     {
-        $this->_debug ? print "<div>".__METHOD__."</div>" : print "";
+//        $this->_debug ? print "<div>".__METHOD__."</div>" : print "";
         $raw = json_decode(file_get_contents($this->_classHash['repos_url']));
 
         $list = array();
