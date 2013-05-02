@@ -16,7 +16,7 @@ class RandDataTest extends PHPUnit_Framework_TestCase
 		$result = true;
 		foreach($types AS $type) {
 			$func = 'is_'.$type;
-			$this->sssertTrue($func($this->randData->get($type)));
+			$this->assertTrue($func($this->randData->get($type)));
 		}
     }
 
