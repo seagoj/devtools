@@ -35,6 +35,7 @@ class Git
     private $_reposHash;
     private $_reposList;
     private $_redis;
+    private $_log;
 //    private $_debug;
 
     /**
@@ -56,7 +57,10 @@ class Git
 
         $config = array_merge($defaults, $options);
 
-        var_dump($config);
+        $logOpt = array('type'=>'html');
+        $this_>_log = new \Devtools\Log($logOpt);
+
+        $this->_log->write(var_dump($config));
 //        $this->_debug = false;
 //        $this->_debug ? print "<div>".__METHOD__."</div>" : print "";
         if ($config['user']!=null) {
