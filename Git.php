@@ -63,12 +63,12 @@ class Git
         $this->_log->write(var_dump($config));
 //        $this->_debug = false;
 //        $this->_debug ? print "<div>".__METHOD__."</div>" : print "";
+        $this->host($config['host']); 
         if ($config['user']!=null) {
             $this->user($config['user']);
             $this->_setHash();
         }
         $this->_redis = new \Predis\Client();
-        $this->host($config['host']);
     }
 
     /**
@@ -101,7 +101,6 @@ class Git
         $this->_host = $host;
         if(isset($this->_user))
             $this->_setHash();
-        $this->_log->write("Host: ".$this->_host);
         return $this->_host == $host;
     }
 
