@@ -21,10 +21,8 @@ class Log {
 
         $this->_config = array_merge($defaults, $options);
 
-        $this->_testCount = 0;
-
         $this->write($headers[$this->_config['format']]);
-
+        $this->_testCount = 0;
     }
 
     public function write($content, $result='EMPTY')
@@ -43,7 +41,7 @@ class Log {
                 $this->_file($content);
                 break;
             case 'html':
-                $this->_stdout($content);
+                $this->_html($content);
                 break;
             default:
                 throw new \InvalidArgumentException($this->_config['type'].' is not a valid Log type');
@@ -59,7 +57,7 @@ class Log {
         return file_put_contents($this->_config['file'], $content.$endline, FILE_APPEND);
     }
 
-    private function _stdout($content)
+    private function _html($content)
     {
         $tag = 'div';
         print "<$tag>$content</$tag>";

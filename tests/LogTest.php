@@ -29,7 +29,7 @@ class LogTest extends PHPUnit_Framework_TestCase
 
     public function testCustomTypeValid()
     {
-        $options = array('type'=>'stdout');
+        $options = array('type'=>'html');
         $log = new \Devtools\Log($options);       
     }
 
