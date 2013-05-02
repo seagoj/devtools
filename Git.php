@@ -109,7 +109,7 @@ class Git
             $this->_classHash = array('repos_url'=>'https://api.github.com/users/'.$this->_user.'/repos');
             break;
         default:
-            die("Host $host is not implemented.");
+            die("Host $this->_host is not implemented.");
             break;
         }
 
