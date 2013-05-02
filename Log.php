@@ -7,7 +7,7 @@ class Log {
     private $_headers;
     private $_footers;
 
-    public function __construct($options=[])
+    public function __construct($options=array())
     {
         $defaults = [
             'type'=>'file',
