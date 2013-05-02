@@ -66,11 +66,11 @@ class Log {
     }
 
     private function _tapify($content, $result) {
-        $nextTest = $this->testCount+1;
+        $nextTest = $this->_testCount+1;
         $prefix = 'ok '.$nextTest.' - ';
             
         if($result!=='EMPTY') {
-                $this->testCount = $nextTest;
+                $this->_testCount = $nextTest;
                 $content = $prefix.$content;
             if(!$result) {
                 $content = 'not '.$content;
