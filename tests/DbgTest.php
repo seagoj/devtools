@@ -5,10 +5,7 @@
  * @TODO	Comment Unit Tests in accordance with PHPDoc standard
  */
 
-namespace seagoj\devtools;
-require_once('../lib/autoload/src/autoload.php');
-
-class dbgTest extends unit {
+class DbgTest extends PHPUnit_Framework_TestCase {
 	private $unit;
 	private $dbg;
 
