@@ -1,6 +1,6 @@
 <?php
 
-class randDataTest extends PHPUnit_Framework_TestCase
+class RandDataTest extends PHPUnit_Framework_TestCase
 {
 	public function __construct() {
 /*		$this->randData = new \Devtools\RandData();
