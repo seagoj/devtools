@@ -10,21 +10,23 @@ class DbgTest extends PHPUnit_Framework_TestCase {
 	private $dbg;
 
 	public function __construct($class=NULL) {
-		if($class!=NULL)
+    /*
+        if($class!=NULL)
 			$this->dbg = new dbg($class);
 		else
 			$this->dbg = new dbg($this);
 		$this->unit = new unit(new dbg($class),$this);
+    */
 	}
 	public function __constructTest() {
-		return true;
+	//	return true;
 	}
 	/**
 	 * @getComments	true
 	 * @depends	__constructTest
 	 */
 	public function getCommentTagsTest() {
-		$test = $this->unit->getCommentTags($_SERVER['SCRIPT_FILENAME']);
+	/*	$test = $this->unit->getCommentTags($_SERVER['SCRIPT_FILENAME']);
 		$isArray = $this->test(is_array($test),"getCommentTags did not return an array.");
 		foreach($test["getCommentTagsTest"] AS $comment) {
 			foreach($comment AS $tag=>$value) {
@@ -34,13 +36,13 @@ class DbgTest extends PHPUnit_Framework_TestCase {
 		}
 		$valueFound = $this->test($valueFound, "@getComments was not found in unit->getCommentsTags array.");
 		return ($isArray && $valueFound);
-		
+	*/	
 	}
 	/**
 	 * @depends	__constructTest
 	 */
 	public function randDataTest() {
-		$data = array (
+	/*	$data = array (
 				"array" => dbg::randData('array'),
 				"string" => dbg::randData('string'),
 				"integer" => dbg::randData('integer'),
@@ -58,40 +60,39 @@ class DbgTest extends PHPUnit_Framework_TestCase {
 				$pass = $pass && dbg::test($func($value), "$value is of type ".gettype($value));
 		}
 		return $pass;
+    */
 	}
 	/**
 	 * @depends	__constructTest
 	 */
 	public function msgTest() {
-		return true;
+	//	return true;
 	}
 	/**
 	 * @depends	__constructTest
 	 */
 	public function dumpTest() {
-		return true;
+	//	return true;
 	}
 	/**
 	 * @depends	__constructTest
 	 */
 	public function testTest() {
-		return true;
+	//	return true;
 	}
 	/**
 	 * @depends	__constructTest
 	 */
 	public function setNoCacheTest() {
-		return true;
+	//	return true;
 	}
 	/**
 	 * @depends	__constructTest
 	 */
 	public function getUnitTagsTest() {
-		return true;
+	//	return true;
 	}
 	public function getTest() {
-		return true;
+	//	return true;
 	}
 }
-
-new dbgTest();
