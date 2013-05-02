@@ -86,6 +86,6 @@ class Log {
             'tap'=>'1..'.$this->_testCount."\r\n"
         );
 
-        $this->_write($footers[$this->_config['format']]);
+        $this->write($footers[$this->_config['format']]);
     }
 }
