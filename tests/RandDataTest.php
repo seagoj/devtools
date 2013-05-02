@@ -2,26 +2,27 @@
 
 class RandDataTest extends PHPUnit_Framework_TestCase
 {
-	public function __construct() {
-/*		$this->randData = new \Devtools\RandData();
-		$this->testing($this->randData);
-		$this->with($this);
-		$this->runTest();
-        */
-	}
-	public function __constructTest() {
-//		return true;
-	}
-	public function getTest() {
-/*		$types = array('string','array','integer','bool','double','null');
+    private $_log;
+
+    public function setup()
+    {
+        $options = array('file'=>__CLASS__.'.log');
+        $this->_log = new \Devtools\Log($options);
+    }
+
+    public function testGet()
+    {
+		$types = array('string','array','integer','bool','double','null');
 		$result = true;
 		foreach($types AS $type) {
 			$func = 'is_'.$type;
-			$result = $this->test($func($this->randData->get($type))) && $result;
+			$this->sssertTrue($func($this->randData->get($type)));
 		}
-		
-		return $result;
-*/  
-	}
+    }
+
+    public function tearDown()
+    {
+        unlink(__CLASS__.'.log');
+    }
 }
 
