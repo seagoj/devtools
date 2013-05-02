@@ -12,11 +12,11 @@ class RandDataTest extends PHPUnit_Framework_TestCase
 
     public function testGet()
     {
-		$types = array('string','array','integer','bool','double','null');
-		$result = true;
+		$randData = new \Devtools\RandData();
+        $types = array('string','array','integer','bool','double','null');
 		foreach($types AS $type) {
 			$func = 'is_'.$type;
-			$this->assertTrue($func($this->randData->get($type)));
+			$this->assertTrue($func($randData->get($type)));
 		}
     }
 
