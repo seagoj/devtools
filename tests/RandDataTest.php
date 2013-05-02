@@ -5,7 +5,7 @@ class randDataTest extends PHPUnit_Framework_TestCase
 	private $randData;
 	
 	public function __construct() {
-		$this->randData = new randData();
+		$this->randData = new \Devtools\RandData();
 		$this->testing($this->randData);
 		$this->with($this);
 		$this->runTest();
