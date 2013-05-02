@@ -10,7 +10,7 @@ class DbgTest extends PHPUnit_Framework_TestCase {
 
     public function setup()
     {
-        $options = array('file'=>__CLASS__'.log');
+        $options = array('file'=>__CLASS__.'.log');
         $this->$_log = new \Devtools\Log($options);
     }
     
