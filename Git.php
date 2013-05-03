@@ -196,13 +196,14 @@ class Git
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->_classHash['repos_url']);
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'seagoj@gmail.com');
         $raw = curl_exec($ch);
         curl_close($ch);
 
         $this->_log->write($raw);
-
 
      /*   $postdata = http_build_query(
             array(
