@@ -203,6 +203,12 @@ class Git
         $raw = curl_exec($ch);
         curl_close($ch);
 
+        $limitMessage = 'API Rate Limit Exceeded';
+
+        if (substr($raw['message'], 0 , strlen($limitMessage)-1) == $limitMessage) {
+            throw new \Exception($raw['message']); 
+        }
+
         $this->_log->write($raw);
 
      /*   $postdata = http_build_query(

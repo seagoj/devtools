@@ -2,8 +2,6 @@
 
 namespace Config;
 
-
-
 class config
 {
 	public $debug;
