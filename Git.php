@@ -205,6 +205,8 @@ class Git
 
         $limitMessage = 'API Rate Limit Exceeded';
 
+        $raw = json_decode($raw);
+
         if (substr($raw['message'], 0 , strlen($limitMessage)-1) == $limitMessage) {
             throw new \Exception($raw['message']); 
         }
