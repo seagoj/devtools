@@ -44,9 +44,11 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $mdStr = "";
 
         for($i=1; $i<=5; $i++) {
-            $resultStr .= "\t<li>$li.$i</li>\n";
-            $mdStr .= "* $li\n";
+            $resultStr .= "\t<li>$li$i</li>\n";
+            $mdStr .= "* $li$i\n";
         }
+
+        $resultStr .= "</ul>";
 
         $this->assertEquals($resultStr, $md->convert($mdStr));
     }
