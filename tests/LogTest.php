@@ -63,9 +63,18 @@ class LogTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(file_get_contents($options['file'])!=='');
     }
 
-    public function test_tapify()
+    public function test_tapifyTrue()
     {
-         
+        $message = "Sample Output";
+
+        $method = new ReflectionMethod('Devtools\Log', '_tapify');
+        $method->setAccessible(true);
+
+        
+        print $method->invoke(new \Devtools\Log(), $message, $true);
+//        $this->assertEquals('');
+
+
     }
 }
 
