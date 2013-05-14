@@ -4,6 +4,7 @@ class LogTest extends PHPUnit_Framework_TestCase
 {
     public function setup()
     {
+        print "Begin ".__CLASS__;
     }
 
     public function tearDown()
