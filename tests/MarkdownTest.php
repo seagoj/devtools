@@ -30,7 +30,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         for($i=1; $i<=5; $i++) {
             for($count=1; $count<=$i; $count++)
                 $head.="#";
-            $this->assertEquals("<h$i>H$1</h$i>\n", $md->convert("$head H1"));
+            $this->assertEquals("<h$i>H$i</h$i>\n", $md->convert("$head H$i"));
         }
     }
 }
