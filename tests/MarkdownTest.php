@@ -25,12 +25,13 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
     public function testHeaders()
     {
         $md = new \Devtools\Markdown();
-        $head = "";
+        $head="";
 
         for($i=1; $i<=5; $i++) {
             for($count=1; $count<=$i; $count++)
                 $head.="#";
             $this->assertEquals("<h$i>H$i</h$i>\n", $md->convert("$head H$i"));
+            $head = "";
         }
     }
 }
