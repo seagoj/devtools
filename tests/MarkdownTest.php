@@ -25,6 +25,12 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
     public function testHeaders()
     {
         $md = new \Devtools\Markdown();
-        $this->assertEquals("<h1>H1</h1>\n", $md->convert("# H1"));
+        $head = "")
+
+        for($i=1; $i<=5; $i++) {
+            for($count=1; $count<=$i; $count++)
+                $head.="#";
+            $this->assertEquals("<h$i>H$1</h$i>\n", $md->convert("$head H1"));
+        }
     }
 }
