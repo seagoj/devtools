@@ -82,7 +82,7 @@ class Markdown
                     $array = explode('*', $string);
                     $string = '';
                     for ($i=0; $i<count($array); $i++) {
-                        if ($i%2===0) {
+                        if ($i%2!==0) {
                             $string .= $array[$i];
                         } else {
                             $string .= "<i>".$array[$i]."</i>";
