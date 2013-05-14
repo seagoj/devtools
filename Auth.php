@@ -26,13 +26,13 @@ class Auth
             return $this->_email==$email_attempt && $this->_hash ==
             $pass_attempt;
 	}
-
+/*
 	public function sanitize($pass)
 	{
         $db = new \PDO('sqlite::memory:');
 		return $db->prepare($pass);
 	}
-
+*/
 	public function hash($pass)
 	{
         $salt = $this->_email;
