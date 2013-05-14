@@ -34,4 +34,20 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
             $head = "";
         }
     }
+    
+    public function testUnorderedList()
+    {
+        $md = new \Devtools\Markdown();
+
+        $li = "List Item ";
+        $resultStr = "<ul>\n";
+        $mdStr = "";
+
+        for($i=1; $i<=5; $i++) {
+            $resultStr .= "<li>$li.$i</li>\n";
+            $mdStr .= "* $li\n";
+        }
+
+        $this->assertEquals($resultStr, $md->convert($mdStr));
+    }
 }
