@@ -39,9 +39,12 @@ class Markdown
      *
      * @return void
      **/
-    public function convert($file)
+    public function convert($input)
     {
-        $code = file_get_contents($file);
+        if(is_file($input))
+            $code = file_get_contents($input);
+        else
+            $code = $file;
 
         $first = true;
 
