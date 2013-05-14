@@ -65,6 +65,8 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
             $resultStr .= "<i>$sample$i</i>";
             $mdStr .= "*$sample$i*";
         }
+        
+        $this->_log->write($mdStr);
 
         $this->assertEquals($resultStr, $md->convert($mdStr));
     }
