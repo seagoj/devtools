@@ -8,6 +8,7 @@ class LogTest extends PHPUnit_Framework_TestCase
 
     public function tearDown()
     {
+        print "END ".__CLASS__;
     }
 
     public function testInstanceOf()
@@ -74,4 +75,3 @@ class LogTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("ok 1 - $message", $method->invoke(new \Devtools\Log(), $message, true));
     }
 }
-

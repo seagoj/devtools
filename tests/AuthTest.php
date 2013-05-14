@@ -6,6 +6,7 @@ class AuthTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        print "Begin ".__CLASS__;
         $options = array('file'=>__CLASS__.'.log');
         $this->_log = new \Devtools\Log($options);
     }
@@ -13,6 +14,7 @@ class AuthTest extends PHPUnit_Framework_TestCase
     public function tearDown()
     {
 //        $this->unlink(__CLASS__.'.log');
+        print "End ".__CLASS__;
     }
 
     public function testAuth()
