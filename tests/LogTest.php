@@ -71,10 +71,7 @@ class LogTest extends PHPUnit_Framework_TestCase
         $method->setAccessible(true);
 
         
-        print $method->invoke(new \Devtools\Log(), $message, true);
-//        $this->assertEquals('');
-
-
+        $this->assertEquals("ok 1 - $message", $method->invoke(new \Devtools\Log(), $message, true));
     }
 }
 
