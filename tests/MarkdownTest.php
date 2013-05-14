@@ -53,7 +53,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($resultStr, $md->convert($mdStr));
     }
 
-    public function testBold()
+    public function testItalics()
     {
         $md = new \Devtools\Markdown();
 
@@ -62,8 +62,8 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $mdStr = "";
 
         for($i=0; $i<=5; $i++) {
-            $resultStr .= "<b>$sample$i</b>";
-            $mdStr .= "**$sample$i**";
+            $resultStr .= "<i>$sample$i</i>";
+            $mdStr .= "*$sample$i*";
         }
 
         $this->assertEquals($resultStr, $md->convert($mdStr));
