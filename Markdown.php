@@ -44,7 +44,7 @@ class Markdown
         if(is_file($input))
             $code = file_get_contents($input);
         else
-            $code = $file;
+            $code = $input;
 
         $first = true;
 
