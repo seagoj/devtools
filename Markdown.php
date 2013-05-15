@@ -68,26 +68,26 @@ class Markdown
                         $depth++;
                     }
                     $tag = "h".$depth;
-                    $string = "<$tag>$string</$tag>";
+                    $line = "<$tag>$string</$tag>";
                 } else {
                     // Check for unmatched star
                     if ( $line[0]=='*' && $line[1]==' ') {
                         if ($first) {
                             $first = false;
 
-                            $string = "<ul>\n\t<li>$string</li>";
+                            $line = "<ul>\n\t<li>$string</li>";
                         } else {
-                            $string = "<li>$string</li>";
+                            $line = "<li>$string</li>";
                         }
                     }
                 }
 
-                $string = $this->_tagReplace(
+                $line = $this->_tagReplace(
                     $this->_tagReplace($line, 'b', '**'),
                     'i','*'
                 );
 
-                $html .= $string."\n";
+                $html .= $line."\n";
             } else {
                 if (!$first) {
                     $html .= "</ul>\n";
