@@ -19,7 +19,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
     {
         $md = new \Devtools\Markdown();
         $this->assertInstanceOf('Devtools\Markdown', $md);
-        $this->_log->write('$md is an instance of Devtools\Markdown','EMPTY');
+//        $this->_log->write('$md is an instance of Devtools\Markdown','EMPTY');
     }
 
     public function testHeaders()
