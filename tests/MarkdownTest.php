@@ -6,13 +6,13 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $options = array('file'=>__CLASS__.'.log');
+        $options = array('type'=>'stdout');
         $this->_log = new \Devtools\Log($options);
     }
 
     public function tearDown()
     {
-        unlink(__CLASS__.'.log');
+//        unlink(__CLASS__.'.log');
     }
 
     public function testMarkdown()
