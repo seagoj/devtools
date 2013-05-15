@@ -6,6 +6,7 @@ class Log {
     private $_config;
     private $_headers;
     private $_footers;
+    public $type;
 
     public function __construct($options=[])
     {
@@ -20,7 +21,7 @@ class Log {
         );
 
         $this->_config = array_merge($defaults, $options);
-
+        $this->type = $this->config['type'];
         $this->write($headers[$this->_config['format']]);
         $this->_testCount = 0;
     }

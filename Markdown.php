@@ -31,7 +31,7 @@ class Markdown
      **/
     public function __construct()
     {
-        $options = array('type'=>'stdout');
+        $options = array('file'=>__CLASS__.'.log');
         $this->_log = new \Devtools\Log($options);
     }
 
