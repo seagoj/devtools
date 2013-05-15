@@ -105,7 +105,6 @@ class Markdown
         if($start===$end || $end===null) {
             if (strpos($line, $start)!==false) {
                 $array = explode($start, $line);
-                $this->_log->write($array);
                 for ($i=0; $i<count($array); $i++) {
                     if ($i%2===0) {
                         $string .= $array[$i];
