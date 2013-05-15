@@ -21,7 +21,7 @@ class Log {
         );
 
         $this->_config = array_merge($defaults, $options);
-        $this->type = $this->config['type'];
+        $this->type = $this->_config['type'];
         $this->write($headers[$this->_config['format']]);
         $this->_testCount = 0;
     }
