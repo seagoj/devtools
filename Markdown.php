@@ -71,13 +71,12 @@ class Markdown
                     $line = "<$tag>$string</$tag>";
                 } else if ( $line[0]=='*' && $line[1]==' ') {
                     // Check for unordered list
-                        if ($first) {
-                            $first = false;
+                    if ($first) {
+                        $first = false;
 
-                            $line = "<ul>\n<li>$string</li>";
-                        } else {
-                            $line = "<li>$string</li>";
-                        }
+                    $line = "<ul>\n<li>$string</li>";
+                    } else {
+                        $line = "<li>$string</li>";
                     }
                 } else if (substr($line, 0, 2)==='---') {
                     $line = "<hr>\n";
