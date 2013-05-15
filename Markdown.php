@@ -63,6 +63,10 @@ class Markdown
                 $string = substr($line, strpos($line, ' ')+1);
 
                 // Check for header
+                $line = $this->_checkHeader($line);
+                $line = $this->_checkUnorderedList($line);
+                $line = $this->_checkHR($line);
+/*
                 if ($line[$depth = 0]=='#') {
                     while ( $line[$depth]=='#' ) {
                         $depth++;
@@ -78,10 +82,10 @@ class Markdown
                     } else {
                         $line = "<li>$string</li>";
                     }
-                } else if (substr($line, 0, 3)==='---') {
+                } else if(substr($line, 0, 3)==='---') {
                     $line = "<hr>\n";
                 }
-
+*/
                 $line = $this->_tagReplace(
                     $this->_tagReplace($line, 'b', '**'),
                     'i','*'
@@ -130,5 +134,34 @@ class Markdown
             $line = "<hr>\n";
         return $line;
         
+    }
+
+    private function _checkHeader($line)
+    {
+        if ($line[$depth = 0]=='#') {
+            while ( $line[$depth]=='#' ) {
+                $depth++;
+            }
+            $tag = "h".$depth;
+            $line = "<$tag>$string</$tag>";
+        }
+
+        return $line;
+    }
+
+    private function _checkUnorderedList($line)
+    {
+        if ( $line[0]=='*' && $line[1]==' ') {
+            // Check for unordered list
+            if ($first) {
+                $first = false;
+
+                $line = "<ul>\n<li>$string</li>";
+            } else {
+                $line = "<li>$string</li>";
+            }
+        }
+
+        return $line;
     }
 }
