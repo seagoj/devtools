@@ -59,39 +59,14 @@ class Markdown
 
             if ($line!="") {
 
-               // $tag = substr($line, 0, strpos($line, ' '));
-               // $string = substr($line, strpos($line, ' ')+1);
-
-                // Check for header
                 $line = $this->_checkHeader($line);
                 $line = $this->_checkUnorderedList($line, $first);
-                $first = false;
                 $line = $this->_checkHR($line);
-/*
-                if ($line[$depth = 0]=='#') {
-                    while ( $line[$depth]=='#' ) {
-                        $depth++;
-                    }
-                    $tag = "h".$depth;
-                    $line = "<$tag>$string</$tag>";
-                } else if ( $line[0]=='*' && $line[1]==' ') {
-                    // Check for unordered list
-                    if ($first) {
-                        $first = false;
-
-                    $line = "<ul>\n<li>$string</li>";
-                    } else {
-                        $line = "<li>$string</li>";
-                    }
-                } else if(substr($line, 0, 3)==='---') {
-                    $line = "<hr>\n";
-                }
-*/
-                $line = $this->_tagReplace(
-                    $this->_tagReplace($line, 'b', '**'),
-                    'i','*'
-                );
-
+                $line = $this->_tagReplace($line, 'code', '    ');
+                $line = $this->_tagReplace($line, 'b', '**');
+                $line = $this->_tagReplace($line, 'i', '*');
+                $first = false;
+                
                 $html .= $line."\n";
             } else {
                 if (!$first) {
@@ -163,5 +138,14 @@ class Markdown
         }
 
         return $line;
+    }
+
+    private function _formatCode($line, $first)
+    {
+        if(substr($line, 0, 4)='    ') {
+            }'))}
+        }
+
+        
     }
 }

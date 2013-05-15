@@ -117,4 +117,17 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals("<hr>\n", $result);
     }
+
+    public function testCode()
+    {
+        $mdStr = "    code1\n   code2";
+        $resultStr = "<code>code1\ncode2</code>";
+
+        $method = new ReflectionMethod('Devtools\Markdown','_formatCode');
+        $method->setAccessible(true);
+
+        $result = $method->invoke(new \Devtools\Markdown(), $mdStr, true);
+        $this->assertEquals($resultStr)
+        
+    }
 }
