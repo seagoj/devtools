@@ -80,7 +80,6 @@ class Markdown
                 // Check for bold
                 if (strpos($string, '**')) {
                     $array = explode('**', $string);
-                    print $array;
                     $string = '';
                     for ($i=0; $i<count($array); $i++) {
                         if ($i%2===0) {
