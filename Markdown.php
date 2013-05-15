@@ -21,6 +21,7 @@ namespace Devtools;
  */
 class Markdown
 {
+    private $_log;
     /**
      * Markdown::__construct()
      *
@@ -28,7 +29,11 @@ class Markdown
      *
      * @return void
      **/
-    public function __construct() {}
+    public function __construct()
+    {
+        $options = array('type'=>'stdout');
+        $this->_log = new \Devtools\Log($options);
+    }
 
     /**
      * Markdown::__convert()
@@ -80,6 +85,7 @@ class Markdown
                 // Check for bold
                 if (strpos($string, '**')) {
                     $array = explode('**', $string);
+                    $this->_log->write($array);
                     $string = '';
                     for ($i=0; $i<count($array); $i++) {
                         if ($i%2===0) {

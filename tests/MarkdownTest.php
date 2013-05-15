@@ -62,7 +62,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $mdStr = "";
 
         for($i=1; $i<=5; $i++) {
-            $resultStr .= "<i>$sample$i</i>";
+            $resultStr .= "<b>$sample$i</b>";
             $mdStr .= "**$sample$i**";
         }
         
