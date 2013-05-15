@@ -27,6 +27,8 @@ class Log {
 
     public function write($content, $result='EMPTY')
     {
+        $content = $this->_stringify($content);)
+
         switch($this->_config['format']) {
             case 'tap':
                 $content = $this->_tapify($content, $result);
@@ -43,6 +45,9 @@ class Log {
             case 'html':
                 $this->_html($content);
                 break;
+            case 'stdout':
+                $this->_stdout($content);
+                break;)
             default:
                 throw new \InvalidArgumentException($this->_config['type'].' is not a valid Log type');
                 break;
@@ -61,6 +66,19 @@ class Log {
     {
         $tag = 'div';
         print "<$tag>$content</$tag>";
+    }
+
+    private function _stdout($content)
+    {
+        print $content;
+    }
+
+    private function _stringify($content)
+    {
+        if(is_array($content))
+            return var_dump($content);
+        else
+            return $content;
     }
 
     private function _tapify($content, $result) {
