@@ -115,10 +115,11 @@ class Markdown
                 }
             } else {
 //                throw new \Exception("$start not found in $line");
+                $string = $line;
             }
 
         } else {
-//            throw new \Exception("$start does not equal $end");
+            throw new \Exception("$start does not equal $end");
         }
 
         return $string;
