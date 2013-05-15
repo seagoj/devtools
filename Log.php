@@ -27,7 +27,7 @@ class Log {
 
     public function write($content, $result='EMPTY')
     {
-        $content = $this->_stringify($content);)
+        $content = $this->_stringify($content);
 
         switch($this->_config['format']) {
             case 'tap':
