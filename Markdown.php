@@ -82,8 +82,10 @@ class Markdown
                     }
                 }
 
-                $this->_tagReplace($line, 'b', '**');
-                $this->_tagReplace($line, 'i', '*');
+                $line = $this->_tagReplace(
+                    $this->_tagReplace($line, 'b', '**'),
+                    'i','*'
+                );
 
                 $html .= $string."\n";
             } else {
