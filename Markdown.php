@@ -83,8 +83,8 @@ class Markdown
                 }
 
                 // Check for bold
-                if (strpos($string, '**')) {
-                    $array = explode('**', $string);
+                if (strpos($line, '**')) {
+                    $array = explode('**', $line);
                     $this->_log->write($array);
                     $string = '';
                     for ($i=0; $i<count($array); $i++) {
