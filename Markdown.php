@@ -77,12 +77,13 @@ class Markdown
                     }
                 }
 
-                // Check for italics
-                if (strpos($string, '*')) {
-                    $array = explode('*', $string);
+                // Check for bold
+                if (strpos($string, '**')) {
+                    $array = explode('**', $string);
+                    print $array;
                     $string = '';
                     for ($i=0; $i<count($array); $i++) {
-                        if ($i%2!==0) {
+                        if ($i%2===0) {
                             $string .= $array[$i];
                         } else {
                             $string .= "<i>".$array[$i]."</i>";
