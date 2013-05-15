@@ -47,7 +47,7 @@ class Log {
                 break;
             case 'stdout':
                 $this->_stdout($content);
-                break;)
+                break;
             default:
                 throw new \InvalidArgumentException($this->_config['type'].' is not a valid Log type');
                 break;
