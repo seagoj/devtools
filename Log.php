@@ -76,7 +76,7 @@ class Log {
     private function _stringify($content)
     {
         if(is_array($content))
-            return var_dump($content);
+            return serialize($content);
         else
             return $content;
     }
