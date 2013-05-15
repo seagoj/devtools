@@ -96,9 +96,9 @@ class Markdown
         return $html;
     }
 
-    private function _tagReplace($line, $tag, $start, $end=$start)
+    private function _tagReplace($line, $tag, $start, $end=null)
     {
-        if($start===$end) {
+        if($start===$end || $end===null) {
             if (strpos($line, $start)) {
                 $array = explode($start, $line);
                 $this->_log->write($array);
