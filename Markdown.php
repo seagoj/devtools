@@ -82,20 +82,8 @@ class Markdown
                     }
                 }
 
-//                $this->_log->write($line);
-                // Check for bold
-                if (strpos($line, '**')) {
-                    $array = explode('**', $line);
-                    $this->_log->write($array);
-                    $string = '';
-                    for ($i=0; $i<count($array); $i++) {
-                        if ($i%2===0) {
-                            $string .= $array[$i];
-                        } else {
-                            $string .= "<b>".$array[$i]."</b>";
-                        }
-                    }
-                }
+                $this->_tagReplace($line, 'b', '**');
+                $this->_tagReplace($line, 'i', '*');
 
                 $html .= $string."\n";
             } else {
@@ -106,5 +94,26 @@ class Markdown
             }
         }
         return $html;
+    }
+
+    private function _tagReplace($line, $tag, $start, $end=$start)
+    {
+        if($start===$end) {
+            if (strpos($line, $start)) {
+                $array = explode($start, $line);
+                $this->_log->write($array);
+                $string = '';
+                for ($i=0; $i<count($array); $i++) {
+                    if ($i%2===0) {
+                        $string .= $array[$i];
+                    } else {
+                        $string .= "<$tag>".$array[$i]."</$tag>";
+                    }
+                }
+            }
+        } else {
+            
+            
+        }
     }
 }
