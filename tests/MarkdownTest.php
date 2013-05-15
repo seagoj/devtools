@@ -55,13 +55,19 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
 
     public function test_tagReplace()
     {
+        $sample = __METHOD__." ";
+        $resultStr = "";
+        $mdStr = "";
+
+        for($i=1; $i<=5; $i++) {
+            $resultStr .= "<b>$sample$i</b>";
+            $mdStr .= "**$sample$i**";
+        }
+
         $method = new ReflectionMethod('Devtools\Markdown', '_tagReplace');
         $method->setAccessible(true);
-        $result = $method->invoke(new \Devtools\Markdown(), '**bold** not bold **bold**', 'b', '**');
-        $this->assertEquals('<b>bold</b> not bold <b>bold</b>', $result);
-
-        
-        
+        $result = $method->invoke(new \Devtools\Markdown(), $mdStr, 'b', '**');
+        $this->assertEquals($resultStr, $result);
     }
 
     public function testBold()
