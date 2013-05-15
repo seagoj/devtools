@@ -139,13 +139,4 @@ class Markdown
 
         return $line;
     }
-
-    private function _formatCode($line, $first)
-    {
-        if(substr($line, 0, 4)='    ') {
-            }'))}
-        }
-
-        
-    }
 }
