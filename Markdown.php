@@ -115,5 +115,7 @@ class Markdown
             
             
         }
+
+        return $string;
     }
 }
