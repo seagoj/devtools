@@ -80,12 +80,11 @@ class Log {
         
     public function __destruct()
     {
-        $start = $this->_testCOunt===0 ? 0 : 1;
+        $start = $this->_testCount===0 ? 0 : 1;
         $footers = array(
             'tap'=>$start.'..'.$this->_testCount."\r\n"
         );
 
-//        if($this->_testCount !== 0)
-            $this->write($footers[$this->_config['format']]);
+        $this->write($footers[$this->_config['format']]);
     }
 }
