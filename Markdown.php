@@ -113,8 +113,7 @@ class Markdown
                 }
             }
         } else {
-            
-            
+            throw new Exception("$start does not equal $end");
         }
 
         return $string;
