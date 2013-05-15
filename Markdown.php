@@ -98,11 +98,12 @@ class Markdown
 
     private function _tagReplace($line, $tag, $start, $end=null)
     {
+        $string = '';
+
         if($start===$end || $end===null) {
             if (strpos($line, $start)) {
                 $array = explode($start, $line);
                 $this->_log->write($array);
-                $string = '';
                 for ($i=0; $i<count($array); $i++) {
                     if ($i%2===0) {
                         $string .= $array[$i];
