@@ -82,7 +82,7 @@ class Markdown
                     }
                 }
 
-                $this->_log->write($line);
+//                $this->_log->write($line);
                 // Check for bold
                 if (strpos($line, '**')) {
                     $array = explode('**', $line);
