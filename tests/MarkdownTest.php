@@ -60,8 +60,8 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $mdStr = "";
 
         for($i=1; $i<=5; $i++) {
-            $resultStr .= "<b>$sample$i</b>";
-            $mdStr .= "**$sample$i**";
+            $resultStr .= "<b>$sample$i</b> ";
+            $mdStr .= "**$sample$i** ";
         }
 
         $method = new ReflectionMethod('Devtools\Markdown', '_tagReplace');
@@ -79,8 +79,8 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $mdStr = "";
 
         for($i=1; $i<=5; $i++) {
-            $resultStr .= "<b>$sample$i</b>";
-            $mdStr .= "**$sample$i**";
+            $resultStr .= "<b>$sample$i</b> ";
+            $mdStr .= "**$sample$i** ";
         }
         
         $resultStr.="\n";
@@ -97,8 +97,8 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $mdStr = "";
 
         for($i=1; $i<=5; $i++) {
-            $resultStr .= "<i>$sample$i</i>";
-            $mdStr .= "*$sample$i*";
+            $resultStr .= "<i>$sample$i</i> ";
+            $mdStr .= "*$sample$i* ";
         }
         
         $resultStr.="\n";
