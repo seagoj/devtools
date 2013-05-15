@@ -82,7 +82,7 @@ class Markdown
                     }
                 }
 
-                $line = $this->_tagReplace(
+                $string = $this->_tagReplace(
                     $this->_tagReplace($line, 'b', '**'),
                     'i','*'
                 );
