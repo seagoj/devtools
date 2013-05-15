@@ -62,16 +62,15 @@ class Markdown
                 $tag = substr($line, 0, strpos($line, ' '));
                 $string = substr($line, strpos($line, ' ')+1);
 
-                // Check for hash
+                // Check for header
                 if ($line[$depth = 0]=='#') {
                     while ( $line[$depth]=='#' ) {
                         $depth++;
                     }
                     $tag = "h".$depth;
                     $line = "<$tag>$string</$tag>";
-                } else {
-                    // Check for unmatched star
-                    if ( $line[0]=='*' && $line[1]==' ') {
+                } else if ( $line[0]=='*' && $line[1]==' ') {
+                    // Check for unordered list
                         if ($first) {
                             $first = false;
 
@@ -80,6 +79,8 @@ class Markdown
                             $line = "<li>$string</li>";
                         }
                     }
+                } else if (substr($line, 0, 2)==='---') {
+                    $line = "<hr>\n";
                 }
 
                 $line = $this->_tagReplace(
