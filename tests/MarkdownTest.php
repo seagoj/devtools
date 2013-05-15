@@ -109,8 +109,12 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
 
     public function testHR()
     {
-        $md = new \Devtools\Markdown();
+        $method = new ReflectionMethod('Devtools\Markdown','_checkHR');
+        $method->setAccessible(true);
 
-        $this->assertEquals("<hr>\n", $md->convert("---\n"));
+        $md = new \Devtools\Markdown();
+        $result = $method->invoke($md, "---\n");
+
+        $this->assertEquals("<hr>\n", $result);
     }
 }

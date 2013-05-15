@@ -123,4 +123,12 @@ class Markdown
 
         return $string;
     }
+
+    private function _checkHR($line)
+    {
+        if(substr($line, 0, 3)==='---')
+            $line = "<hr>\n";
+        return $line;
+        
+    }
 }
