@@ -85,7 +85,7 @@ class Markdown
                         if ($i%2===0) {
                             $string .= $array[$i];
                         } else {
-                            $string .= "<i>".$array[$i]."</i>";
+                            $string .= "<b>".$array[$i]."</b>";
                         }
                     }
                 }
