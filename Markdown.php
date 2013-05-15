@@ -75,7 +75,7 @@ class Markdown
                         if ($first) {
                             $first = false;
 
-                            $line = "<ul>\n\t<li>$string</li>";
+                            $line = "<ul>\n<li>$string</li>";
                         } else {
                             $line = "<li>$string</li>";
                         }
