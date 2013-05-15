@@ -127,7 +127,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $method->setAccessible(true);
 
         $result = $method->invoke(new \Devtools\Markdown(), $mdStr, true);
-        $this->assertEquals($resultStr)
+        $this->assertEquals($resultStr, $result);
         
     }
 }
