@@ -59,12 +59,13 @@ class Markdown
 
             if ($line!="") {
 
-                $tag = substr($line, 0, strpos($line, ' '));
-                $string = substr($line, strpos($line, ' ')+1);
+               // $tag = substr($line, 0, strpos($line, ' '));
+               // $string = substr($line, strpos($line, ' ')+1);
 
                 // Check for header
                 $line = $this->_checkHeader($line);
-                $line = $this->_checkUnorderedList($line);
+                $line = $this->_checkUnorderedList($line, $first);
+                $first = false;
                 $line = $this->_checkHR($line);
 /*
                 if ($line[$depth = 0]=='#') {
@@ -143,19 +144,18 @@ class Markdown
                 $depth++;
             }
             $tag = "h".$depth;
+            $string = substr($line, strpos($line, ' ')+1);
             $line = "<$tag>$string</$tag>";
         }
 
         return $line;
     }
 
-    private function _checkUnorderedList($line)
+    private function _checkUnorderedList($line, $first)
     {
-        if ( $line[0]=='*' && $line[1]==' ') {
-            // Check for unordered list
+        $string = substr($line, strpos($line, ' ')+1);
+        if ( $line[0] =='*' && $line[1]==' ') {
             if ($first) {
-                $first = false;
-
                 $line = "<ul>\n<li>$string</li>";
             } else {
                 $line = "<li>$string</li>";
