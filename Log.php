@@ -21,7 +21,7 @@ class Log {
 
         $this->_config = array_merge($defaults, $options);
 
-        $this->write($headers[$this->_config['format']]);
+//        $this->write($headers[$this->_config['format']]);
         $this->_testCount = 0;
     }
 
@@ -103,6 +103,6 @@ class Log {
             'tap'=>$start.'..'.$this->_testCount."\r\n"
         );
 
-        $this->write($footers[$this->_config['format']]);
+//        $this->write($footers[$this->_config['format']]);
     }
 }
