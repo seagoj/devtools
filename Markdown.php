@@ -101,7 +101,7 @@ class Markdown
         $string = '';
 
         if($start===$end || $end===null) {
-            if (strpos($line, $start)) {
+            if (strpos($line, $start)===false) {
                 $array = explode($start, $line);
                 $this->_log->write($array);
                 for ($i=0; $i<count($array); $i++) {
