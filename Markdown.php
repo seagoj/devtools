@@ -77,7 +77,7 @@ class Markdown
 
                             $string = "<ul>\n\t<li>$string</li>";
                         } else {
-                            $string = "\t<li>$string</li>";
+                            $string = "<li>$string</li>";
                         }
                     }
                 }
