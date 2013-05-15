@@ -111,6 +111,6 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
     {
         $md = new \Devtools\Markdown();
 
-        $this->assertEquals("<hr>/n", $md->convert("---\r"));
+        $this->assertEquals("<hr>\n", $md->convert("---\n"));
     }
 }
