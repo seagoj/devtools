@@ -78,7 +78,7 @@ class Markdown
                     } else {
                         $line = "<li>$string</li>";
                     }
-                } else if (substr($line, 0, 2)==='---') {
+                } else if (substr($line, 0, 333=='---') {
                     $line = "<hr>\n";
                 }
 
