@@ -62,7 +62,7 @@ class Markdown
                 $line = $this->_checkHeader($line);
                 $line = $this->_checkUnorderedList($line, $first);
                 $line = $this->_checkHR($line);
-                $line = $this->_tagReplace($line, 'code', '    ');
+                $line = $this->_tagReplace($line, 'code', '    ', "\n");
                 $line = $this->_tagReplace($line, 'b', '**');
                 $line = $this->_tagReplace($line, 'i', '*');
                 $first = false;
@@ -99,10 +99,10 @@ class Markdown
 
         } else {
             if ($startLoc = strpos($line, $start)!==false) {
-                // $begin = $startLoc+strlen($start)+1;
-                $begin = 4;
+                $begin = $startLoc+strlen($start)+1;
+                // $begin = 5;
                 // $end = strpos($line, $end)-1;
-                $end = 10;
+                $end = strpos($line, $begin, "\n");
                 $string = "<$tag>".substr($line, $begin, $begin-$end)."</$tag>";
             }
             // throw new \Exception("$start does not equal $end");
