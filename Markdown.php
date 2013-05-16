@@ -73,7 +73,7 @@ class Markdown
 
                 if(strpos($line, '    ')!==false) {
                     $CODE = true;
-                    $line = $this->_tagReplace($line, 'code', '    ');
+                    $line = $this->_formatCode($line, $first);
                     $first = false;
                 }
 
@@ -165,6 +165,19 @@ class Markdown
             } else {
                 $line = "<li>$string</li>";
             }
+        }
+
+        return $line;
+    }
+
+    private function _formatCode($line, $first)
+    {
+        $string = substr($line, 5);
+        if( substr($line, 0, 4)==='    ') {
+            if($first)
+                $line = "<code>$string";
+            else
+                $line=$string;
         }
 
         return $line;
