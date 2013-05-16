@@ -52,7 +52,7 @@ class Markdown
             $code = $input;
 
         $first = true;
-
+        $UL = $CODE = false;
         $html = "";
 
         foreach (explode("\n", $code) AS $line) {
