@@ -98,7 +98,7 @@ class Markdown
             }
 
         } else {
-            if ($startLoc = strpos($line, $start)!==false) {
+            if (($startLoc = strpos($line, $start))!==false) {
                 print "StartLoc: $startLoc";
                 $begin = $startLoc+strlen($start)+1;
                 // $begin = 5;
