@@ -121,7 +121,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
     public function test_formatCode()
     {
         $mdStr = "    code1\n    code2\n";
-        $resultStr = "<code>code1\ncode2\n</code>";
+        $resultStr = "<code>code1\ncode2\n</code>\n";
 
         $md = new \Devtools\Markdown();
         $this->assertEquals($resultStr, $md->convert($mdStr));
