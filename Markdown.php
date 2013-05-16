@@ -99,7 +99,7 @@ class Markdown
 
         } else {
             if ($startLoc = strpos($line, $start)!==false) {
-                $begin = $startLoc+strlen($start);
+                $begin = $startLoc+strlen($start)-1;
                 $end = strpos($line, $end);
                 $string = "<$tag>".substr($line, $begin, $begin-$end)."</$tag>";
             }
