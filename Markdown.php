@@ -106,7 +106,7 @@ class Markdown
                 $end = strpos($line, "\n", $begin);
                 print "Begin: $begin";
                 print "End: $end";
-                $string = "<$tag>".substr($line, $begin, $begin-$end)."</$tag>";
+                $string = "<$tag>".substr($line, $begin, $end-$begin)."</$tag>";
             } else {
                 $string = $line;    
             }
