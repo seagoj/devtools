@@ -120,8 +120,8 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
 
     public function testCode()
     {
-        $mdStr = "    code1\n   code2";
-        $resultStr = "<code>code1\ncode2</code>";
+        $mdStr = "    code1\n";
+        $resultStr = "<code>code1\n</code>";
 
         $method = new ReflectionMethod('Devtools\Markdown','_tagReplace');
         $method->setAccessible(true);
