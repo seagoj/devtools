@@ -60,16 +60,16 @@ class Markdown
             if ($line!="") {
 
                 if(strpos($line, "# ")!==false)
-                    $line = $this->_checkHeader($line);
+                    $line = $this->_formatHeader($line);
 
                 if(strpos($line, "* ")!==false) {
                     $UL = true;
-                    $line = $this->_checkUnorderedList($line, $first);
+                    $line = $this->_formatUnorderedList($line, $first);
                     $first = false;
                 }
 
                 if(strpos($line, '---')!==false)
-                    $line = $this->_checkHR($line);
+                    $line = $this->_formatHR($line);
 
                 if(strpos($line, '    ')!==false) {
                     $CODE = true;
@@ -116,7 +116,7 @@ class Markdown
                     }
                 }
             } else {
-//                throw new \Exception("$start not found in $line");
+                // throw new \Exception("$start not found in $line");
                 $string = $line;
             }
 
@@ -134,7 +134,7 @@ class Markdown
         return $string;
     }
 
-    private function _checkHR($line)
+    private function _formatHR($line)
     {
         if(substr($line, 0, 3)==='---')
             $line = "<hr>\n";
@@ -142,7 +142,7 @@ class Markdown
         
     }
 
-    private function _checkHeader($line)
+    private function _formatHeader($line)
     {
         if ($line[$depth = 0]=='#') {
             while ( $line[$depth]=='#' ) {
@@ -156,7 +156,7 @@ class Markdown
         return $line;
     }
 
-    private function _checkUnorderedList($line, $first)
+    private function _formatUnorderedList($line, $first)
     {
         $string = substr($line, strpos($line, ' ')+1);
         if ( $line[0] =='*' && $line[1]==' ') {

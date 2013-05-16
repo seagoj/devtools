@@ -109,7 +109,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
 
     public function testHR()
     {
-        $method = new ReflectionMethod('Devtools\Markdown','_checkHR');
+        $method = new ReflectionMethod('Devtools\Markdown','_formatHR');
         $method->setAccessible(true);
 
         $md = new \Devtools\Markdown();
@@ -118,18 +118,21 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("<hr>\n", $result);
     }
 
-    public function testCode()
+    public function test_formatCode()
     {
-        $mdStr = "    code1\n";
-        $resultStr = "<code>code1\n</code>";
+        $mdStr = "    code1\n    code2\n";
+        $resultStr = "<code>code1\ncode2\n</code>";
 
-        $method = new ReflectionMethod('Devtools\Markdown','_tagReplace');
+        $md = new \Devtools\Markdown();
+        $this->assertEquals($resultStr, $md->convert($mdStr));
+
+        /*$method = new ReflectionMethod('Devtools\Markdown','_formatCode');
         $method->setAccessible(true);
 
         $result = $method->invoke(new \Devtools\Markdown(), $mdStr, 'code', '    ', "\n");
 
         $this->assertEquals($resultStr, $result);
-        
+        */
     }
 }
 
