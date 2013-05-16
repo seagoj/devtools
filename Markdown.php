@@ -71,7 +71,7 @@ class Markdown
                 if(strpos($line, '---')!==false)
                     $line = $this->_checkHR($line);
 
-                if(strpos($line, '    '!==false) {
+                if(strpos($line, '    ')!==false) {
                     $CODE = true;
                     $line = $this->_tagReplace($line, 'code', '    ');
                     $first = false;
