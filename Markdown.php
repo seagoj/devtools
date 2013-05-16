@@ -59,18 +59,41 @@ class Markdown
 
             if ($line!="") {
 
-                $line = $this->_checkHeader($line);
-                $line = $this->_checkUnorderedList($line, $first);
-                $line = $this->_checkHR($line);
-                $line = $this->_tagReplace($line, 'code', '    ', "\n");
-                $line = $this->_tagReplace($line, 'b', '**');
-                $line = $this->_tagReplace($line, 'i', '*');
-                $first = false;
-                
+                if(strpos($line, "# ")!==false)
+                    $line = $this->_checkHeader($line);
+
+                if(strpos($line, "* ")!==false) {
+                    $UL = true;
+                    $line = $this->_checkUnorderedList($line, $first);
+                    $first = false;
+                }
+
+                if(strpos($line, '---')!==false)
+                    $line = $this->_checkHR($line);
+
+                if(strpos($line, '    '!==false) {
+                    $CODE = true;
+                    $line = $this->_tagReplace($line, 'code', '    ');
+                    $first = false;
+                }
+
+                if(strpos($line, '**')!==false)
+                    $line = $this->_tagReplace($line, 'b', '**');
+
+                if(strpos($line, '*')!==false)
+                    $line = $this->_tagReplace($line, 'i', '*');
+
                 $html .= $line."\n";
             } else {
                 if (!$first) {
-                    $html .= "</ul>\n";
+                    if($UL) {
+                        $html .= "</ul>\n";
+                        $UL = false;
+                    }
+                    if($CODE) {
+                        $html .= "</code>\n";
+                        $CODE = false;
+                    }
                     $first = true;
                 }
             }
@@ -99,14 +122,9 @@ class Markdown
 
         } else {
             if (($startLoc = strpos($line, $start))!==false) {
-                print "StartLoc: $startLoc";
                 $begin = $startLoc+strlen($start);
-                // $begin = 5;
-                // $end = strpos($line, $end)-1;
-                $end = strpos($line, "\n", $begin);
-                print "Begin: $begin";
-                print "End: $end";
-                $string = "<$tag>".substr($line, $begin, $end-$begin)."</$tag>";
+                // $end = strpos($line, "\n", $begin);
+                $string = "<$tag>".substr($line, $begin)."</$tag>";
             } else {
                 $string = $line;    
             }
