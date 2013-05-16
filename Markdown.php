@@ -172,7 +172,7 @@ class Markdown
 
     private function _formatCode($line, $first)
     {
-        $string = substr($line, 5);
+        $string = substr($line, 4);
         if( substr($line, 0, 4)==='    ') {
             if($first)
                 $line = "<code>$string";
