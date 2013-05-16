@@ -102,7 +102,7 @@ class Markdown
                 $begin = $startLoc+strlen($start)+1;
                 // $begin = 5;
                 // $end = strpos($line, $end)-1;
-                $end = strpos($line, $begin, "\n");
+                $end = strpos($line, "\n", $begin);
                 $string = "<$tag>".substr($line, $begin, $begin-$end)."</$tag>";
             }
             // throw new \Exception("$start does not equal $end");
