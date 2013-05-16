@@ -123,10 +123,11 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $mdStr = "    code1\n   code2";
         $resultStr = "<code>code1\ncode2</code>";
 
-        $method = new ReflectionMethod('Devtools\Markdown','_formatCode');
+        $method = new ReflectionMethod('Devtools\Markdown','_tagReplace');
         $method->setAccessible(true);
 
-        $result = $method->invoke(new \Devtools\Markdown(), $mdStr, true);
+        $result = $method->invoke(new \Devtools\Markdown(), $mdStr, 'code', '    ', "\n");
+
         $this->assertEquals($resultStr, $result);
         
     }
