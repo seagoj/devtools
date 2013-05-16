@@ -99,8 +99,8 @@ class Markdown
 
         } else {
             if ($startLoc = strpos($line, $start)!==false) {
-                $begin = $startLoc+strlen($start)-1;
-                $end = strpos($line, $end);
+                $begin = $startLoc+strlen($start)+1;
+                $end = strpos($line, $end)-1;
                 $string = "<$tag>".substr($line, $begin, $begin-$end)."</$tag>";
             }
             // throw new \Exception("$start does not equal $end");
