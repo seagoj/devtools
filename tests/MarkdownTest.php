@@ -75,13 +75,12 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $md = new \Devtools\Markdown();
 
         $sample = __METHOD__." ";
-        $resultStr = "";
-        $mdStr = "";
+        $resultStr = $mdStrStar = $mdStrUS = "";
 
         for($i=1; $i<=5; $i++) {
             $resultStr .= "<b>$sample$i</b> ";
             $mdStrStar .= "**$sample$i** ";
-            $mdStrUS .= "__".$sample$i."__ ";
+            $mdStrUS .= "__".$sample.$i."__ ";
         }
         
         $resultStr.="\n";
@@ -95,8 +94,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $md = new \Devtools\Markdown();
 
         $sample = __METHOD__." ";
-        $resultStr = "";
-        $mdStr = "";
+        $resultStr = $mdStrStar = $mdStrUS = "";
 
         for($i=1; $i<=5; $i++) {
             $resultStr .= "<i>$sample$i</i> ";
