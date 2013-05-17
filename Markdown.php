@@ -84,9 +84,13 @@ class Markdown
 
                 if(strpos($line, '**')!==false)
                     $line = $this->_tagReplace($line, 'b', '**');
+                if(strpos($line, '__')!==false)
+                    $line = $this->_tagReplace($line, 'b', '__');
 
                 if(strpos($line, '*')!==false)
                     $line = $this->_tagReplace($line, 'i', '*');
+                if(strpos($line, '_')!==false)
+                    $line = $this->_tagReplace($line, 'i', '_');
 
                 $html .= $line."\n";
             } else {

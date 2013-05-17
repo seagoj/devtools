@@ -80,12 +80,14 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
 
         for($i=1; $i<=5; $i++) {
             $resultStr .= "<b>$sample$i</b> ";
-            $mdStr .= "**$sample$i** ";
+            $mdStrStar .= "**$sample$i** ";
+            $mdStrUS .= "__".$sample$i."__ ";
         }
         
         $resultStr.="\n";
 
-        $this->assertEquals($resultStr, $md->convert($mdStr));
+        $this->assertEquals($resultStr, $md->convert($mdStrStar));
+        $this->assertEquals($resultStr, $md->convert($mdStrUS));
     }
 
     public function testItalics()
@@ -98,13 +100,14 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
 
         for($i=1; $i<=5; $i++) {
             $resultStr .= "<i>$sample$i</i> ";
-            $mdStr .= "*$sample$i* ";
+            $mdStrStar .= "*$sample$i* ";
+            $mdStrUS .= "_".$sample$i."_ ";
         }
         
         $resultStr.="\n";
 
-        $this->assertEquals($resultStr, $md->convert($mdStr));       
-        
+        $this->assertEquals($resultStr, $md->convert($mdStrStar));
+        $this->assertEquals($resultStr, $md->convert($mdStrUS));
     }
 
     public function testHR()
