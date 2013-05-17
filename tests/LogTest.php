@@ -1,7 +1,7 @@
 <?php
 
 // Required to test output
-// require_once 'PHPUnit/Extensions/OutputTestCase.php';
+require_once 'PHPUnit/Autoload.php';
 
 class LogTest extends PHPUnit_Framework_TestCase
 {
