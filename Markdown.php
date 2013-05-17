@@ -52,18 +52,23 @@ class Markdown
             $code = $input;
 
         $first = true;
-        $UL = $CODE = false;
+        $closeTag = null
         $html = "";
 
         foreach (explode("\n", $code) AS $line) {
 
             if ($line!="") {
+                if(strpos($line, "> ")!==false) {
+                    $closeTag = 'block';
+                    $line = $this->_formatBlockquote($line, $first);
+                    $first = false;
+                }
 
                 if(strpos($line, "# ")!==false)
                     $line = $this->_formatHeader($line);
 
                 if(strpos($line, "* ")!==false) {
-                    $UL = true;
+                    $closeTag = 'ul';
                     $line = $this->_formatUnorderedList($line, $first);
                     $first = false;
                 }
@@ -72,7 +77,7 @@ class Markdown
                     $line = $this->_formatHR($line);
 
                 if(strpos($line, '    ')!==false) {
-                    $CODE = true;
+                    $closeTag = 'code'
                     $line = $this->_formatCode($line, $first);
                     $first = false;
                 }
@@ -85,15 +90,9 @@ class Markdown
 
                 $html .= $line."\n";
             } else {
-                if (!$first) {
-                    if($UL) {
-                        $html .= "</ul>\n";
-                        $UL = false;
-                    }
-                    if($CODE) {
-                        $html .= "</code>\n";
-                        $CODE = false;
-                    }
+                if (!$first && $closeTag!==null) {
+                    $html .= "</$closeTag>\n";
+                    $closeTag = '';
                     $first = true;
                 }
             }
@@ -178,6 +177,19 @@ class Markdown
                 $line = "<code>$string";
             else
                 $line=$string;
+        }
+
+        return $line;
+    }
+
+    private function _formatBlockquote($line, $first)
+    {
+        $string = substr($line, 2);
+        if (substr($line, 0, 1)==='> ') {
+            if($first)
+                $line = "<blockquote>\n\t$string";
+            else
+                $line = $string."\n";
         }
 
         return $line;

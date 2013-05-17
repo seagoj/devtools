@@ -125,14 +125,15 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
 
         $md = new \Devtools\Markdown();
         $this->assertEquals($resultStr, $md->convert($mdStr));
+    }
 
-        /*$method = new ReflectionMethod('Devtools\Markdown','_formatCode');
-        $method->setAccessible(true);
+    public function test_formatBlockquote()
+    {
+        $mdStr = "> line1\n> line2";
+        $resultStr = "<blockquote>\n\tline1\n\tline2\n</blockquote>";
 
-        $result = $method->invoke(new \Devtools\Markdown(), $mdStr, 'code', '    ', "\n");
-
-        $this->assertEquals($resultStr, $result);
-        */
+        $md = new \Devtools\Markdown();
+        $this->assertEquals($resultStr, $md->convert($mdStr));))
     }
 }
 
