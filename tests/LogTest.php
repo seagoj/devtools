@@ -81,7 +81,6 @@ class LogTest extends PHPUnit_Framework_TestCase
     {
         $message = __METHOD__;
         $this->expectedOutputString($message."\n");
-        )
         $options = array('type'=>'stdout');
         $log = new \Devtools\Log($options);
 
