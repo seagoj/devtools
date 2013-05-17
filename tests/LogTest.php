@@ -1,9 +1,8 @@
 <?php
 
 // Required to test output
-require_once 'PHPUnit/Autoload.php';
 
-class LogTest extends PHPUnit_Extensions_OutputTestCase
+class LogTest extends PHPUnit_Framework_TestCase
 {
     public function setup()
     {
@@ -80,10 +79,11 @@ class LogTest extends PHPUnit_Extensions_OutputTestCase
     public function test_stdout()
     {
         $message = __METHOD__;
-        $this->expectedOutputString($message."\n");
         $options = array('type'=>'stdout');
         $log = new \Devtools\Log($options);
 
+        ob_start();
         $log->write($message);
+        $this->assertEquals($message."\n", ob_get_clean());
     }
 }
