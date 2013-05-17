@@ -90,9 +90,9 @@ class Markdown
 
                 $html .= $line."\n";
             } else {
-                if (!$first && $closeTag!==null) {
+                if ($closeTag!==null) {
                     $html .= "</$closeTag>\n";
-                    $closeTag = '';
+                    $closeTag = null;
                     $first = true;
                 }
             }
@@ -189,7 +189,7 @@ class Markdown
             if($first)
                 $line = "<blockquote>\n\t$string";
             else
-                $line = $string;
+                $line = "\t".$string;
         }
 
         return $line;
