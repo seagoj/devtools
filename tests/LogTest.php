@@ -1,5 +1,8 @@
 <?php
 
+// Required to test output
+require_once 'PHPUNIT/Extensions/OutputTestCase.php';
+
 class LogTest extends PHPUnit_Framework_TestCase
 {
     public function setup()
@@ -72,5 +75,16 @@ class LogTest extends PHPUnit_Framework_TestCase
 
         
         $this->assertEquals("ok 1 - $message", $method->invoke(new \Devtools\Log(), $message, true));
+    }
+
+    public function test_stdout()
+    {
+        $message = __METHOD__;
+        $this->expectedOutputString($message."\n");
+        )
+        $options = array('type'=>'stdout');
+        $log = new \Devtools\Log($options);
+
+        $log->write($message);
     }
 }

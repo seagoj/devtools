@@ -71,7 +71,7 @@ class Log {
 
     private function _stdout($content)
     {
-        print $content;
+        print $content."\n";
     }
 
     private function _stringify($content)
