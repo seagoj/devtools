@@ -59,7 +59,7 @@ class Markdown
 
             if ($line!="") {
                 if(strpos($line, "> ")!==false) {
-                    $closeTag = 'block';
+                    $closeTag = 'blockquote';
                     $line = $this->_formatBlockquote($line, $first);
                     $first = false;
                 }
