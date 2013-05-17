@@ -136,7 +136,7 @@ class Markdown
     private function _formatHR($line)
     {
         if(substr($line, 0, 3)==='---')
-            $line = "<hr>\n";
+            $line = "<hr>";
         return $line;
         
     }
@@ -185,11 +185,11 @@ class Markdown
     private function _formatBlockquote($line, $first)
     {
         $string = substr($line, 2);
-        if (substr($line, 0, 1)==='> ') {
+        if (substr($line, 0, 2)==='> ') {
             if($first)
                 $line = "<blockquote>\n\t$string";
             else
-                $line = $string."\n";
+                $line = $string;
         }
 
         return $line;
