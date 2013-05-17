@@ -129,7 +129,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
     public function test_formatBlockquote()
     {
         $mdStr = "> line1\n> line2";
-        $resultStr = "<blockquote>\n\tline1\n\tline2\n</blockquote>";
+        $resultStr = "<blockquote>\n\tline1\n\tline2\n</blockquote>\n";
 
         $md = new \Devtools\Markdown();
         $this->assertEquals($resultStr, $md->convert($mdStr));
