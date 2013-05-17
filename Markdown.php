@@ -77,7 +77,7 @@ class Markdown
                     $line = $this->_formatHR($line);
 
                 if(strpos($line, '    ')!==false) {
-                    $closeTag = 'code'
+                    $closeTag = 'code';
                     $line = $this->_formatCode($line, $first);
                     $first = false;
                 }
