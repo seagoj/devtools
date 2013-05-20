@@ -180,5 +180,14 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $md = new \Devtools\Markdown();
         $this->assertEquals($resultStr, $md->convert($mdStr));
     }
+
+    public function test_formatLink()
+    {
+        $mdStr = "[link](http://google.com)\n";
+        $resultStr = "<a href='http://google.com' >link</a>\n";
+
+        $md = new \Devtools\Markdown();
+        $this->assertEquals($resultStr, $md->convert($mdStr));))
+    }
 }
 

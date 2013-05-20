@@ -71,6 +71,11 @@ class Markdown
                     $line = $this->_formatImage($line);
                 }
 
+                // LINKS
+                if (strpos($line, '[')!==false) {
+                    $line = $this->_formatLink($line);
+                }
+
                 // HEADER
                 if(strpos($line, "# ")!==false)
                     $line = $this->_formatHeader($line);
@@ -245,5 +250,18 @@ class Markdown
         $path = substr($line, $pathBegin, $pathEnd-$pathBegin);
 
         return "<img src='$path' alt='$alt' />";
+    }
+
+    private function _formatLink($line)
+    {
+        $textBegin = strpos($line, '[')+1;
+        $textEnd = strpos($line, ']')-$textBegin;
+        $text = substr($line, $textBegin, $textEnd);
+
+        $pathBegin = strpos($line, '(', $textBegin)+1;
+        $pathEnd = strpos($line, ')', $pathBegin)-$pathBegin;
+        $path = substr($line, $pathBegin, $pathEnd);
+
+        return "<a href='$path' >$text</a>";
     }
 }
