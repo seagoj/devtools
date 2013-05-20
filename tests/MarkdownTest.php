@@ -175,7 +175,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
     public function test_formatImage()
     {
         $mdStr = "![Alt Text](http://pathtoimage.com/image.jpg)\n";
-        $resultStr = "<img src='http://pathtoimage.com/image.jpg' alt='Alt Text' />";
+        $resultStr = "<img src='http://pathtoimage.com/image.jpg' alt='Alt Text' />\n";
 
         $md = new \Devtools\Markdown();
         $this->assertEquals($resultStr, $md->convert($mdStr));
