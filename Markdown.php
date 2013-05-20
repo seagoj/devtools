@@ -100,7 +100,6 @@ class Markdown
                 foreach(array('*', '_') AS $syntax) {
                     if(strpos($line, $syntax)!==false)
                         $line = $this->_tagReplace($line, 'i', $syntax);
-                        
                 }
 
                 $html .= $line."\n";
