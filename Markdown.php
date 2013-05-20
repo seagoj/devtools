@@ -82,16 +82,16 @@ class Markdown
                 // ORDERED LIST
                 if($pivot = strpos($line, '. ')!==false) {
                     $this->_log->write('Ordered List found at '.$pivot);
-//                    $this->_log->write(substr($line, 0, $pivot));
+                    $this->_log->write(substr($line, 0, $pivot));
                     if(is_integer(trim($prefix = substr($line, 0, $pivot)))) {
                         $this->_log->write('Prefix is an integer');
                         $closeTag = 'ol';
                         $line = $this->_formatOrderedList($line, $syntax, $first);
                         $first = false;
                     }
-                    $this->_log->write($prefix);
-//                    $this->_log->write("Trimmed: ".trim($prefix));
-//                    $this->_log->write("Integer? ".is_integer(trim($prefix))===true);
+                    $this->_log->write("Prefix: ".$prefix);
+                    $this->_log->write("Trimmed: ".trim($prefix));
+                    $this->_log->write("Integer? ".is_integer(trim($prefix))===true);
                 }
 
                 // HR
