@@ -239,12 +239,10 @@ class Markdown
         $altBegin = strpos($line, '![')+2;
         $altEnd = strpos($line, ']');
         $alt = substr($line, $altBegin, $altEnd-$altBegin);
-        $this->_log->write($alt);
 
         $pathBegin = strpos($line, '(', $altBegin)+1;
         $pathEnd = strpos($line, ')', $pathBegin);
         $path = substr($line, $pathBegin, $pathEnd-$pathBegin);
-        $this->_log->write($path);
 
         return "<img src='$path' alt='$alt' />";
     }
