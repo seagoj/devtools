@@ -31,7 +31,7 @@ class Markdown
      **/
     public function __construct()
     {
-        $options = array('file'=>__CLASS__.'.log');
+        $options = array('type'=>'stdout');
         $this->_log = new \Devtools\Log($options);
     }
 
@@ -81,11 +81,14 @@ class Markdown
 
                 // ORDERED LIST
                 if($pivot = strpos($line, '. ')!==false) {
+                    $this->_log->write('Ordered List found');
                     if(is_integer(trim($prefix = substr($line, 0, $pivot)))) {
+                        $this->_log->write('Prefix is an integer');
                         $closeTag = 'ol';
                         $line = $this->_formatOrderedList($line, $syntax, $false);
                         $first = false;
                     }
+                    $this->_log->write("Prefix: $prefix");
                 }
 
                 // HR
