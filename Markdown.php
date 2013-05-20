@@ -89,9 +89,10 @@ class Markdown
                         $line = $this->_formatOrderedList($line, $syntax, $first);
                         $first = false;
                     }
-                    $this->_log->write("Prefix: ".$prefix);
-                    $this->_log->write("Trimmed: ".trim($prefix));
-                    $this->_log->write(is_integer(trim($prefix))===true);
+                    if(is_integer($prefix))
+                        $this->_log->write('prefix is an integer');
+                    if(is_integer(trim($prefix)))
+                        $this->_log->write('trim(prefix is an integer');
                 }
 
                 // HR
