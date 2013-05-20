@@ -89,6 +89,7 @@ class Markdown
                         $first = false;
                     }
                     $this->_log->write("Prefix: $prefix");
+                    $this->_log->write("Trimmed: ".trim($prefix));
                     $this->_log->write("Integer? ".is_integer(trim($prefix)));
                 }
 
