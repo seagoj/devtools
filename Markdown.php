@@ -246,6 +246,6 @@ class Markdown
         $path = substr($line, $pathBegin, $pathEnd-$pathBegin);
         $this->_log->write($path);
 
-        return "<img src='$path' alt='$alt' />'";
+        return "<img src='$path' alt='$alt' />";
     }
 }
