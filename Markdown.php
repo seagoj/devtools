@@ -241,7 +241,7 @@ class Markdown
         $alt = substr($line, $altBegin, $altEnd-$altBegin);
         $this->_log->write($alt);
 
-        $pathBegin = strpos($line, '(', $altBegin))+2;
+        $pathBegin = strpos($line, '(', $altBegin)+2;
         $pathEnd = strpos(line, ')', $pathBegin);
         $path = substr($line, $pathBegin, $pathEnd-$pathBegin);
         $this->_log->write($path);
