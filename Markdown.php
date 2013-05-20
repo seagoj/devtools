@@ -83,15 +83,15 @@ class Markdown
                 if($pivot = strpos($line, '. ')!==false) {
                     $this->_log->write('Ordered List found at '.$pivot);
                     $this->_log->write(substr($line, 0, $pivot));
-                    if(is_integer(trim($prefix = substr($line, 0, $pivot)))) {
+                    if(is_numeric(trim($prefix = substr($line, 0, $pivot)))) {
                         $this->_log->write('Prefix is an integer');
                         $closeTag = 'ol';
                         $line = $this->_formatOrderedList($line, $syntax, $first);
                         $first = false;
                     }
-                    if(is_integer($prefix))
+                    if(is_numeric($prefix))
                         $this->_log->write('prefix is an integer');
-                    if(is_integer(trim($prefix)))
+                    if(is_numeric(trim($prefix)))
                         $this->_log->write('trim(prefix is an integer');
                 }
 
