@@ -68,7 +68,7 @@ class Markdown
 
                 // IMAGES
                 if (strpos($line, '![')!==false) {
-                    $line = $this->_formatImage($line);)
+                    $line = $this->_formatImage($line);
                 }
 
                 // HEADER
