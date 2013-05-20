@@ -74,8 +74,8 @@ class Markdown
                 foreach(array('*', '-', '+') AS $syntax) {
                     if(strpos($line, "$syntax ")!==false) {
                         $closeTag = 'ul';
-                        $first = false;
                         $line = $this->_formatUnorderedList($line, $first, $syntax);
+                        $first = false;
                     }
                 }
 
