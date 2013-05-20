@@ -115,6 +115,16 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($resultStr, $md->convert($mdStrUS));
     }
 
+    public function testInlineCode()
+    {
+        $md = new \Devtools\Markdown();
+
+        $mdStr = "not code `code` not code\n";
+        $resultStr = "not code <code>code</code> not code\n";
+
+        $this->assertEquals($resultStr, $md->Convert($mdStr));
+    }
+
     public function testHR()
     {
         $md = new \Devtools\Markdown();

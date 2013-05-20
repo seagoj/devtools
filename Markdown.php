@@ -89,17 +89,18 @@ class Markdown
                     $line = $this->_formatCode($line, $first);
                     $first = false;
                 }
-           
-                // BOLD
-                foreach(array('**', '__') AS $syntax) {
-                    if(strpos($line, $syntax)!==false)
-                        $line = $this->_tagReplace($line, 'b', $syntax);
-                }
 
-                // ITALICS
-                foreach(array('*', '_') AS $syntax) {
+                // INLINE FORMATTING
+                $syntaxMap = array(
+                    '`'=>'code',
+                    '**' => 'b',
+                    '__' => 'b',
+                    '*' => 'i',
+                    '_' => 'i'
+                );
+                foreach($syntaxMap AS $syntax=>$tag) {
                     if(strpos($line, $syntax)!==false)
-                        $line = $this->_tagReplace($line, 'i', $syntax);
+                        $line = $this->_tagReplace($line, $tag, $syntax);
                 }
 
                 $html .= $line."\n";
