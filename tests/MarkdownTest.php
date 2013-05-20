@@ -109,8 +109,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
             $mdStrUS .= "__".$sample.$i."__ ";
         }
         
-        $resultStr.="\n";
-        $resultStr = "<p>$resultStr</p>";
+        $resultStr = "<p>$resultStr</p>\n";
 
         $this->assertEquals($resultStr, $md->convert($mdStrStar));
         $this->assertEquals($resultStr, $md->convert($mdStrUS));
@@ -129,8 +128,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
             $mdStrUS .= "_".$sample.$i."_ ";
         }
         
-        $resultStr.="\n";
-        $resultStr = "<p>$resultStr</p>";
+        $resultStr = "<p>$resultStr</p>\n";
 
         $this->assertEquals($resultStr, $md->convert($mdStrStar));
         $this->assertEquals($resultStr, $md->convert($mdStrUS));
@@ -141,8 +139,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $md = new \Devtools\Markdown();
 
         $mdStr = "not code `code` not code\n";
-        $resultStr = "not code <code>code</code> not code\n";
-        $resultStr = "<p>$resultStr</p>";
+        $resultStr = "<p>not code <code>code</code> not code</p>\n";
 
         $this->assertEquals($resultStr, $md->Convert($mdStr));
     }
