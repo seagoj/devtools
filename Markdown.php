@@ -54,8 +54,11 @@ class Markdown
         $first = true;
         $closeTag = null;
         $html = "";
+        
 
         foreach (explode("\n", $code) AS $line) {
+
+            $structure = false;
 
             if ($line!="") {
 
@@ -64,21 +67,27 @@ class Markdown
                     $closeTag = 'blockquote';
                     $line = $this->_formatBlockquote($line, $first);
                     $first = false;
+                    $structure = true;
                 }
 
                 // IMAGES
                 if (strpos($line, '![')!==false) {
                     $line = $this->_formatImage($line);
+                    $structure = true;
                 }
 
                 // LINKS
                 if (strpos($line, '[')!==false) {
                     $line = $this->_formatLink($line);
+                    $structure = true;
                 }
 
                 // HEADER
-                if(strpos($line, "# ")!==false)
+                if(strpos($line, "# ")!==false) {
                     $line = $this->_formatHeader($line);
+                    $structure = true;
+                }
+
 
                 // UNORDERED LIST
                 foreach(array('*', '-', '+') AS $syntax) {
@@ -86,6 +95,7 @@ class Markdown
                         $closeTag = 'ul';
                         $line = $this->_formatUnorderedList($line, $syntax, $first);
                         $first = false;
+                        $structure = true;
                     }
                 }
 
@@ -95,19 +105,26 @@ class Markdown
                         $closeTag = 'ol';
                         $line = $this->_formatOrderedList($line, $syntax, $first);
                         $first = false;
+                        $structure = true;
                     }
                 }
 
                 // HR
-                if(strpos($line, '---')!==false)
+                if(strpos($line, '---')!==false) {
                     $line = $this->_formatHR($line);
+                    $structure = true;
+                }
 
                 // CODE
                 if(strpos($line, '    ')!==false) {
                     $closeTag = 'code';
                     $line = $this->_formatCode($line, $first);
                     $first = false;
+                    $structure = true;
                 }
+
+                if($structure===false)
+                    $line = "<p>$line</p>";
 
                 // INLINE FORMATTING
                 $syntaxMap = array(
@@ -231,9 +248,9 @@ class Markdown
         $string = substr($line, 2);
         if (substr($line, 0, 2)==='> ') {
             if($first)
-                $line = "<blockquote>\n\t$string";
+                $line = "<blockquote>\n\t<p>$string</p>";
             else
-                $line = "\t".$string;
+                $line = "\t<p>$string</p>";
         }
 
         return $line;
