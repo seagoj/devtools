@@ -189,5 +189,14 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $md = new \Devtools\Markdown();
         $this->assertEquals($resultStr, $md->convert($mdStr));
     }
+
+    public function testFullPage()
+    {
+        $mdStr = file_get_contents('tests/test.markdown');
+        $resultStr = file_get_contents('tests/test.html');
+
+        $md = new \DEvtools\Markdown();
+        $this->assertEquals($resultStr, $md->convert($mdStr));
+    }
 }
 
