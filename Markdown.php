@@ -89,6 +89,7 @@ class Markdown
                         $first = false;
                     }
                     $this->_log->write("Prefix: $prefix");
+                    $this->log->write("Integer? ".is_integer(trim($prefix)));
                 }
 
                 // HR
