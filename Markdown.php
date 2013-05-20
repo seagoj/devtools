@@ -84,7 +84,7 @@ class Markdown
                 foreach(array('*', '-', '+') AS $syntax) {
                     if(strpos($line, "$syntax ")!==false) {
                         $closeTag = 'ul';
-                        $line = $this->_formatUnorderedList($line, $first, $syntax);
+                        $line = $this->_formatUnorderedList($line, $syntax, $first);
                         $first = false;
                     }
                 }
@@ -189,7 +189,7 @@ class Markdown
         return $line;
     }
 
-    private function _formatUnorderedList($line, $first, $syntax)
+    private function _formatUnorderedList($line, $syntax, $first)
     {
         $string = substr($line, strpos($line, ' ')+1);
         if ( $line[0] ==$syntax && $line[1]==' ') {
