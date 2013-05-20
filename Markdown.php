@@ -67,7 +67,7 @@ class Markdown
                 }
 
                 // IMAGES
-                if (strpos($line, '![')!===false) {
+                if (strpos($line, '!['!==false) {
                     $line = $this->_formatImage($line);)
                 }
 
