@@ -41,16 +41,20 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
 
         $li = "List Item ";
         $resultStr = "<ul>\n";
-        $mdStr = "";
+        $mdStrStar = $mdStrMinus = $mdStrPlus = "";
 
         for($i=1; $i<=5; $i++) {
             $resultStr .= "<li>$li$i</li>\n";
-            $mdStr .= "* $li$i\n";
+            $mdStrStar .= "* $li$i\n";
+            $mdStrMinus .= "- $li$i\n";
+            $mdStrPlus .= "+ $li$i\n";
         }
 
         $resultStr .= "</ul>\n";
 
-        $this->assertEquals($resultStr, $md->convert($mdStr));
+        $this->assertEquals($resultStr, $md->convert($mdStrStar));
+        $this->assertEquals($resultStr, $md->convert($mdStrMinus));
+        $this->assertEquals($resultStr, $md->convert($mdStrPlus));
     }
 
     public function test_tagReplace()

@@ -58,39 +58,50 @@ class Markdown
         foreach (explode("\n", $code) AS $line) {
 
             if ($line!="") {
+
+                // BLOCKQUOTE
                 if(strpos($line, "> ")!==false) {
                     $closeTag = 'blockquote';
                     $line = $this->_formatBlockquote($line, $first);
                     $first = false;
                 }
 
+                // HEADER
                 if(strpos($line, "# ")!==false)
                     $line = $this->_formatHeader($line);
 
-                if(strpos($line, "* ")!==false) {
-                    $closeTag = 'ul';
-                    $line = $this->_formatUnorderedList($line, $first);
-                    $first = false;
+                // UNORDERED LIST
+                foreach(array('*', '-', '+') AS $syntax) {
+                    if(strpos($line, "$syntax ")!==false) {
+                        $closeTag = 'ul';
+                        $first = false;
+                        $line = $this->_formatUnorderedList($line, $first, $syntax);
+                    }
                 }
 
+                // HR
                 if(strpos($line, '---')!==false)
                     $line = $this->_formatHR($line);
 
+                // CODE
                 if(strpos($line, '    ')!==false) {
                     $closeTag = 'code';
                     $line = $this->_formatCode($line, $first);
                     $first = false;
                 }
+           
+                // BOLD
+                foreach(array('**', '__') AS $syntax) {
+                    if(strpos($line, $syntax)!==false)
+                        $line = $this->_tagReplace($line, 'b', $syntax);
+                }
 
-                if(strpos($line, '**')!==false)
-                    $line = $this->_tagReplace($line, 'b', '**');
-                if(strpos($line, '__')!==false)
-                    $line = $this->_tagReplace($line, 'b', '__');
-
-                if(strpos($line, '*')!==false)
-                    $line = $this->_tagReplace($line, 'i', '*');
-                if(strpos($line, '_')!==false)
-                    $line = $this->_tagReplace($line, 'i', '_');
+                // ITALICS
+                foreach(array('*', '_') AS $syntax) {
+                    if(strpos($line, $syntax)!==false)
+                        $line = $this->_tagReplace($line, 'i', $syntax);
+                        
+                }
 
                 $html .= $line."\n";
             } else {
@@ -159,10 +170,10 @@ class Markdown
         return $line;
     }
 
-    private function _formatUnorderedList($line, $first)
+    private function _formatUnorderedList($line, $first, $syntax)
     {
         $string = substr($line, strpos($line, ' ')+1);
-        if ( $line[0] =='*' && $line[1]==' ') {
+        if ( $line[0] ==$syntax && $line[1]==' ') {
             if ($first) {
                 $line = "<ul>\n<li>$string</li>";
             } else {
