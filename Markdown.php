@@ -79,6 +79,15 @@ class Markdown
                     }
                 }
 
+                // ORDERED LIST
+                if($pivot = strpos($line, '. ')!==false) {
+                    if(is_integer(trim($prefix = substr($line, 0, $pivot)))) {
+                        $closeTag = 'ol';
+                        $line = $this->_formatOrderedList($line, $syntax, $false);
+                        $first = false;
+                    }
+                }
+
                 // HR
                 if(strpos($line, '---')!==false)
                     $line = $this->_formatHR($line);
@@ -174,12 +183,22 @@ class Markdown
     {
         $string = substr($line, strpos($line, ' ')+1);
         if ( $line[0] ==$syntax && $line[1]==' ') {
-            if ($first) {
+            if ($first)
                 $line = "<ul>\n<li>$string</li>";
-            } else {
+            else
                 $line = "<li>$string</li>";
-            }
         }
+
+        return $line;
+    }
+
+    private function _formatOrderedList($line, $pivot, $first)
+    {
+        $string = substr($line, $pivot+2);
+        if ($first)
+            $line = "<ol>\n<li>$string</li>";
+        else
+            $line = "<li>$string</li>";
 
         return $line;
     }

@@ -60,6 +60,25 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($resultStr, $md->convert($mdStrPlus));
     }
 
+    public function testOrderedList()
+    {
+        $md = new \Devtools\Markdown();
+
+        $li = "List Item ";
+        $resultStr = "<ol>\n";
+        $mdStr = "";
+
+        for($i=1; $i<=5; $i++) {
+            $resultStr .= "<li>$li$i</li>\n";
+            $mdStr .= "1. $li$i\n";
+        }
+
+        $resultStr .= "</ol>\n";
+        $mdStr .= "\n";
+
+        $this->assertEquals($resultStr, $md->convert($mdStr));
+    }
+
     public function test_tagReplace()
     {
         $sample = __METHOD__." ";
