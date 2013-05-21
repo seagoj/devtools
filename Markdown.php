@@ -54,7 +54,6 @@ class Markdown
         $first = true;
         $closeTag = null;
         $html = "";
-        
 
         foreach (explode("\n", $code) AS $line) {
 
@@ -123,8 +122,10 @@ class Markdown
                     $structure = true;
                 }
 
-                if($structure===false)
+                if($structure===false) {
                     $line = "<p>$line</p>";
+                    $structure=true;
+                }
 
                 // INLINE FORMATTING
                 $syntaxMap = array(
