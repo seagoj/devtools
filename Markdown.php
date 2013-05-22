@@ -228,7 +228,8 @@ class Markdown
     {
         $code = array();
         foreach($this->_code AS $line) {
-            if ($line[$depth = 0]=='#') {
+
+            if ($line !='' && $line[$depth=0]=='#') {
                 while ( $line[$depth]=='#' )
                     $depth++;
 

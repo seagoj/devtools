@@ -60,7 +60,6 @@ class Autoload
         if($path[sizeof($path)-1]=='phpunit') {
             return 'PHPUNIT';
         } else {
-            var_dump($path);
             return '';    
         }
     }
