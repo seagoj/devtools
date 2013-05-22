@@ -227,7 +227,7 @@ class Markdown
     private function _formatHeaderCodeAtOnce()
     {
         $code = array();
-        foreach($this->_code) AS $line) {
+        foreach($this->_code AS $line) {
             if ($line[$depth = 0]=='#') {
                 while ( $line[$depth]=='#' )
                     $depth++;
