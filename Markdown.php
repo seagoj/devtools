@@ -22,6 +22,7 @@ namespace Devtools;
 class Markdown
 {
     private $_log;
+    private $_code;
     /**
      * Markdown::__construct()
      *
@@ -50,15 +51,19 @@ class Markdown
             $code = file_get_contents($input);
         else
             $code = $input;
+
+        $this->_code = explode("\n", $code);
         
         // ROOT LEVEL: HEADER, UNORDERED LIST, ORDERED LIST, HR, CODE, BLOCKQUOTE
         // CAN BE NESTED: IMAGES, LINKS, BOLD, ITALICS, INLINE CODE
 
         $matches = array();
 
-        preg_match_all("#\# .*?#", $code, $matches);
+        
 
-        $this->_log->write($matches);
+        $this->_formatHeaderCodeAtOnce();
+
+
 
         /*
         $first = true;
@@ -161,7 +166,7 @@ class Markdown
 
         }*/
 
-        return $html;
+        return implode("\n", $this->_code);
     }
 
     private function _tagReplace($line, $tag, $start, $end=null)
@@ -217,6 +222,24 @@ class Markdown
         }
 
         return $line;
+    }
+
+    private function _formatHeaderCodeAtOnce()
+    {
+        $code = array();
+        foreach($this->_code) AS $line) {
+            if ($line[$depth = 0]=='#') {
+                while ( $line[$depth]=='#' )
+                    $depth++;
+
+                $tag = "h".$depth;
+                $code[] = substr($line, strpos($line, ' ')+1);
+            } else {
+                $code[] = $line;    
+            }
+        }
+
+        $this->_code = $code;
     }
 
     private function _formatUnorderedList($line, $syntax, $first)
