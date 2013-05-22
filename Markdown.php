@@ -57,10 +57,6 @@ class Markdown
         // ROOT LEVEL: HEADER, UNORDERED LIST, ORDERED LIST, HR, CODE, BLOCKQUOTE
         // CAN BE NESTED: IMAGES, LINKS, BOLD, ITALICS, INLINE CODE
 
-        $matches = array();
-
-        
-
         $this->_formatHeaderCodeAtOnce();
 
 
@@ -166,7 +162,11 @@ class Markdown
 
         }*/
 
-        return implode("\n", $this->_code);
+        foreach($this->_code AS $line) {
+            $code .= $line."\n";
+        }
+
+        return $code;
     }
 
     private function _tagReplace($line, $tag, $start, $end=null)
@@ -236,7 +236,7 @@ class Markdown
                     $depth++;
 
                 $tag = "h".$depth;
-                array_push($code, substr($line, strpos($line, ' ')+1));
+                array_push($code, "<$tag>".substr($line, strpos($line, ' ')+1)."</$tag>");
             } else {
                 array_push($code, $line);    
             }
