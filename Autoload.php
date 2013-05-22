@@ -44,7 +44,7 @@ class Autoload
     public function __construct($currentDir = __DIR__)
     {
         switch(self::checkEnv()) {
-            case 'PHPUNIT_TRAVIS':
+            case 'PHPUNIT':
                 $this->_runPath = $this->_getPath($currentDir);
                 $this->_libPath = $this->_runPath.'/lib';
                 break; 
@@ -57,9 +57,10 @@ class Autoload
 
     public function checkEnv() {
         $path = explode('/',$_SERVER['SCRIPT_FILENAME']);
-        if($path[2]=='travis' && $path[7]=='phpunit') {
-            return 'PHPUNIT_TRAVIS';
+        if($path[sizeof($path)-1]=='phpunit') {
+            return 'PHPUNIT';
         } else {
+            var_dump($path);
             return '';    
         }
     }
