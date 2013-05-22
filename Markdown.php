@@ -56,7 +56,7 @@ class Markdown
 
         $matches = array();
 
-        preg_match_all("# .*?", $code, $matches);
+        preg_match_all("#\# .*?#", $code, $matches);
 
         $this->_log->write($matches);
 
