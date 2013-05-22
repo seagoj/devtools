@@ -50,7 +50,17 @@ class Markdown
             $code = file_get_contents($input);
         else
             $code = $input;
+        
+        // ROOT LEVEL: HEADER, UNORDERED LIST, ORDERED LIST, HR, CODE, BLOCKQUOTE
+        // CAN BE NESTED: IMAGES, LINKS, BOLD, ITALICS, INLINE CODE
 
+        $matches = array();
+
+        preg_match_all("# .*?", $code, $matches);
+
+        $this->_log->write($matches);
+
+        /*
         $first = true;
         $closeTag = null;
         $html = "";
@@ -148,7 +158,9 @@ class Markdown
                     $first = true;
                 }
             }
-        }
+
+        }*/
+
         return $html;
     }
 
