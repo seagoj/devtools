@@ -226,6 +226,8 @@ class Markdown
 
     private function _formatHeaderCodeAtOnce()
     {
+        $this->_log->write($this->_code);
+
         $code = array();
         foreach($this->_code AS $line) {
 
@@ -234,9 +236,9 @@ class Markdown
                     $depth++;
 
                 $tag = "h".$depth;
-                $code[] = substr($line, strpos($line, ' ')+1);
+                array_push($code, substr($line, strpos($line, ' ')+1));
             } else {
-                $code[] = $line;    
+                array_push($code, $line);    
             }
         }
 
