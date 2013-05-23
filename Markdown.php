@@ -57,9 +57,9 @@ class Markdown
         // ROOT LEVEL: HEADER, UNORDERED LIST, ORDERED LIST, HR, CODE, BLOCKQUOTE
         // CAN BE NESTED: IMAGES, LINKS, BOLD, ITALICS, INLINE CODE
 
-        $this->_formatHeaderCodeAtOnce();
-
-
+        $this->_formatHeader();
+        $this->_formatUnorderedList();
+        $this->_formatOrderedList();
 
         /*
         $first = true;
@@ -162,11 +162,14 @@ class Markdown
 
         }*/
 
+        $html = '';
+        $previous = null;
         foreach($this->_code AS $line) {
-            $code .= $line."\n";
+            if( $line!='' || $previous != '')
+                $html .= $line."\n";
+            $previous = $line;
         }
-
-        return $code;
+        return $html;
     }
 
     private function _tagReplace($line, $tag, $start, $end=null)
@@ -209,26 +212,10 @@ class Markdown
         return $line;
         
     }
-
-    private function _formatHeader($line)
+    
+    private function _formatHeader()
     {
-        if ($line[$depth = 0]=='#') {
-            while ( $line[$depth]=='#' ) {
-                $depth++;
-            }
-            $tag = "h".$depth;
-            $string = substr($line, strpos($line, ' ')+1);
-            $line = "<$tag>$string</$tag>";
-        }
-
-        return $line;
-    }
-
-    private function _formatHeaderCodeAtOnce()
-    {
-        $this->_log->write($this->_code);
-
-        $code = array();
+        $result = array();
         foreach($this->_code AS $line) {
 
             if ($line !='' && $line[$depth=0]=='#') {
@@ -236,28 +223,73 @@ class Markdown
                     $depth++;
 
                 $tag = "h".$depth;
-                array_push($code, "<$tag>".substr($line, strpos($line, ' ')+1)."</$tag>");
+                array_push($result, "<$tag>".substr($line, strpos($line, ' ')+1)."</$tag>");
             } else {
-                array_push($code, $line);    
+                array_push($result, $line);    
             }
         }
 
-        $this->_code = $code;
+        $this->_code = $result;
     }
-
-    private function _formatUnorderedList($line, $syntax, $first)
+    
+    private function _formatUnorderedList()
     {
-        $string = substr($line, strpos($line, ' ')+1);
-        if ( $line[0] ==$syntax && $line[1]==' ') {
-            if ($first)
-                $line = "<ul>\n<li>$string</li>";
-            else
-                $line = "<li>$string</li>";
+        $result = array();
+        $first = true;
+        $triggered = false;
+        foreach($this->_code AS $line) {
+            if(strpos($line, "* ")!==false || strpos($line, "- ")!==false ||
+                strpos($line, "+")!==false) {
+                $triggered = true;
+                $li = substr($line, strpos($line, ' ')+1);
+                if($first === true) {
+                    array_push($result, "<ul>\n<li>$li</li>");
+                    $first = false;
+                } else {
+                    array_push($result, "<li>$li</li>");
+                }
+            } else {
+                if($triggered) {
+                    array_push($result, "</ul>");
+                    $triggered = false;
+                }
+                if($line!="\n")
+                    array_push($result, $line);
+            }
         }
-
-        return $line;
+        $this->_code = $result;
     }
 
+    private function _formatOrderedList()
+    {
+        $result = array();
+        $first = true;
+        $triggered = false;
+        foreach($this->_code AS $line) {
+            if($pivot = strpos($line, '. ')!==false) {
+                if(is_numeric(trim($prefix = substr($line, 0, $pivot)))) {
+                    $triggered = true;
+                    if($first) {
+                        array_push($result, "<ol>");
+                        $first = false;
+                    }
+                    array_push($result, "<li>".substr($line, $pivot+2)."</li>");
+                } else
+                    array_push($result, $line);
+            } else{
+                if($triggered) {
+                    array_push($result, "</ol>");
+                    $triggered = false;
+                }
+                if($line != "\n")
+                    array_push($result, $line);
+                $first = true;
+            }
+        }
+        $this->_code = $result;
+    }
+    
+/* 
     private function _formatOrderedList($line, $pivot, $first)
     {
         $string = substr($line, $pivot+3);
@@ -268,7 +300,7 @@ class Markdown
 
         return $line;
     }
-
+*/
     private function _formatCode($line, $first)
     {
         $string = substr($line, 4);
