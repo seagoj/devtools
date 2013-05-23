@@ -57,9 +57,15 @@ class Markdown
         // ROOT LEVEL: HEADER, UNORDERED LIST, ORDERED LIST, HR, CODE, BLOCKQUOTE
         // CAN BE NESTED: IMAGES, LINKS, BOLD, ITALICS, INLINE CODE
 
+        $this->_formatInline();
         $this->_formatHeader();
         $this->_formatUnorderedList();
         $this->_formatOrderedList();
+        $this->_formatHR();
+        $this->_formatCode();
+        $this->_formatBlockquote();
+        var_dump($this->_code);
+        $this->_formatParagraph();
 
         /*
         $first = true;
@@ -172,45 +178,150 @@ class Markdown
         return $html;
     }
 
-    private function _tagReplace($line, $tag, $start, $end=null)
+    private function _formatParagraph()
     {
-        $string = '';
+        // ROOT LEVEL: UNORDERED LIST, ORDERED LIST, HR, CODE, BLOCKQUOTE
+        // CAN BE NESTED: IMAGES, LINKS, BOLD, ITALICS, INLINE CODE
+        $headers = array();
 
-        if($start===$end || $end===null) {
-            if (strpos($line, $start)!==false) {
-                $array = explode($start, $line);
-                for ($i=0; $i<count($array); $i++) {
-                    if ($i%2===0) {
-                        $string .= $array[$i];
-                    } else {
-                        $string .= "<$tag>".$array[$i]."</$tag>";
+        $rootElements = array('h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+            'ul', '/ul',
+            'ol', '/ol',
+            'li',
+            'hr',
+            'code', '/code',
+            'blockquote', '/blockquote'
+        );
+
+        $blockElements = array('code', 'blockquote');
+
+
+        $result = array();
+        $first = true;
+        $triggered = false;
+        $block = false;
+        foreach ($this->_code as $line) {
+            if($line!=='' && $line[0]==='<') {
+                print "Tag found\n";
+                $end = strpos($line, '>')-1;
+                print substr($line, 1, $end);
+                if(in_array(substr($line, 1, $end), $rootElements)) {
+                    print "Tag is in rootElements\n";
+                    if(in_array(substr($line, 1, $end), $blockElements))
+                        $block=true;
+                    else if(in_array(substr($line, 2, $end), $blockElements))
+                        $block=false;
+
+                    if($triggered) {
+                        print "End P1\n";
+                        array_push($result, "</p>");
+                        $triggered = false;
                     }
+                    print "Write Line as is\n";
+                    array_push($result, $line);
                 }
-            } else {
-                // throw new \Exception("$start not found in $line");
-                $string = $line;
+                else {
+                    if($first) {
+                        print "Begin P1 \n";
+                        array_push($result, "<p>");
+                        $first = false;
+                        $triggered = true;
+                    }
+                    print "Write line as is1\n";
+                    array_push($result, $line);
+                }
+            } else if($line!=='') {
+                if($first && !$block) {
+                    print "Begin P2\n";
+                    array_push($result, "<p>");
+                    $first = false;
+                    $triggered = true;
+                }
+                print "Write line as is2\n";
+                array_push($result, $line);
+            } else if($triggered) {
+                print "End P2\n";
+                array_push($result, "</p>");
+                print "Write line as is3\n";
+                array_push($result, $line);
+                $triggered = false;
             }
 
-        } else {
-            if (($startLoc = strpos($line, $start))!==false) {
-                $begin = $startLoc+strlen($start);
-                // $end = strpos($line, "\n", $begin);
-                $string = "<$tag>".substr($line, $begin)."</$tag>";
-            } else {
-                $string = $line;    
+            if($triggered) {
+                print $line."\n";
+                print "End P3\n";
+                array_push($result, "</p>");
+                $triggered = false;
             }
-            // throw new \Exception("$start does not equal $end");
         }
 
-        return $string;
+        $this->_code = $result;
     }
 
-    private function _formatHR($line)
+    private function _tagReplace($line, $tag, $startTag, $endTag=null)
     {
-        if(substr($line, 0, 3)==='---')
-            $line = "<hr>";
+        if($startTag===$endTag || $endTag===null) {
+            $begin = strpos($line, $startTag);
+            $end = strpos($line, $startTag, $begin)-strlen($startTag);
+            if($begin!==false && $end!==false) {
+                $line = str_replace(" $startTag", " <$tag>", $line);
+                $line = str_replace("$startTag ", "</$tag> ", $line);
+            }
+
+            // Check for leading tag
+            if(substr($line, 0, strlen($startTag))==$startTag)
+                $line = "<$tag>".substr($line, strlen($startTag));
+
+            // Check for ending tag
+            if(substr($line, -strlen($startTag))==$startTag)
+                $line = substr($line, 0, strlen($line)-strlen($startTag))."</$tag>";
+        }
+
         return $line;
-        
+    }
+
+    private function _formatInline()
+    {
+        $syntaxMap = array(
+            '`'=>'code',
+            '**' => 'b',
+            '__' => 'b',
+            '*' => 'i',
+            '_' => 'i'
+        );
+        $first = false;
+
+        foreach($syntaxMap AS $syntax=>$tag) {
+            $result = array();
+            foreach($this->_code AS $line) {
+                $first = strpos($line, $syntax);
+                if($first!==false) {
+                    $second = strpos($line, $syntax, $first+strlen($syntax));
+                    if($second!==false) {
+                        array_push($result, $this->_tagReplace($line, $tag, $syntax));
+                    } else {
+                        array_push($result, $line);    
+                    }
+                } else {
+                    array_push($result, $line);    
+                }
+            }
+            $this->_code = $result;
+        }
+    }
+
+
+    private function _formatHR()
+    {
+        $result = array();
+        foreach($this->_code as $line) {
+            if(substr($line, 0, 3)==='---')
+                array_push($result, "<hr>");
+            else
+                array_push($result, $line);
+        }
+
+        $this->_code = $result;
     }
     
     private function _formatHeader()
@@ -236,10 +347,10 @@ class Markdown
     {
         $result = array();
         $first = true;
+        $loc = null;
         $triggered = false;
         foreach($this->_code AS $line) {
-            if(strpos($line, "* ")!==false || strpos($line, "- ")!==false ||
-                strpos($line, "+")!==false) {
+            if($loc=strpos($line, "* ")!==false || strpos($line, "- ")!==false || strpos($line, "+ ")!==false) {
                 $triggered = true;
                 $li = substr($line, strpos($line, ' ')+1);
                 if($first === true) {
@@ -289,42 +400,56 @@ class Markdown
         $this->_code = $result;
     }
     
-/* 
-    private function _formatOrderedList($line, $pivot, $first)
+    private function _formatCode()
     {
-        $string = substr($line, $pivot+3);
-        if ($first)
-            $line = "<ol>\n<li>$string</li>";
-        else
-            $line = "<li>$string</li>";
+        $first = true;
+        $result = array();
+        $triggered = false;
 
-        return $line;
-    }
-*/
-    private function _formatCode($line, $first)
-    {
-        $string = substr($line, 4);
-        if( substr($line, 0, 4)==='    ') {
-            if($first)
-                $line = "<code>$string";
-            else
-                $line=$string;
+        foreach($this->_code as $line) {
+            $string = substr($line, 4);
+            if( substr($line, 0, 4)==='    ') {
+                $triggered = true;
+                if($first) {
+                    array_push($result, "<code>");
+                    $first = false;
+                }
+                array_push($result, "\t".$string);
+            } else {
+                if($triggered) {
+                    array_push($result, "</code>");
+                }
+                array_push($result, $line);
+                $first = true;    
+            }
         }
 
-        return $line;
+        return $this->_code = $result;
     }
 
-    private function _formatBlockquote($line, $first)
+    private function _formatBlockquote()
     {
-        $string = substr($line, 2);
-        if (substr($line, 0, 2)==='> ') {
-            if($first)
-                $line = "<blockquote>\n\t<p>$string</p>";
-            else
-                $line = "\t<p>$string</p>";
+        $first = true;
+        $result = array();
+        $triggered = false;
+
+        foreach($this->_code as $line) {
+            $string = substr($line, 2);
+            if (substr($line, 0, 2)==='> ') {
+                if($first) {
+                    array_push($result, "<blockquote>");
+                    $first = false;
+                }
+                array_push($result, "\t<p>$string</p>");
+                $triggered = true;
+            } else {
+                if($triggered)
+                    array_push($result, "</blockquote>");
+                array_push($result, $line);
+            }
         }
 
-        return $line;
+        return $this->_code = $result;
     }
 
     private function _formatImage($line)

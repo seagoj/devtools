@@ -14,7 +14,28 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
     {
         unlink(__CLASS__.'.log');
     }
+    public function test_formatInline()
+    {
+        $md = new \Devtools\Markdown();
 
+        $sample = "*Test*\n";
+        $output = "<ul>\n<li>Test</li>\n</ul>\n\n";
+        $swap = false;
+        
+        $syntax = '*';
+
+        foreach(explode("\n", $sample) as $line)  {
+            $first = strpos($line, $syntax);
+            if($first!==false) {
+                $second = strpos($line, $syntax, $first+strlen($syntax));
+            }
+            if($first!==false && $second!==false) {
+                $swap = true;    
+            }
+        }
+
+        $this->assertEquals($swap, true);
+    }
     public function testMarkdown()
     {
         $md = new \Devtools\Markdown();
@@ -50,7 +71,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
             $mdStrPlus .= "+ $li$i\n";
         }
 
-        $resultStr .= "</ul>\n\n";
+        $resultStr .= "</ul>\n";
         $mdStrStar .= "\n";
         $mdStrMinus .= "\n";
         $mdStrPlus .= "\n";
@@ -73,7 +94,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
             $mdStr .= "$i. $li$i\n";
         }
 
-        $resultStr .= "</ol>\n\n";
+        $resultStr .= "</ol>\n";
         $mdStr .= "\n";
 
         $this->assertEquals($resultStr, $md->convert($mdStr));
@@ -109,7 +130,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
             $mdStrUS .= "__".$sample.$i."__ ";
         }
         
-        $resultStr = "<p>$resultStr</p>\n";
+        $resultStr = "<p>\n$resultStr\n</p>\n";
 
         $this->assertEquals($resultStr, $md->convert($mdStrStar));
         $this->assertEquals($resultStr, $md->convert($mdStrUS));
@@ -128,7 +149,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
             $mdStrUS .= "_".$sample.$i."_ ";
         }
         
-        $resultStr = "<p>$resultStr</p>\n";
+        $resultStr = "<p>\n$resultStr\n</p>\n";
 
         $this->assertEquals($resultStr, $md->convert($mdStrStar));
         $this->assertEquals($resultStr, $md->convert($mdStrUS));
@@ -139,7 +160,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $md = new \Devtools\Markdown();
 
         $mdStr = "not code `code` not code\n";
-        $resultStr = "<p>not code <code>code</code> not code</p>\n";
+        $resultStr = "<p>\nnot code <code>code</code> not code\n</p>\n";
 
         $this->assertEquals($resultStr, $md->Convert($mdStr));
     }
@@ -157,7 +178,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
     public function test_formatCode()
     {
         $mdStr = "    code1\n    code2\n";
-        $resultStr = "<code>code1\ncode2\n</code>\n";
+        $resultStr = "<code>\n\tcode1\n\tcode2\n</code>\n";
 
         $md = new \Devtools\Markdown();
         $this->assertEquals($resultStr, $md->convert($mdStr));
@@ -195,7 +216,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $mdStr = file_get_contents('tests/test.markdown');
         $resultStr = file_get_contents('tests/test.html');
 
-        $md = new \DEvtools\Markdown();
+        $md = new \Devtools\Markdown();
         $this->assertEquals($resultStr, $md->convert($mdStr));
     }
 }
