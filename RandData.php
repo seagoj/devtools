@@ -4,21 +4,22 @@ namespace Devtools;
 class RandData
 {
     private $dataTypes;
-    
-    public function __construct() {
+
+    public function __construct()
+    {
         $this->dataTypes = array('String','Array','Integer','Bool','Double','Null');
     }
 
-    public function get($type) {
+    public function get($type)
+    {
         $func = 'rand'.ucfirst(strtolower($type));
-         
-        if(in_array(ucfirst(strtolower($type)), $this->dataTypes)) {
+
+        if (in_array(ucfirst(strtolower($type)), $this->dataTypes)) {
             return $this->$func();
-        }
-        else
+        } else
             die("Data of type $type could not be generated.");
     }
-    
+
     private function randArray($max=100)
     {
         $array = array();
@@ -60,7 +61,8 @@ class RandData
 
         return $string;
     }
-    private function randNull() {
+    private function randNull()
+    {
         return NULL;
     }
 }

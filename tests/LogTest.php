@@ -32,7 +32,7 @@ class LogTest extends PHPUnit_Framework_TestCase
     public function testCustomTypeValid()
     {
         $options = array('type'=>'html');
-        $log = new \Devtools\Log($options);       
+        $log = new \Devtools\Log($options);
     }
 
     public function testCustomFileValid()
@@ -72,7 +72,6 @@ class LogTest extends PHPUnit_Framework_TestCase
         $method = new ReflectionMethod('Devtools\Log', '_tapify');
         $method->setAccessible(true);
 
-        
         $this->assertEquals("ok 1 - $message", $method->invoke(new \Devtools\Log(), $message, true));
     }
 

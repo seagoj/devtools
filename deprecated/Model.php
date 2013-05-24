@@ -1,7 +1,7 @@
 <?php
 /**
  * Model: Model library for PHP
- * 
+ *
  * @name      Model
  * @category  Seagoj
  * @package   Devtools
@@ -50,8 +50,8 @@ class Model
      */
     public function __construct ($id, $tbl=NULL, $query=NULL, $dbtype='mysql')
     {
-    	$this->config = new \Devtools\Config($this);
-    	
+        $this->config = new \Devtools\Config($this);
+
         $this->setDbg(_DBG_);
         if(_DBG_) dbg::msg("dbg is in scope of model class");
 
@@ -336,9 +336,9 @@ class Model
          */
         $this->dbg = _DBG_;
         //if($this->dbg) require_once(_LIB_PATH_."/lib.dbg/src/dbg.php");
-        if(_DBG_) {
-        	$this->dbg = new dbg();
-        	dbg::msg("DBG loaded");
+        if (_DBG_) {
+            $this->dbg = new dbg();
+            dbg::msg("DBG loaded");
         }
     }
     private function dbgMsg($msg, $method, $exception=false)

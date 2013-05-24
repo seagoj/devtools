@@ -1,7 +1,7 @@
 <?php
 /**
  * Config: Defines configuration for current project
- * 
+ *
  * @name      Config
  * @category  Seagoj
  * @package   Devtools
@@ -16,7 +16,7 @@ namespace Devtools;
 
 /**
  * Config: Defines configuration for current project
- * 
+ *
  * @name      Config
  * @category  Seagoj
  * @package   Devtools
@@ -74,6 +74,7 @@ class Config
             'Devtools\Dbg\test'=>true,
             'Devtools\Dbg\setNoCache'=>"<META HTTP-EQUIV='CACHE-CONTROL' CONTENT='NO-CACHE'>\n<META HTTP-EQUIV='PRAGMA' CONTENT='NO-CACHE'>"
             );
+
         return isset($this->debug) && isset($this->test);
     }
 
@@ -87,6 +88,7 @@ class Config
     private function _configDefault()
     {
         $this->debug = false;
+
         return true;
     }
 
@@ -112,6 +114,7 @@ class Config
         $this->conn = new mysqli($info['host'].':'.$info['port'], $info['user'], $info['pass'], 'demo');
 
         mysql_select_db($info['db'], $this->conn);
+
         return true;
     }
 
@@ -121,10 +124,11 @@ class Config
      * Defines configuration for Autoload class()
      *
      * @return bool
-     */    
+     */
     private function _configAutoload()
     {
         $this->debug = true;
+
         return true;
     }
 
@@ -134,10 +138,11 @@ class Config
      * Defines configuration for the Unit class
      *
      * @return bool
-     */    
+     */
     private function _configUnit()
     {
         $this->debug = true;
+
         return true;
     }
 
@@ -147,10 +152,11 @@ class Config
      * Defines configuration for the Config class
      *
      * @return bool
-     */    
+     */
     private function _configConfig()
     {
         $this->debug = true;
+
         return true;
     }
 
@@ -160,10 +166,11 @@ class Config
      * Defines configuration for the RandData class
      *
      * @return bool
-     */    
+     */
     private function _configRandData()
     {
         $this->debug = true;
+
         return true;
     }
 
@@ -173,7 +180,7 @@ class Config
      * Defines configuration for the Markdown class
      *
      * @return bool
-     */    
+     */
     private function _configMarkdown()
     {
         $this->debug = false;
@@ -188,7 +195,7 @@ class Config
      * Defines configuration for the Git class
      *
      * @return bool
-     */    
+     */
     private function _configGit()
     {
         $this->debug = false;

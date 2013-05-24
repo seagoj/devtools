@@ -1,7 +1,7 @@
 <?php
 /**
  * Unit: Unit testing class for PHP
- * 
+ *
  * @name      Unit
  * @category  Seagoj
  * @package   Devtools
@@ -16,7 +16,7 @@ namespace Devtools;
 
 /**
  * Config: Defines configuration for current project
- * 
+ *
  * @name      Config
  * @category  Seagoj
  * @package   Devtools
@@ -37,7 +37,7 @@ class Unit extends Dbg
     private $_depends;
     private $_config;
     private $_dbg;
-    
+
     /**
      * Unit::__construct
      *
@@ -48,7 +48,7 @@ class Unit extends Dbg
     public function __construct()
     {
     }
-    
+
     /**
      * Unit::runTest()
      *
@@ -91,7 +91,7 @@ class Unit extends Dbg
             }
         }
     }
-    
+
     /**
      * Unit::results()
      *
@@ -113,10 +113,10 @@ class Unit extends Dbg
                     $pass = $pass && dbg::test(!in_array($method."Test", $this->_passed), "$method did not pass Unit tests.");
             }
         }
-            
+
         $pass ? print "<div>".get_class($this->_testObj)." passed all unit tests</div><div>&nbsp;</div>": "";
     }
-    
+
     /**
      * Unit::__destruct
      *
@@ -127,7 +127,7 @@ class Unit extends Dbg
     public function __destruct()
     {
     }
-    
+
     /**
      * Unit::testing
      *
@@ -143,7 +143,7 @@ class Unit extends Dbg
         $this->_config = new config($this->_testObj);
         $this->_dbg = new dbg($this->_testObj);
     }
-    
+
     /**
      * Unit::with()
      *
@@ -157,7 +157,7 @@ class Unit extends Dbg
     {
         $this->_unitObj = $unitObj;
     }
-    
+
     /**
      * Unit::_buildDepends
      *
@@ -179,9 +179,10 @@ class Unit extends Dbg
             }
             $this->_depends[$method]=$temp;
         }
+
         return true;
     }
-    
+
     /**
      * Unit::getCommentTags
      *
@@ -195,9 +196,10 @@ class Unit extends Dbg
     public function getCommentTags($filename, $type='')
     {
         $this->_scanCommentsForTags($filename, $type);
+
         return $this->commentTags;
     }
-    
+
     /**
      * Unit::getUnitTags()
      *
@@ -227,9 +229,10 @@ class Unit extends Dbg
                 }
             }
         }
+
         return $return;
     }
-    
+
     /**
      * Unit::_scanCommentsForTags()
      *
@@ -243,7 +246,7 @@ class Unit extends Dbg
     private function _scanCommentsForTags($filename='dbg.php', $type='')
     {
         $source = file_get_contents($filename);
-    
+
         $tokens = token_get_all($source);
         $comment = array(
                 T_COMMENT,      // All comments since PHP5
@@ -254,11 +257,11 @@ class Unit extends Dbg
         $commentsFound = false;
         $functionFound = false;
         $whitespace = array(" "=>0,"\t"=>0,"\r"=>0,"\n"=>0,"\r\n"=>0,"\n\r"=>0);
-        foreach ( $tokens as $token ) {
-                
+        foreach ($tokens as $token) {
+
             if (in_array($token[0], $comment)) {
                 preg_match_all('/@[a-zA-Z0-9 \t_]*/', $token[1], $matches);
-    
+
                 foreach ($matches[0] AS $match) {
                     $firstPos = 0;
                     $rightChar = '';
@@ -273,17 +276,17 @@ class Unit extends Dbg
                         }
                     }
                     $pivot = $firstPos;
-                    
+
                     dbg::test($pivot!=0, "Pivot is zero");
                     $tag = substr($match, 0, $pivot);
                     $value = substr($match, $pivot+1);
                     array_push($commentTags, array($tag=>$value));
                     $commentsFound = true;
                 }
-            } else if (($token[0]==T_FUNCTION ||$token[0]==T_CLASS) && $commentsFound) {
+            } elseif (($token[0]==T_FUNCTION ||$token[0]==T_CLASS) && $commentsFound) {
                 $functionFound = true;
                 $commentsFound = false;
-            } else if ($token[0]==307 && $functionFound) {
+            } elseif ($token[0]==307 && $functionFound) {
                 while ($tag = array_pop($commentTags)) {
                     $this->commentTags[$token[1]] = array($tag);
                 }

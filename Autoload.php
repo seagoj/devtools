@@ -3,7 +3,7 @@
  * Autoload: Autoloader for PHP classes
  *
  * Autoloads instantiated classes across multiple namespaces using PSR-0 standard
- * 
+ *
  * @name      Autoload
  * @category  Seagoj
  * @package   Devtools
@@ -43,11 +43,11 @@ class Autoload
      */
     public function __construct($currentDir = __DIR__)
     {
-        switch(self::checkEnv()) {
+        switch (self::checkEnv()) {
             case 'PHPUNIT':
                 $this->_runPath = $this->_getPath($currentDir);
                 $this->_libPath = $this->_runPath.'/lib';
-                break; 
+                break;
             default:
                 $this->_runPath = $this->_getPath($_SERVER['SCRIPT_FILENAME']);
                 $this->_libPath = $this->_getPath($currentDir);
@@ -55,18 +55,19 @@ class Autoload
         }
     }
 
-    public function checkEnv() {
+    public function checkEnv()
+    {
         $path = explode('/',$_SERVER['SCRIPT_FILENAME']);
-        if($path[sizeof($path)-1]=='phpunit') {
+        if ($path[sizeof($path)-1]=='phpunit') {
             return 'PHPUNIT';
         } else {
-            return '';    
+            return '';
         }
     }
 
     /**
      * public Autoload.Register()
-     * 
+     *
      * Registers the function to use as the autoloader
      *
      * @param bool $prepend Prepend value to pass on to spl_autoload_register
@@ -82,7 +83,7 @@ class Autoload
      * Autoload.autoloader()
      *
      * @param string $class Class that the autoloader is searching for
-     * 
+     *
      * @return void
      */
     private function _autoload($class)
@@ -153,7 +154,7 @@ class Autoload
                     $i--;
 
                 for ($i; $i<$longArrayDepth-1; $i++) {
-                    if($i<$shortArrayDepth-1) {
+                    if ($i<$shortArrayDepth-1) {
                         array_push(${"poppedFrom".ucfirst($shortArray)}, array_pop(${$shortArray."PathArray"}));
                     }
                     array_push(${"poppedFrom".ucfirst($longArray)}, array_pop(${$longArray."PathArray"}));
@@ -167,6 +168,7 @@ class Autoload
             foreach (array_reverse($poppedFromLib) AS $pop) {
                 array_push($relPath, $pop);
             }
+
             return implode(DIRECTORY_SEPARATOR, $relPath).DIRECTORY_SEPARATOR;
         }
     }

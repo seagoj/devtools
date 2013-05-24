@@ -27,7 +27,7 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
     {
         \Devtools\Autoload::register(true);
         $autoloadStack = spl_autoload_functions();
-        
+
         $this->assertEquals($this->_validClass, get_class($autoloadStack[0][0]));
         $this->assertEquals($this->_validMethod, $autoloadStack[0][1]);
     }
@@ -52,7 +52,6 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
     {
         $method = new ReflectionMethod('Devtools\Autoload', '_getRelPath');
         $method->setAccessible(true);
-        
 
         $_runPath = '/home/travis/build/seagoj';
         $_libPath = $_runPath.'/lib/lib';

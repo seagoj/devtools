@@ -1,7 +1,7 @@
 <?php
 /**
  * Dbg: Debug library for PHP
- * 
+ *
  * @name      Dbg
  * @category  Seagoj
  * @package   Devtools
@@ -85,12 +85,12 @@ class Dbg extends RandData
      * @param string $file      Filename
      * @param int    $line      Line number
      * @param bool   $export    True: export instead of dump
-     * 
+     *
      * @return string Generated output
      */
     public function dump($var, $die=true, $label='', $exception=false, $file='', $line='', $export=true)
     {
-        
+
         if ($this->_config->debug) {
             if ($export) {
                 $var = var_export($var, true);
@@ -115,14 +115,14 @@ class Dbg extends RandData
     }
 
     /**
-     * public Dbg::test() 
+     * public Dbg::test()
      *
      * Tests statements and passes or fails accordingly
      *
      * @param bool   $term    Term to be evaluated
      * @param string $failMsg Message to be displayed upon failure
      * @param bool   $die     True: die upon failure
-     * 
+     *
      * @return bool Success
      */
     public function test($term, $failMsg='', $die=true)
@@ -153,7 +153,7 @@ class Dbg extends RandData
      */
     public function setNoCache ()
     {
-        
+
         print "<META HTTP-EQUIV='CACHE-CONTROL' CONTENT='NO-CACHE'>\n<META HTTP-EQUIV='PRAGMA' CONTENT='NO-CACHE'>";
     }
 
@@ -163,13 +163,14 @@ class Dbg extends RandData
      * returns a random value of the passed type
      *
      * @param string $type Type of data to return
-     * 
+     *
      * @return multi
      */
     public function randData($type)
-    {	
-        
+    {
+
         $data = new \Devtools\RandData();
+
         return $data->get($type);
     }
 
@@ -181,7 +182,7 @@ class Dbg extends RandData
      * @param object $object Object of class to be tested
      * @param string $method Method to test in class $object
      * @param array  $params Array of parameters to pass to $method
-     * 
+     *
      * @return bool
      */
     public function unit ($object, $method, $params)
@@ -208,9 +209,11 @@ class Dbg extends RandData
 
         if ($output==$result) {
             print "<div>$class->$method($paramStr) test passed.</div>";
+
             return true;
         } else {
             print "<div>$class->$method($paramStr) test failed.</div><div>\n\n$output\n\n</div><div>\n\n$result\n\n</div>";
+
             return false;
         }
     }

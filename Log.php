@@ -1,7 +1,8 @@
 <?php
 namespace Devtools;
-    
-class Log {
+
+class Log
+{
     private $_testCount;
     private $_config;
     private $_headers;
@@ -30,7 +31,7 @@ class Log {
     {
         $content = $this->_stringify($content);
 
-        switch($this->_config['format']) {
+        switch ($this->_config['format']) {
             case 'tap':
                 $content = $this->_tapify($content, $result);
                 break;
@@ -39,7 +40,7 @@ class Log {
                 break;
         }
 
-        switch($this->_config['type']) {
+        switch ($this->_config['type']) {
             case 'file':
                 $this->_file($content);
                 break;
@@ -52,9 +53,8 @@ class Log {
             default:
                 throw new \InvalidArgumentException($this->_config['type'].' is not a valid Log type');
                 break;
-        } 
+        }
     }
-
 
     private function _file($content)
     {
@@ -77,26 +77,28 @@ class Log {
     private function _stringify($content)
     {
         if(is_array($content))
+
             return serialize($content);
         else
             return $content;
     }
 
-    private function _tapify($content, $result) {
+    private function _tapify($content, $result)
+    {
         $nextTest = $this->_testCount+1;
         $prefix = 'ok '.$nextTest.' - ';
-            
-        if($result!=='EMPTY') {
+
+        if ($result!=='EMPTY') {
                 $this->_testCount = $nextTest;
                 $content = $prefix.$content;
-            if(!$result) {
+            if (!$result) {
                 $content = 'not '.$content;
             }
         }
 
         return $content;
     }
-        
+
     public function __destruct()
     {
         $start = $this->_testCount===0 ? 0 : 1;

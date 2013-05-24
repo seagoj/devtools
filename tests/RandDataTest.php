@@ -12,12 +12,12 @@ class RandDataTest extends PHPUnit_Framework_TestCase
 
     public function testGet()
     {
-		$randData = new \Devtools\RandData();
+        $randData = new \Devtools\RandData();
         $types = array('string','array','integer','bool','double','null');
-		foreach($types AS $type) {
-			$func = 'is_'.$type;
-			$this->assertTrue($func($randData->get($type)));
-		}
+        foreach ($types AS $type) {
+            $func = 'is_'.$type;
+            $this->assertTrue($func($randData->get($type)));
+        }
     }
 
     public function tearDown()
@@ -25,4 +25,3 @@ class RandDataTest extends PHPUnit_Framework_TestCase
         unlink(__CLASS__.'.log');
     }
 }
-
