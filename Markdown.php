@@ -54,9 +54,6 @@ class Markdown
 
         $this->_code = explode("\n", $code);
         
-        // ROOT LEVEL: HEADER, UNORDERED LIST, ORDERED LIST, HR, CODE, BLOCKQUOTE
-        // CAN BE NESTED: IMAGES, LINKS, BOLD, ITALICS, INLINE CODE
-
         $this->_formatInline();
         $this->_formatHeader();
         $this->_formatUnorderedList();
@@ -64,109 +61,9 @@ class Markdown
         $this->_formatHR();
         $this->_formatCode();
         $this->_formatBlockquote();
-        var_dump($this->_code);
+        $this->_formatLink();
+
         $this->_formatParagraph();
-
-        /*
-        $first = true;
-        $closeTag = null;
-        $html = "";
-
-        foreach (explode("\n", $code) AS $line) {
-
-            $structure = false;
-
-            if ($line!="") {
-
-                // BLOCKQUOTE
-                if(strpos($line, "> ")!==false) {
-                    $closeTag = 'blockquote';
-                    $line = $this->_formatBlockquote($line, $first);
-                    $first = false;
-                    $structure = true;
-                }
-
-                // IMAGES
-                if (strpos($line, '![')!==false) {
-                    $line = $this->_formatImage($line);
-                    $structure = true;
-                }
-
-                // LINKS
-                if (strpos($line, '[')!==false) {
-                    $line = $this->_formatLink($line);
-                    $structure = true;
-                }
-
-                // HEADER
-                if(strpos($line, "# ")!==false) {
-                    $line = $this->_formatHeader($line);
-                    $structure = true;
-                }
-
-
-                // UNORDERED LIST
-                foreach(array('*', '-', '+') AS $syntax) {
-                    if(strpos($line, "$syntax ")!==false) {
-                        $closeTag = 'ul';
-                        $line = $this->_formatUnorderedList($line, $syntax, $first);
-                        $first = false;
-                        $structure = true;
-                    }
-                }
-
-                // ORDERED LIST
-                if($pivot = strpos($line, '. ')!==false) {
-                    if(is_numeric(trim($prefix = substr($line, 0, $pivot)))) {
-                        $closeTag = 'ol';
-                        $line = $this->_formatOrderedList($line, $syntax, $first);
-                        $first = false;
-                        $structure = true;
-                    }
-                }
-
-                // HR
-                if(strpos($line, '---')!==false) {
-                    $line = $this->_formatHR($line);
-                    $structure = true;
-                }
-
-                // CODE
-                if(strpos($line, '    ')!==false) {
-                    $closeTag = 'code';
-                    $line = $this->_formatCode($line, $first);
-                    $first = false;
-                    $structure = true;
-                }
-
-                if($structure===false) {
-                    $line = "<p>$line</p>";
-                    $structure=true;
-                }
-
-                // INLINE FORMATTING
-                $syntaxMap = array(
-                    '`'=>'code',
-                    '**' => 'b',
-                    '__' => 'b',
-                    '*' => 'i',
-                    '_' => 'i'
-                );
-                foreach($syntaxMap AS $syntax=>$tag) {
-                    if(strpos($line, $syntax)!==false)
-                        $line = $this->_tagReplace($line, $tag, $syntax);
-                }
-
-                $html .= $line."\n";
-            } else {
-                if ($closeTag!==null) {
-                    $html .= "</$closeTag>\n";
-                    $closeTag = null;
-                    $first = true;
-                }
-            }
-
-        }*/
 
         $html = '';
         $previous = null;
@@ -180,8 +77,6 @@ class Markdown
 
     private function _formatParagraph()
     {
-        // ROOT LEVEL: UNORDERED LIST, ORDERED LIST, HR, CODE, BLOCKQUOTE
-        // CAN BE NESTED: IMAGES, LINKS, BOLD, ITALICS, INLINE CODE
         $headers = array();
 
         $rootElements = array('h1', 'h2', 'h3', 'h4', 'h5', 'h6',
@@ -465,16 +360,30 @@ class Markdown
         return "<img src='$path' alt='$alt' />";
     }
 
-    private function _formatLink($line)
+    private function _formatLink()
     {
-        $textBegin = strpos($line, '[')+1;
-        $textEnd = strpos($line, ']')-$textBegin;
-        $text = substr($line, $textBegin, $textEnd);
+        $result = array();
 
-        $pathBegin = strpos($line, '(', $textBegin)+1;
-        $pathEnd = strpos($line, ')', $pathBegin)-$pathBegin;
-        $path = substr($line, $pathBegin, $pathEnd);
+        foreach($this->_code as $line) {
+            if(($textBegin = strpos($line, '[')) && ($textEnd = strpos($line, ']')) &&
+                ($pathBegin = strpos($line, '(', $textEnd)) &&
+                ($pathEnd = strpos($line, ')', $pathBegin)))
+            {
+                $text = substr($line, $textBegin+1, $textEnd-$textBegin);
+                $path = substr($line, $pathBegin+1, $pathEnd-$pathBegin);
 
-        return "<a href='$path' >$text</a>";
+                $prefix = substr($line, 0, $textBegin);
+                $postfix = substr($line, $pathEnd);
+                array_push($result, "$prefix<a href='$path' >$text</a>$postfix");
+            } else {
+                print "textBegin: $textBegin\n";
+                if(isset($textEnd)) print "textEnd: $textEnd\n";
+                if(isset($pathBegin)) print "pathBegin: $pathBegin\n";
+                if(isset($pathEnd)) print "pathEnd: $pathEnd\n";
+                array_push($result, $line);
+            }
+        }
+
+        $this->_code = $result;
     }
 }
