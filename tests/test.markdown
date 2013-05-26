@@ -4,7 +4,11 @@
 
 This is just a regular paragraph.
 
-This is another regular paragraph.
+This is another [regular](http://google.com) [paragraph](http://google.com).
+
+Here is an image: ![Alt Text](http://pathtoimage.com)
+
+Here are two images: ![1](http://imageone.com) ![2](http://imagetwo.com)
 
 ### Header 3
 

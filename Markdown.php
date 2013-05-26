@@ -355,31 +355,19 @@ class Markdown
         $result = array();
 
         foreach ($this->_code as $line) {
-            if (($squareOpen = strpos($line, '['))!==false) {
-                $textBegin = $squareOpen+1;
-                if (($squareClose = strpos($line, ']', $textBegin))!==false) {
-                    if (($parensOpen = strpos($line, '(', $squareClose))!==false) {
-                        $pathBegin=$parensOpen+1;
-                        if (($parensClose = strpos($line, ')', $pathBegin))!==false) {
-                            $textLength = $squareClose-$textBegin;
-                            $text = substr($line, $textBegin, $textLength);
+            while(($squareOpen = strpos($line, '['))!==false &&
+                ($squareClose = strpos($line, ']', ($textBegin = $squareOpen+1)))!==false &&
+                ($parensOpen = strpos($line, '(', $squareClose))!==false &&
+                ($parensClose = strpos($line, ')',($pathBegin = $parensOpen+1)))!==false
+            ) {
+                $text = substr($line, $textBegin, $squareClose-$textBegin);
+                $path = substr($line, $pathBegin, $parensClose-$pathBegin);
+                $prefix = substr($line, 0, $squareOpen);
+                $postfix = substr($line, $parensClose+1);
 
-                            $pathLength = $parensClose-$pathBegin;
-                            $path = substr($line, $pathBegin, $pathLength);
-
-                            array_push($result, "<a href='$path' >$text</a>");
-                        } else {
-                            array_push($result, $line);
-                        }
-                    } else {
-                        array_push($result, $line);
-                    }
-                } else {
-                    array_push($result, $line);
-                }
-            } else {
-                array_push($result, $line);
+                $line = "$prefix<a href='$path' >$text</a>$postfix";
             }
+            array_push($result, $line);    
         }
 
         $this->_code = $result;
@@ -387,6 +375,27 @@ class Markdown
 
     private function _formatImage()
     {
+        $result = array();
+
+        foreach ($this->_code as $line) {
+            while(($squareOpen = strpos($line, '!['))!==false &&
+                ($squareClose = strpos($line, ']', ($textBegin = $squareOpen+2)))!==false &&
+                ($parensOpen = strpos($line, '(', $squareClose))!==false &&
+                ($parensClose = strpos($line, ')',($pathBegin = $parensOpen+1)))!==false
+            ) {
+                $text = substr($line, $textBegin, $squareClose-$textBegin);
+                $path = substr($line, $pathBegin, $parensClose-$pathBegin);
+                $prefix = substr($line, 0, $squareOpen);
+                $postfix = substr($line, $parensClose+1);
+
+                $line = "$prefix<img src='$path' alt='$text' />$postfix";
+            }
+            array_push($result, $line);    
+        }
+
+        $this->_code = $result;
+
+        /*
         $result = array();
         foreach ($this->_code as $line) {
             if (($squareOpen = strpos($line, '!['))!==false) {
@@ -417,5 +426,6 @@ class Markdown
         }
 
         $this->_code = $result;
+        */
     }
 }
