@@ -367,7 +367,7 @@ class Markdown
 
                 $line = "$prefix<a href='$path' >$text</a>$postfix";
             }
-            array_push($result, $line);    
+            array_push($result, $line);
         }
 
         $this->_code = $result;
@@ -390,7 +390,7 @@ class Markdown
 
                 $line = "$prefix<img src='$path' alt='$text' />$postfix";
             }
-            array_push($result, $line);    
+            array_push($result, $line);
         }
 
         $this->_code = $result;
