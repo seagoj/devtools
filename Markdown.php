@@ -18,9 +18,15 @@ namespace Devtools;
  * @author   Jeremy Seago <seagoj@gmail.com>
  * @license  http://github.com/seagoj/Devtools/LICENSE MIT
  * @link     http://github.com/seagoj/Devtools
+ *
+ * Converts markdown to html in the following flavors:
+ *  Standard: http:// daringfireball.net/projects/markdown/syntax
+ *  GitHub: https://help.github.com/articles/github-flavored-markdown
+ * 
  */
 class Markdown
 {
+    private $_config;
     private $_log;
     private $_code;
     /**
@@ -30,10 +36,49 @@ class Markdown
      *
      * @return void
      **/
-    public function __construct()
+    public function __construct($options=[])
     {
-        $options = array('type'=>'stdout');
-        $this->_log = new \Devtools\Log($options);
+        $defaults = [
+            'flavor'=>'standard',
+            'logType'=>'stdout'
+        ];
+
+        $this->_config = array_merge($defaults, $options);
+
+        $this->_validateConfig();
+
+        $logOptions = array('type'=>$this->_config['logType']);
+        $this->_log = new \Devtools\Log($logOptions);
+    }
+
+    /**
+     * Markdown::_validateConfig()
+     *
+     * Validates Configuration
+     *
+     * @return void
+     **/
+    private function _validateConfig()
+    {
+        $valid = [ 
+            'flavor'=>[
+                'standard',
+                'github'
+            ],
+            'logType'=>[
+                'stdout',
+            ]
+        ];
+
+        foreach ($this->_config as $var=>$value)
+        {
+            if (!array_key_exists($var, $valid))
+                throw new \Exception("$var is not a valid option.");
+            else if (!in_array($value, $valid[$var]))
+                throw new \Exception("$value is not a valid value for $var.");
+            else
+                return true;
+        }
     }
 
     /**
@@ -94,7 +139,6 @@ class Markdown
 
         $result = array();
         $first = true;
-        $triggered = false;
         $block = false;
         foreach ($this->_code as $line) {
             if ($line!=='' && $line[0]==='<') {
@@ -105,35 +149,32 @@ class Markdown
                     else if(in_array(substr($line, 2, $end), $blockElements))
                         $block=false;
 
-                    if ($triggered) {
+                    if (!$first) {
                         array_push($result, "</p>");
-                        $triggered = false;
+                        $first = true;
                     }
                     array_push($result, $line);
                 } else {
                     if ($first) {
                         array_push($result, "<p>");
                         $first = false;
-                        $triggered = true;
                     }
                     array_push($result, $line);
                 }
-            } elseif ($line!=='') {
+            } else if ($line!=='') {
                 if ($first && !$block) {
                     array_push($result, "<p>");
                     $first = false;
-                    $triggered = true;
                 }
                 array_push($result, $line);
-            } elseif ($triggered) {
+            } else if (!$first) {
                 array_push($result, "</p>");
                 array_push($result, $line);
-                $triggered = false;
+                $first = true;
             }
 
-            if ($triggered) {
+            if (!$first) {
                 array_push($result, "</p>");
-                $triggered = false;
                 $first = true;
             }
         }
@@ -179,10 +220,10 @@ class Markdown
     {
         $syntaxMap = array(
             '`'=>'code',
-            '**' => 'b',
-            '__' => 'b',
-            '*' => 'i',
-            '_' => 'i'
+            '**' => 'strong',
+            '__' => 'strong',
+            '*' => 'em',
+            '_' => 'em'
         );
         $first = false;
 
@@ -394,38 +435,5 @@ class Markdown
         }
 
         $this->_code = $result;
-
-        /*
-        $result = array();
-        foreach ($this->_code as $line) {
-            if (($squareOpen = strpos($line, '!['))!==false) {
-                $textBegin = $squareOpen+strlen('![');
-                if (($squareClose = strpos($line, ']', $textBegin))!==false) {
-                    if (($parensOpen = strpos($line, '(', $squareClose))!==false) {
-                        $pathBegin=$parensOpen+strlen('(');
-                        if (($parensClose = strpos($line, ')', $pathBegin))!==false) {
-                            $textLength = $squareClose-$textBegin;
-                            $text = substr($line, $textBegin, $textLength);
-
-                            $pathLength = $parensClose-$pathBegin;
-                            $path = substr($line, $pathBegin, $pathLength);
-
-                            array_push($result, "<img src='$path' alt='$text' />");
-                        } else {
-                            array_push($result, $line);
-                        }
-                    } else {
-                        array_push($result, $line);
-                    }
-                } else {
-                    array_push($result, $line);
-                }
-            } else {
-                array_push($result, $line);
-            }
-        }
-
-        $this->_code = $result;
-        */
     }
 }

@@ -146,7 +146,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $resultStr = $mdStrStar = $mdStrUS = "";
 
         for ($i=1; $i<=5; $i++) {
-            $resultStr .= "<b>$sample$i</b> ";
+            $resultStr .= "<strong>$sample$i</strong> ";
             $mdStrStar .= "**$sample$i** ";
             $mdStrUS .= "__".$sample.$i."__ ";
         }
@@ -165,7 +165,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $resultStr = $mdStrStar = $mdStrUS = "";
 
         for ($i=1; $i<=5; $i++) {
-            $resultStr .= "<i>$sample$i</i> ";
+            $resultStr .= "<em>$sample$i</em> ";
             $mdStrStar .= "*$sample$i* ";
             $mdStrUS .= "_".$sample.$i."_ ";
         }
