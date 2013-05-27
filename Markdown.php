@@ -22,7 +22,7 @@ namespace Devtools;
  * Converts markdown to html in the following flavors:
  *  Standard: http:// daringfireball.net/projects/markdown/syntax
  *  GitHub: https://help.github.com/articles/github-flavored-markdown
- * 
+ *
  */
 class Markdown
 {
@@ -60,7 +60,7 @@ class Markdown
      **/
     private function _validateConfig()
     {
-        $valid = [ 
+        $valid = [
             'flavor'=>[
                 'standard',
                 'github'
@@ -70,8 +70,7 @@ class Markdown
             ]
         ];
 
-        foreach ($this->_config as $var=>$value)
-        {
+        foreach ($this->_config as $var=>$value) {
             if (!array_key_exists($var, $valid))
                 throw new \Exception("$var is not a valid option.");
             else if (!in_array($value, $valid[$var]))
@@ -142,16 +141,10 @@ class Markdown
         $block = false;
         foreach ($this->_code as $line) {
             if ($line!=='' && $line[0]==='<') {
-                $end = strpos($line, '>')-1;
-                if (in_array(substr($line, 1, $end), $rootElements)) {
-                    if(in_array(substr($line, 1, $end), $blockElements))
+                $tag = substr($line, 1, ($end = strpos($line, '>')-1));
+                if (in_array($tag, $rootElements)) {
+                    if (in_array($tag, $blockElements)) {
                         $block=true;
-                    else if(in_array(substr($line, 2, $end), $blockElements))
-                        $block=false;
-
-                    if (!$first) {
-                        array_push($result, "</p>");
-                        $first = true;
                     }
                     array_push($result, $line);
                 } else {
@@ -161,16 +154,12 @@ class Markdown
                     }
                     array_push($result, $line);
                 }
-            } else if ($line!=='') {
+            } elseif ($line!=='') {
                 if ($first && !$block) {
                     array_push($result, "<p>");
                     $first = false;
                 }
                 array_push($result, $line);
-            } else if (!$first) {
-                array_push($result, "</p>");
-                array_push($result, $line);
-                $first = true;
             }
 
             if (!$first) {
@@ -264,7 +253,6 @@ class Markdown
         $result = array();
         foreach ($this->_code AS $line) {
 
-//            if ($line !='' && $line[$depth=0]=='#') {
             if (($start = strpos($line, '#'))!==false) {
                 $depth = $start;
                 while ( $line[$depth]=='#' )
@@ -408,7 +396,7 @@ class Markdown
 
                 $line = "$prefix<a href='$path' >$text</a>$postfix";
             }
-            array_push($result, $line);    
+            array_push($result, $line);
         }
 
         $this->_code = $result;
@@ -431,7 +419,7 @@ class Markdown
 
                 $line = "$prefix<img src='$path' alt='$text' />$postfix";
             }
-            array_push($result, $line);    
+            array_push($result, $line);
         }
 
         $this->_code = $result;
