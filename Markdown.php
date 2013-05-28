@@ -26,9 +26,26 @@ namespace Devtools;
  */
 class Markdown
 {
+    /**
+     * Configuration array for the class
+     *
+     * Sets the flavor of Markdown and logType to be used with Devtools\Log
+     **/
     private $_config;
+    /**
+     * Log object for the class. Devtools\Log
+     *
+     * An instance of Devtools\Log of type this._config['logType']
+     **/
     private $_log;
+    /**
+     * Array of lines to be parsed
+     *
+     * An array of the string or file contents exploded by the linefeed. So that
+     * each line becomes an entry in the array.
+     **/
     private $_code;
+
     /**
      * Markdown::__construct()
      *
@@ -483,6 +500,7 @@ class Markdown
      *                          formatted accordingly
      *
      * @return string Formatted line
+     **/
     private function _getTextPath($line, $type)
     {
         switch ($type) {
