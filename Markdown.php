@@ -34,7 +34,7 @@ class Markdown
      *
      * Constructor for Markdown class
      *
-     * @param   array   $options    Array of options for class
+     * @param array $options Array of options for class
      * @option  string  flavor      Type of Markdown to be used in the
      *                              conversion
      * @option  string  logType     Type of log to write
@@ -90,9 +90,9 @@ class Markdown
      *
      * Converts Markdown syntax into HTML and returns as string
      *
-     * @param   string  $input  Filename or string to be converted
+     * @param string $input Filename or string to be converted
      *
-     * @return string   Formatted string
+     * @return string Formatted string
      **/
     public function convert($input)
     {
@@ -185,13 +185,13 @@ class Markdown
      *
      * Replaces Markdown syntax with tags
      *
-     * @param   string  $line       String to have items replaced
-     * @param   string  $tag        HTML tag to replace the Markdown syntax    
-     * @param   string  $startTag   Initial Markdown tag
-     * @param   string  $endTag     Ending Markdown tag (assumed to be the same
+     * @param string $line     String to have items replaced
+     * @param string $tag      HTML tag to replace the Markdown syntax
+     * @param string $startTag Initial Markdown tag
+     * @param string $endTag   Ending Markdown tag (assumed to be the same
      *                              as $startTag if not passed
      *
-     * @return string   Formatted line
+     * @return string Formatted line
      **/
     private function _tagReplace($line, $tag, $startTag, $endTag=null)
     {
@@ -374,7 +374,7 @@ class Markdown
 
     /**
      * Markdown::_formatCode
-     * 
+     *
      * Converts Markdown code blocks into HTML and stores result in this._code
      *
      * @return void
@@ -474,15 +474,15 @@ class Markdown
 
     /**
      * Markdown::_getTextPath
-     * 
+     *
      * Collects text and path for image and link for a line of Markdown and
      * return as string
      *
-     * @param   string  $line   Line of raw Markdown to be converted
-     * @param   string  $type   Type of element to look for and return values
+     * @param string $line Line of raw Markdown to be converted
+     * @param string $type Type of element to look for and return values
      *                          formatted accordingly
      *
-     * @return  string  Formatted line
+     * @return string Formatted line
     private function _getTextPath($line, $type)
     {
         switch ($type) {
