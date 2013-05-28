@@ -132,7 +132,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
             $mdStr .= "**$sample$i** ";
         }
 
-        $method = new ReflectionMethod('Devtools\Markdown', '_tagReplace');
+        $method = new ReflectionMethod('Devtools\Markdown', 'tagReplace');
         $method->setAccessible(true);
         $result = $method->invoke(new \Devtools\Markdown(), $mdStr, 'b', '**');
         $this->assertEquals($resultStr, $result);

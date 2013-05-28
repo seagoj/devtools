@@ -35,7 +35,7 @@ class RandData
      * RandData::__construct
      *
      * Constructor for RandData class
-     * 
+     *
      * Populates valid data types into this._dataTypes
      **/
     public function __construct()
@@ -59,7 +59,7 @@ class RandData
         $arrayLen = rand()%$max;
 
         for ($count=0;$count<$arrayLen;$count++) {
-            array_push($array,randData::randSign()*rand());
+            array_push($array,randData::_randSign()*rand());
         }
 
         return $array;

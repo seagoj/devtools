@@ -10,6 +10,7 @@
  **/
 
 namespace Devtools;
+
 /**
  * Class Markdown
  *
@@ -31,20 +32,20 @@ class Markdown
      *
      * Sets the flavor of Markdown and logType to be used with Devtools\Log
      **/
-    private $_config;
+    private $config;
     /**
      * Log object for the class. Devtools\Log
      *
-     * An instance of Devtools\Log of type this._config['logType']
+     * An instance of Devtools\Log of type this.config['logType']
      **/
-    private $_log;
+    private $log;
     /**
      * Array of lines to be parsed
      *
      * An array of the string or file contents exploded by the linefeed. So that
      * each line becomes an entry in the array.
      **/
-    private $_code;
+    private $code;
 
     /**
      * Markdown::__construct()
@@ -58,47 +59,48 @@ class Markdown
      *
      * @return void
      **/
-    public function __construct($options=[])
+    public function __construct($options = [])
     {
         $defaults = [
-            'flavor'=>'standard',
-            'logType'=>'stdout'
+            'flavor' => 'standard',
+            'logType' => 'stdout'
         ];
 
-        $this->_config = array_merge($defaults, $options);
+        $this->config = array_merge($defaults, $options);
 
-        $this->_validateConfig();
+        $this->validateConfig();
 
-        $logOptions = array('type'=>$this->_config['logType']);
-        $this->_log = new \Devtools\Log($logOptions);
+        $logOptions = array('type'=>$this->config['logType']);
+        $this->log = new \Devtools\Log($logOptions);
     }
 
     /**
-     * Markdown::_validateConfig()
+     * Markdown::validateConfig()
      *
      * Validates Configuration
      *
      * @return void
      **/
-    private function _validateConfig()
+    private function validateConfig()
     {
         $valid = [
-            'flavor'=>[
+            'flavor' => [
                 'standard',
                 'github'
             ],
-            'logType'=>[
+            'logType' => [
                 'stdout',
             ]
         ];
 
-        foreach ($this->_config as $var=>$value) {
-            if (!array_key_exists($var, $valid))
+        foreach ($this->config as $var => $value) {
+            if (!array_key_exists($var, $valid)) {
                 throw new \Exception("$var is not a valid option.");
-            else if (!in_array($value, $valid[$var]))
+            } elseif (!in_array($value, $valid[$var])) {
                 throw new \Exception("$value is not a valid value for $var.");
-            else
+            } else {
                 return true;
+            }
         }
     }
 
@@ -114,26 +116,27 @@ class Markdown
     public function convert($input)
     {
         // Pull contents of file if input is a path to a file
-        if(is_file($input))
+        if (is_file($input)) {
             $code = file_get_contents($input);
-        else
+        } else {
             $code = $input;
+        }
 
-        $this->_code = explode("\n", $code);
+        $this->code = explode("\n", $code);
 
-        $this->_formatInline();
-        $this->_formatHeader();
-        $this->_formatUnorderedList();
-        $this->_formatOrderedList();
-        $this->_formatHR();
-        $this->_formatCode();
-        $this->_formatBlockquote();
-        $this->_formatImage();
-        $this->_formatLink();
-        $this->_formatParagraph();
+        $this->formatInline();
+        $this->formatHeader();
+        $this->formatUnorderedList();
+        $this->formatOrderedList();
+        $this->formatHR();
+        $this->formatCode();
+        $this->formatBlockquote();
+        $this->formatImage();
+        $this->formatLink();
+        $this->formatParagraph();
 
         $html = '';
-        foreach ($this->_code AS $line) {
+        foreach ($this->code as $line) {
             $html .= $line."\n";
         }
 
@@ -141,14 +144,14 @@ class Markdown
     }
 
     /**
-     * Markdown::_formatParagraph()
+     * Markdown::formatParagraph()
      *
      * Adds paragraph tags in the proper locations and stores result in
-     * this._code
+     * this.code
      *
      * @return void
      **/
-    private function _formatParagraph()
+    private function formatParagraph()
     {
         $headers = array();
 
@@ -166,12 +169,13 @@ class Markdown
         $result = array();
         $first = true;
         $block = false;
-        foreach ($this->_code as $line) {
+        foreach ($this->code as $line) {
             if ($line!=='' && $line[0]==='<') {
                 $tag = substr($line, 1, ($end = strpos($line, '>')-1));
                 if (in_array($tag, $rootElements)) {
-                    if (in_array($tag, $blockElements))
+                    if (in_array($tag, $blockElements)) {
                         $block=true;
+                    }
                     array_push($result, $line);
                 } else {
                     if ($first) {
@@ -194,11 +198,11 @@ class Markdown
             }
         }
 
-        $this->_code = $result;
+        $this->code = $result;
     }
 
     /**
-     * Markdown::_tagReplace()
+     * Markdown::tagReplace()
      *
      * Replaces Markdown syntax with tags
      *
@@ -210,7 +214,7 @@ class Markdown
      *
      * @return string Formatted line
      **/
-    private function _tagReplace($line, $tag, $startTag, $endTag=null)
+    private function tagReplace($line, $tag, $startTag, $endTag = null)
     {
         if ($startTag===$endTag || $endTag===null) {
             $begin = strpos($line, $startTag);
@@ -221,25 +225,27 @@ class Markdown
             }
 
             // Check for leading tag
-            if(substr($line, 0, strlen($startTag))==$startTag)
+            if (substr($line, 0, strlen($startTag))==$startTag) {
                 $line = "<$tag>".substr($line, strlen($startTag));
+            }
 
             // Check for ending tag
-            if(substr($line, -strlen($startTag))==$startTag)
+            if (substr($line, -strlen($startTag))==$startTag) {
                 $line = substr($line, 0, strlen($line)-strlen($startTag))."</$tag>";
+            }
         }
 
         return $line;
     }
 
     /**
-     * Markdown::_formatInline
+     * Markdown::formatInline
      *
-     * Formats inline Markdown to HTML and stores result in this._code
+     * Formats inline Markdown to HTML and stores result in this.code
      *
      * @return void
      **/
-    private function _formatInline()
+    private function formatInline()
     {
         $syntaxMap = array(
             '`'=>'code',
@@ -250,14 +256,14 @@ class Markdown
         );
         $first = false;
 
-        foreach ($syntaxMap AS $syntax=>$tag) {
+        foreach ($syntaxMap as $syntax => $tag) {
             $result = array();
-            foreach ($this->_code AS $line) {
+            foreach ($this->code as $line) {
                 $first = strpos($line, $syntax);
                 if ($first!==false) {
                     $second = strpos($line, $syntax, $first+strlen($syntax));
                     if ($second!==false) {
-                        array_push($result, $this->_tagReplace($line, $tag, $syntax));
+                        array_push($result, $this->tagReplace($line, $tag, $syntax));
                     } else {
                         array_push($result, $line);
                     }
@@ -265,46 +271,48 @@ class Markdown
                     array_push($result, $line);
                 }
             }
-            $this->_code = $result;
+            $this->code = $result;
         }
     }
 
     /**
-     * Markdown::_formatHR
+     * Markdown::formatHR
      *
-     * converts Markdown HR to HTML and stores result in this._code
+     * converts Markdown HR to HTML and stores result in this.code
      *
      * @return void
      **/
-    private function _formatHR()
+    private function formatHR()
     {
         $result = array();
-        foreach ($this->_code as $line) {
-            if(substr($line, 0, 3)==='---')
+        foreach ($this->code as $line) {
+            if (substr($line, 0, 3)==='---') {
                 array_push($result, "<hr>");
-            else
+            } else {
                 array_push($result, $line);
+            }
         }
 
-        $this->_code = $result;
+        $this->code = $result;
     }
 
     /**
-     * Markdown::_formatHeader
+     * Markdown::formatHeader
      *
-     * Converts Markdown headers into HTML and stores result in this._code
+     * Converts Markdown headers into HTML and stores result in this.code
      *
      * @return void
      **/
-    private function _formatHeader()
+    private function formatHeader()
     {
         $result = array();
-        foreach ($this->_code AS $line) {
+        foreach ($this->code as $line) {
 
             if (($start = strpos($line, '#'))!==false) {
                 $depth = $start;
-                while ( $line[$depth]=='#' )
+                while ($line[$depth] == '#') {
                     $depth++;
+                }
 
                 $depth = $depth-$start;
                 $tag = "h".$depth;
@@ -315,23 +323,23 @@ class Markdown
             }
         }
 
-        $this->_code = $result;
+        $this->code = $result;
     }
 
     /**
-     * Markdown::_formatUnorderedList
+     * Markdown::formatUnorderedList
      *
-     * Converts Markdown UL into HTML and stores reult in this._code
+     * Converts Markdown UL into HTML and stores reult in this.code
      *
      * @return void
      **/
-    private function _formatUnorderedList()
+    private function formatUnorderedList()
     {
         $result = array();
         $first = true;
         $loc = null;
         $triggered = false;
-        foreach ($this->_code AS $line) {
+        foreach ($this->code as $line) {
             if ($loc=strpos($line, "* ")!==false || strpos($line, "- ")!==false || strpos($line, "+ ")!==false) {
                 $triggered = true;
                 $li = substr($line, strpos($line, ' ')+1);
@@ -346,26 +354,27 @@ class Markdown
                     array_push($result, "</ul>");
                     $triggered = false;
                 }
-                if($line!="\n")
+                if ($line!="\n") {
                     array_push($result, $line);
+                }
             }
         }
-        $this->_code = $result;
+        $this->code = $result;
     }
 
     /**
-     * Markdown::_formatOrderedList
+     * Markdown::formatOrderedList
      *
-     * Converts Markdown OL into HTML and stores result in this._code
+     * Converts Markdown OL into HTML and stores result in this.code
      *
      * @return void
      **/
-    private function _formatOrderedList()
+    private function formatOrderedList()
     {
         $result = array();
         $first = true;
         $triggered = false;
-        foreach ($this->_code AS $line) {
+        foreach ($this->code as $line) {
             if ($pivot = strpos($line, '. ')!==false) {
                 if (is_numeric(trim($prefix = substr($line, 0, $pivot)))) {
                     $triggered = true;
@@ -374,37 +383,39 @@ class Markdown
                         $first = false;
                     }
                     array_push($result, "<li>".substr($line, $pivot+2)."</li>");
-                } else
+                } else {
                     array_push($result, $line);
+                }
             } else {
                 if ($triggered) {
                     array_push($result, "</ol>");
                     $triggered = false;
                 }
-                if($line != "\n")
+                if ($line != "\n") {
                     array_push($result, $line);
+                }
                 $first = true;
             }
         }
-        $this->_code = $result;
+        $this->code = $result;
     }
 
     /**
-     * Markdown::_formatCode
+     * Markdown::formatCode
      *
-     * Converts Markdown code blocks into HTML and stores result in this._code
+     * Converts Markdown code blocks into HTML and stores result in this.code
      *
      * @return void
      **/
-    private function _formatCode()
+    private function formatCode()
     {
         $first = true;
         $result = array();
         $triggered = false;
 
-        foreach ($this->_code as $line) {
+        foreach ($this->code as $line) {
             $string = substr($line, 4);
-            if ( substr($line, 0, 4)==='    ') {
+            if (substr($line, 0, 4)==='    ') {
                 $triggered = true;
                 if ($first) {
                     array_push($result, "<code>");
@@ -420,23 +431,23 @@ class Markdown
             }
         }
 
-        return $this->_code = $result;
+        return $this->code = $result;
     }
 
     /**
-     * Markdown::_formatBlockquote
+     * Markdown::formatBlockquote
      *
-     * Converts Markdown blockquote into HTML and stores result in this._code
+     * Converts Markdown blockquote into HTML and stores result in this.code
      *
      * @return void
      **/
-    private function _formatBlockquote()
+    private function formatBlockquote()
     {
         $first = true;
         $result = array();
         $triggered = false;
 
-        foreach ($this->_code as $line) {
+        foreach ($this->code as $line) {
             $string = substr($line, 2);
             if (substr($line, 0, 2)==='> ') {
                 if ($first) {
@@ -446,47 +457,50 @@ class Markdown
                 array_push($result, "    $string");
                 $triggered = true;
             } else {
-                if($triggered)
+                if ($triggered) {
                     array_push($result, "</blockquote>");
+                }
                 array_push($result, $line);
             }
         }
 
-        return $this->_code = $result;
+        return $this->code = $result;
     }
 
     /**
-     * Markdown::_formatLink
+     * Markdown::formatLink
      *
-     * Converts Markdown links into HTML and stores result in this._code
+     * Converts Markdown links into HTML and stores result in this.code
      *
      * @return void
      **/
-    private function _formatLink()
+    private function formatLink()
     {
         $result = array();
 
-        foreach ($this->_code as $line)
-            array_push($result, $this->_getTextPath($line, 'link'));
+        foreach ($this->code as $line) {
+            array_push($result, $this->getTextPath($line, 'link'));
+        }
 
-        $this->_code = $result;
+        $this->code = $result;
     }
 
     /**
-     * Markdown::_formatImage
+     * Markdown::formatImage
      *
-     * Converts Markdown images into HTML and stores result in this._code
+     * Converts Markdown images into HTML and stores result in this.code
      *
      * @return void
      **/
-    private function _formatImage()
+    private function formatImage()
     {
         $result = array();
 
-        foreach ($this->_code as $line)
-            array_push($result, $this->_getTextPath($line, 'image'));
+        foreach ($this->code as $line) {
+            array_push($result, $this->getTextPath($line, 'image'));
+        }
 
-        $this->_code = $result;
+        $this->code = $result;
     }
 
     /**
@@ -501,7 +515,7 @@ class Markdown
      *
      * @return string Formatted line
      **/
-    private function _getTextPath($line, $type)
+    private function getTextPath($line, $type)
     {
         switch ($type) {
             case 'link':
@@ -520,19 +534,25 @@ class Markdown
                 break;
         }
 
-        while(($squareOpen = strpos($line, $textDelimStart))!==false &&
+        while (($squareOpen = strpos($line, $textDelimStart))!==false &&
             ($squareClose = strpos($line, $textDelimEnd, ($textBegin = $squareOpen+strlen($textDelimStart))))!==false &&
             ($parensOpen = strpos($line, $pathDelimStart, $squareClose))!==false &&
-            ($parensClose = strpos($line, $pathDelimEnd,($pathBegin=$parensOpen+strlen($pathDelimStart))))!==false
+            ($parensClose = strpos($line, $pathDelimEnd, ($pathBegin=$parensOpen+strlen($pathDelimStart))))!==false
         ) {
             $text = substr($line, $textBegin, $squareClose-$textBegin);
             $path = substr($line, $pathBegin, $parensClose-$pathBegin);
             $prefix = substr($line, 0, $squareOpen);
             $postfix = substr($line, $parensClose+1);
 
-            $line = str_replace('{{prefix}}', $prefix,
-                str_replace('{{path}}', $path,
-                    str_replace('{{text}}', $text,
+            $line = str_replace(
+                '{{prefix}}',
+                $prefix,
+                str_replace(
+                    '{{path}}',
+                    $path,
+                    str_replace(
+                        '{{text}}',
+                        $text,
                         str_replace('{{postfix}}', $postfix, $template)
                     )
                 )
