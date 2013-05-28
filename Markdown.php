@@ -81,11 +81,11 @@ class Markdown
     }
 
     /**
-     * Markdown::__convert()
+     * Markdown::convert()
      *
-     * Prints the body of the portfolio
+     * Converts markdown syntax into html
      *
-     * @param string $file Filename of the file to be converted
+     * @param string $input Filename or string to be converted
      *
      * @return void
      **/
@@ -160,7 +160,7 @@ class Markdown
                     }
                     array_push($result, $line);
                 }
-            } else if ($line!=='') {
+            } elseif ($line!=='') {
                 if ($first && !$block) {
                     array_push($result, "<p>");
                     $first = false;
@@ -377,7 +377,7 @@ class Markdown
     {
         $result = array();
 
-        foreach ($this->_code as $line) 
+        foreach ($this->_code as $line)
             array_push($result, $this->_getTextPath($line, 'link'));
 
         $this->_code = $result;
@@ -395,7 +395,7 @@ class Markdown
 
     private function _getTextPath($line, $type)
     {
-        switch($type) {
+        switch ($type) {
             case 'link':
                 $textDelimStart = '[';
                 $textDelimEnd =  ']';
@@ -430,7 +430,7 @@ class Markdown
                 )
             );
         }
-        
+
         return $line;
     }
 }
