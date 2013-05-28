@@ -1,26 +1,59 @@
 <?php
+/**
+ * Random data generator
+ *
+ * @category    Seagoj
+ * @package     Devtools
+ * @author      Jeremy Seago <seagoj@gmail.com>
+ * @license     http://github.com/seagoj/Devtools/LICENSE MIT
+ * @link        http://github.com/seagoj/Devtools
+ **/
+
 namespace Devtools;
 
+/**
+ * Class RandData
+ *
+ * @category    Seagoj
+ * @package     Devtools
+ * @author      Jeremy Seago <seagoj@gmail.com>
+ * @license     http://github.com/seagoj/Devtools/LICENSE MIT
+ * @link        http://github.com/seagoj/Devtools
+ *
+ * Returns random values of the passed type
+ **/
 class RandData
 {
-    private $dataTypes;
+    /**
+     * Array of valid data types
+     *
+     * Passed types are validataed against values in this array.
+     **/
+    private $_dataTypes;
 
+    /**
+     * RandData::__construct
+     *
+     * Constructor for RandData class
+     * 
+     * Populates valid data types into this._dataTypes
+     **/
     public function __construct()
     {
-        $this->dataTypes = array('String','Array','Integer','Bool','Double','Null');
+        $this->_dataTypes = array('String','Array','Integer','Bool','Double');
     }
 
     public function get($type)
     {
-        $func = 'rand'.ucfirst(strtolower($type));
+        $func = '_rand'.ucfirst(strtolower($type));
 
-        if (in_array(ucfirst(strtolower($type)), $this->dataTypes)) {
+        if (in_array(ucfirst(strtolower($type)), $this->_dataTypes)) {
             return $this->$func();
         } else
             die("Data of type $type could not be generated.");
     }
 
-    private function randArray($max=100)
+    private function _randArray($max=100)
     {
         $array = array();
         $arrayLen = rand()%$max;
@@ -31,26 +64,26 @@ class RandData
 
         return $array;
     }
-    private function randInteger($max=PHP_INT_MAX)
+    private function _randInteger($max=PHP_INT_MAX)
     {
-        return randData::randSign()*rand()%$max;
+        return randData::_randSign()*rand()%$max;
     }
-    private function randDouble($max=0)
+    private function _randDouble($max=0)
     {
         if($max == 0)
             $max = mt_getrandmax();
 
-        return randData::randSign()*mt_rand() / $max * mt_rand();
+        return randData::_randSign()*mt_rand() / $max * mt_rand();
     }
-    private function randSign()
+    private function _randSign()
     {
         return pow(-1, rand(0,1));
     }
-    private function randBool()
+    private function _randBool()
     {
         return (bool) rand(0,1);
     }
-    private function randString($max=100)
+    private function _randString($max=100)
     {
         $stringLen = rand()%$max;
         $string = "";
@@ -60,9 +93,5 @@ class RandData
         }
 
         return $string;
-    }
-    private function randNull()
-    {
-        return NULL;
     }
 }
