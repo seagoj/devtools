@@ -111,11 +111,8 @@ class Markdown
         $this->_formatParagraph();
 
         $html = '';
-        $previous = null;
         foreach ($this->_code AS $line) {
-            if( $line!='' || $previous != '')
-                $html .= $line."\n";
-            $previous = $line;
+            $html .= $line."\n";
         }
 
         return $html;
