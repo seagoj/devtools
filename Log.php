@@ -3,13 +3,11 @@ namespace Devtools;
 
 class Log
 {
-    private $_testCount;
-    private $_config;
-    private $_headers;
-    private $_footers;
+    private $testCount;
+    private $config;
     public $type;
 
-    public function __construct($options=[])
+    public function __construct($options = [])
     {
         $defaults = [
             'type'=>'file',
@@ -21,75 +19,75 @@ class Log
             'tap'=>date("m-d-Y H:i:s")
         );
 
-        $this->_config = array_merge($defaults, $options);
-        $this->type = $this->_config['type'];
-        $this->write($headers[$this->_config['format']]);
-        $this->_testCount = 0;
+        $this->config = array_merge($defaults, $options);
+        $this->type = $this->config['type'];
+        $this->write($headers[$this->config['format']]);
+        $this->testCount = 0;
     }
 
-    public function write($content, $result='EMPTY')
+    public function write($content, $result = 'EMPTY')
     {
-        $content = $this->_stringify($content);
+        $content = $this->stringify($content);
 
-        switch ($this->_config['format']) {
+        switch ($this->config['format']) {
             case 'tap':
-                $content = $this->_tapify($content, $result);
+                $content = $this->tapify($content, $result);
                 break;
             default:
-                throw new \InvalidArgumentException($this->_config['format'].' is not a valid log format.');
+                throw new \InvalidArgumentException($this->config['format'].' is not a valid log format.');
                 break;
         }
 
-        switch ($this->_config['type']) {
+        switch ($this->config['type']) {
             case 'file':
-                $this->_file($content);
+                $this->file($content);
                 break;
             case 'html':
-                $this->_html($content);
+                $this->html($content);
                 break;
             case 'stdout':
-                $this->_stdout($content);
+                $this->stdout($content);
                 break;
             default:
-                throw new \InvalidArgumentException($this->_config['type'].' is not a valid Log type');
+                throw new \InvalidArgumentException($this->config['type'].' is not a valid Log type');
                 break;
         }
     }
 
-    private function _file($content)
+    private function file($content)
     {
         $endline = "\r\n";
 
-        return file_put_contents($this->_config['file'], $content.$endline, FILE_APPEND);
+        return file_put_contents($this->config['file'], $content.$endline, FILE_APPEND);
     }
 
-    private function _html($content)
+    private function html($content)
     {
         $tag = 'div';
         print "<$tag>$content</$tag>";
     }
 
-    private function _stdout($content)
+    private function stdout($content)
     {
         print $content."\n";
     }
 
-    private function _stringify($content)
+    private function stringify($content)
     {
-        if(is_array($content))
-
+        if (is_array($content)) {
             return serialize($content);
-        else
+        } else {
             return $content;
+        }
     }
 
-    private function _tapify($content, $result)
+    private function tapify($content, $result)
     {
-        $nextTest = $this->_testCount+1;
+        $nextTest = $this->testCount+1;
         $prefix = 'ok '.$nextTest.' - ';
 
         if ($result!=='EMPTY') {
-                $this->_testCount = $nextTest;
+                $this->testCount = $nextTest;
                 $content = $prefix.$content;
             if (!$result) {
                 $content = 'not '.$content;
@@ -101,11 +99,11 @@ class Log
 
     public function __destruct()
     {
-        $start = $this->_testCount===0 ? 0 : 1;
+        $start = $this->testCount===0 ? 0 : 1;
         $footers = array(
-            'tap'=>$start.'..'.$this->_testCount."\r\n"
+            'tap'=>$start.'..'.$this->testCount."\r\n"
         );
 
-        $this->write($footers[$this->_config['format']]);
+        $this->write($footers[$this->config['format']]);
     }
 }

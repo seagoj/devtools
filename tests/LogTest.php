@@ -22,7 +22,7 @@ class LogTest extends PHPUnit_Framework_TestCase
         $log = new \Devtools\Log();
         $this->assertAttributeEquals(
             array('type'=>'file', 'file'=>'Log.log', 'format'=>'tap'),
-            '_config',
+            'config',
             $log
         );
         $this->assertTrue(is_file('Log.php'));
@@ -42,7 +42,7 @@ class LogTest extends PHPUnit_Framework_TestCase
 
         $this->assertAttributeEquals(
             array('type'=>'file', 'file'=>__METHOD__.'.log', 'format'=>'tap'),
-            '_config',
+            'config',
             $log
         );
     }
@@ -65,17 +65,17 @@ class LogTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(file_get_contents($options['file'])!=='');
     }
 
-    public function test_tapifyTrue()
+    public function testTapifyTrue()
     {
         $message = "Sample Output";
 
-        $method = new ReflectionMethod('Devtools\Log', '_tapify');
+        $method = new ReflectionMethod('Devtools\Log', 'tapify');
         $method->setAccessible(true);
 
         $this->assertEquals("ok 1 - $message", $method->invoke(new \Devtools\Log(), $message, true));
     }
 
-    public function test_stdout()
+    public function testStdout()
     {
         $message = __METHOD__;
         $options = array('type'=>'stdout');

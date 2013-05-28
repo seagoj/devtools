@@ -12,6 +12,7 @@
         <ignore>config/*</ignore>
         <ignore>vendor/*</ignore>
         <ignore>deprecated/*</ignore>
+        <ignore>tests/*</ignore>
     </files>
     <extensions>
         <extension>php</extension>

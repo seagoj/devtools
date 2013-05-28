@@ -29,61 +29,63 @@ class RandData
      *
      * Passed types are validataed against values in this array.
      **/
-    private $_dataTypes;
+    private $dataTypes;
 
     /**
      * RandData::__construct
      *
      * Constructor for RandData class
      *
-     * Populates valid data types into this._dataTypes
+     * Populates valid data types into this.dataTypes
      **/
     public function __construct()
     {
-        $this->_dataTypes = array('String','Array','Integer','Bool','Double');
+        $this->dataTypes = array('String','Array','Integer','Bool','Double');
     }
 
     public function get($type)
     {
-        $func = '_rand'.ucfirst(strtolower($type));
+        $func = 'rand'.ucfirst(strtolower($type));
 
-        if (in_array(ucfirst(strtolower($type)), $this->_dataTypes)) {
+        if (in_array(ucfirst(strtolower($type)), $this->dataTypes)) {
             return $this->$func();
-        } else
+        } else {
             die("Data of type $type could not be generated.");
+        }
     }
 
-    private function _randArray($max=100)
+    private function randArray($max = 100)
     {
         $array = array();
         $arrayLen = rand()%$max;
 
-        for ($count=0;$count<$arrayLen;$count++) {
-            array_push($array,randData::_randSign()*rand());
+        for ($count = 0; $count<$arrayLen; $count++) {
+            array_push($array, randData::randSign()*rand());
         }
 
         return $array;
     }
-    private function _randInteger($max=PHP_INT_MAX)
+    private function randInteger($max = PHP_INT_MAX)
     {
-        return randData::_randSign()*rand()%$max;
+        return randData::randSign()*rand()%$max;
     }
-    private function _randDouble($max=0)
+    private function randDouble($max = 0)
     {
-        if($max == 0)
+        if ($max == 0) {
             $max = mt_getrandmax();
+        }
 
-        return randData::_randSign()*mt_rand() / $max * mt_rand();
+        return randData::randSign()*mt_rand() / $max * mt_rand();
     }
-    private function _randSign()
+    private function randSign()
     {
-        return pow(-1, rand(0,1));
+        return pow(-1, rand(0, 1));
     }
-    private function _randBool()
+    private function randBool()
     {
-        return (bool) rand(0,1);
+        return (bool) rand(0, 1);
     }
-    private function _randString($max=100)
+    private function randString($max = 100)
     {
         $stringLen = rand()%$max;
         $string = "";

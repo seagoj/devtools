@@ -29,13 +29,13 @@ namespace Devtools;
  */
 class Autoload
 {
-    private $_libPath;
-    private $_runPath;
+    private $libPath;
+    private $runPath;
 
     /**
      * public Autoload::__construct
      *
-     * Sets $_libPath and $_runPath
+     * Sets $libPath and $runPath
      *
      * @param string $currentDir Path to Dir where this script runs
      *
@@ -45,19 +45,19 @@ class Autoload
     {
         switch (self::checkEnv()) {
             case 'PHPUNIT':
-                $this->_runPath = $this->_getPath($currentDir);
-                $this->_libPath = $this->_runPath.'/lib';
+                $this->runPath = $this->getPath($currentDir);
+                $this->libPath = $this->runPath.'/lib';
                 break;
             default:
-                $this->_runPath = $this->_getPath($_SERVER['SCRIPT_FILENAME']);
-                $this->_libPath = $this->_getPath($currentDir);
+                $this->runPath = $this->getPath($_SERVER['SCRIPT_FILENAME']);
+                $this->libPath = $this->getPath($currentDir);
                 break;
         }
     }
 
     public function checkEnv()
     {
-        $path = explode('/',$_SERVER['SCRIPT_FILENAME']);
+        $path = explode('/', $_SERVER['SCRIPT_FILENAME']);
         if ($path[sizeof($path)-1]=='phpunit') {
             return 'PHPUNIT';
         } else {
@@ -76,25 +76,25 @@ class Autoload
      */
     public static function register($prepend = false)
     {
-        spl_autoload_register(array(new self, '_autoload'), true, $prepend);
+        spl_autoload_register(array(new self, 'autoload'), true, $prepend);
     }
 
     /**
-     * Autoload.autoloader()
+     * Autoload.autoload()
      *
      * @param string $class Class that the autoloader is searching for
      *
      * @return void
      */
-    private function _autoload($class)
+    private function autoload($class)
     {
-        if (is_file($file = $this->_getRelPath().implode(DIRECTORY_SEPARATOR, explode('\\', $class)).'.php')) {
+        if (is_file($file = $this->getRelPath().implode(DIRECTORY_SEPARATOR, explode('\\', $class)).'.php')) {
             include $file;
         }
     }
 
     /**
-     * Private Static Autoload::_getPath
+     * Private Static Autoload::getPath
      *
      * Returns Path to $file
      *
@@ -102,28 +102,32 @@ class Autoload
      *
      * @return string Path to $file
      */
-    private function _getPath($file)
+    private function getPath($file)
     {
         return substr($file, 0, strripos($file, DIRECTORY_SEPARATOR));
     }
 
     /**
-     * Private Autoload::_getRelPath
+     * Private Autoload::getRelPath
      *
-     * Returns Path to $_libPath relative to $_runPath
+     * Returns Path to $libPath relative to $runPath
      *
      * @return string Path to $file
      */
-    private function _getRelPath($_runPath=null, $_libPath=null)
+    private function getRelPath($runPath = null, $libPath = null)
     {
-        if($_runPath == null) $_runPath = $this->_runPath;
-        if($_libPath == null) $_libPath = $this->_libPath;
+        if ($runPath == null) {
+            $runPath = $this->runPath;
+        }
+        if ($libPath == null) {
+            $libPath = $this->libPath;
+        }
 
-        if ($_runPath==$_libPath) {
+        if ($runPath==$libPath) {
             return '';
         } else {
-            $runPathArray = explode(DIRECTORY_SEPARATOR, $_runPath);
-            $libPathArray = explode(DIRECTORY_SEPARATOR, $_libPath);
+            $runPathArray = explode(DIRECTORY_SEPARATOR, $runPath);
+            $libPathArray = explode(DIRECTORY_SEPARATOR, $libPath);
             $runPathDepth = sizeof($runPathArray);
             $libPathDepth = sizeof($libPathArray);
             $poppedFromRun = $poppedFromLib = $relPath = array();
@@ -150,8 +154,9 @@ class Autoload
                 while ($runPathArray[$i]==$libPathArray[$i] && $i<($runPathDepth-1) && $i<($libPathDepth-1)) {
                     $i++;
                 }
-                if($runPathArray[$i]!==$libPathArray[$i])
+                if ($runPathArray[$i]!==$libPathArray[$i]) {
                     $i--;
+                }
 
                 for ($i; $i<$longArrayDepth-1; $i++) {
                     if ($i<$shortArrayDepth-1) {
@@ -161,11 +166,11 @@ class Autoload
                 }
             }
 
-            foreach ($poppedFromRun AS $pop) {
+            foreach ($poppedFromRun as $pop) {
                 array_push($relPath, "..");
             }
 
-            foreach (array_reverse($poppedFromLib) AS $pop) {
+            foreach (array_reverse($poppedFromLib) as $pop) {
                 array_push($relPath, $pop);
             }
 
