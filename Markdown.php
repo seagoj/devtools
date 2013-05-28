@@ -91,6 +91,7 @@ class Markdown
      **/
     public function convert($input)
     {
+        // Pull contents of file if input is a path to a file
         if(is_file($input))
             $code = file_get_contents($input);
         else
@@ -107,7 +108,6 @@ class Markdown
         $this->_formatBlockquote();
         $this->_formatImage();
         $this->_formatLink();
-
         $this->_formatParagraph();
 
         $html = '';
@@ -143,9 +143,8 @@ class Markdown
             if ($line!=='' && $line[0]==='<') {
                 $tag = substr($line, 1, ($end = strpos($line, '>')-1));
                 if (in_array($tag, $rootElements)) {
-                    if (in_array($tag, $blockElements)) {
+                    if (in_array($tag, $blockElements))
                         $block=true;
-                    }
                     array_push($result, $line);
                 } else {
                     if ($first) {
@@ -154,7 +153,7 @@ class Markdown
                     }
                     array_push($result, $line);
                 }
-            } elseif ($line!=='') {
+            } else if ($line!=='') {
                 if ($first && !$block) {
                     array_push($result, "<p>");
                     $first = false;
@@ -191,18 +190,6 @@ class Markdown
         }
 
         return $line;
-    }
-
-    private function _textBetween($firstDelim, $secondDelim, $string)
-    {
-        if(($open = strpos($string, $firstDelim)) && $close = strpos($string,
-            $secondDelim, ($textBegin = $open+strlen($firstDelim)))) {
-                $textLength = $close-$textBegin;
-
-                return substr($string, $textBegin, $textLength);
-        } else {
-            return false;
-        }
     }
 
     private function _formatInline()
@@ -383,21 +370,8 @@ class Markdown
     {
         $result = array();
 
-        foreach ($this->_code as $line) {
-            while(($squareOpen = strpos($line, '['))!==false &&
-                ($squareClose = strpos($line, ']', ($textBegin = $squareOpen+1)))!==false &&
-                ($parensOpen = strpos($line, '(', $squareClose))!==false &&
-                ($parensClose = strpos($line, ')',($pathBegin = $parensOpen+1)))!==false
-            ) {
-                $text = substr($line, $textBegin, $squareClose-$textBegin);
-                $path = substr($line, $pathBegin, $parensClose-$pathBegin);
-                $prefix = substr($line, 0, $squareOpen);
-                $postfix = substr($line, $parensClose+1);
-
-                $line = "$prefix<a href='$path' >$text</a>$postfix";
-            }
-            array_push($result, $line);
-        }
+        foreach ($this->_code as $line) 
+            array_push($result, $this->_getTextPath($line, 'link'));
 
         $this->_code = $result;
     }
@@ -406,22 +380,50 @@ class Markdown
     {
         $result = array();
 
-        foreach ($this->_code as $line) {
-            while(($squareOpen = strpos($line, '!['))!==false &&
-                ($squareClose = strpos($line, ']', ($textBegin = $squareOpen+2)))!==false &&
-                ($parensOpen = strpos($line, '(', $squareClose))!==false &&
-                ($parensClose = strpos($line, ')',($pathBegin = $parensOpen+1)))!==false
-            ) {
-                $text = substr($line, $textBegin, $squareClose-$textBegin);
-                $path = substr($line, $pathBegin, $parensClose-$pathBegin);
-                $prefix = substr($line, 0, $squareOpen);
-                $postfix = substr($line, $parensClose+1);
-
-                $line = "$prefix<img src='$path' alt='$text' />$postfix";
-            }
-            array_push($result, $line);
-        }
+        foreach ($this->_code as $line)
+            array_push($result, $this->_getTextPath($line, 'image'));
 
         $this->_code = $result;
+    }
+
+    private function _getTextPath($line, $type)
+    {
+        switch($type) {
+            case 'link':
+                $textDelimStart = '[';
+                $textDelimEnd =  ']';
+                $pathDelimStart = '(';
+                $pathDelimEnd = ')';
+                $template = "{{prefix}}<a href='{{path}}' >{{text}}</a>{{postfix}}";
+                break;
+            case 'image':
+                $textDelimStart = '![';
+                $textDelimEnd =  ']';
+                $pathDelimStart = '(';
+                $pathDelimEnd = ')';
+                $template = "{{prefix}}<img src='{{path}}' alt='{{text}}' />{{postfix}}";
+                break;
+        }
+
+        while(($squareOpen = strpos($line, $textDelimStart))!==false &&
+            ($squareClose = strpos($line, $textDelimEnd, ($textBegin = $squareOpen+strlen($textDelimStart))))!==false &&
+            ($parensOpen = strpos($line, $pathDelimStart, $squareClose))!==false &&
+            ($parensClose = strpos($line, $pathDelimEnd,($pathBegin=$parensOpen+strlen($pathDelimStart))))!==false
+        ) {
+            $text = substr($line, $textBegin, $squareClose-$textBegin);
+            $path = substr($line, $pathBegin, $parensClose-$pathBegin);
+            $prefix = substr($line, 0, $squareOpen);
+            $postfix = substr($line, $parensClose+1);
+
+            $line = str_replace('{{prefix}}', $prefix,
+                str_replace('{{path}}', $path,
+                    str_replace('{{text}}', $text,
+                        str_replace('{{postfix}}', $postfix, $template)
+                    )
+                )
+            );
+        }
+        
+        return $line;
     }
 }
