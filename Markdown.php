@@ -121,6 +121,13 @@ class Markdown
         return $html;
     }
 
+    /**
+     * Markdown::_formatParagraph()
+     *
+     * Adds paragraph tags in the proper locations
+     *
+     * @return void
+     **/
     private function _formatParagraph()
     {
         $headers = array();
