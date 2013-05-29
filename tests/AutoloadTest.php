@@ -11,7 +11,7 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
         $options = array('file'=>__CLASS__.'.log');
         $this->_log = new \Devtools\Log($options);
         $this->_validClass = "Devtools\Autoload";
-        $this->_validMethod = "_autoload";
+        $this->_validMethod = "autoload";
     }
 
     public function testRegisterAppend()
@@ -48,9 +48,9 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($autoload->checkEnv(), '');
     }
 
-    public function test_getRelPath()
+    public function testGetRelPath()
     {
-        $method = new ReflectionMethod('Devtools\Autoload', '_getRelPath');
+        $method = new ReflectionMethod('Devtools\Autoload', 'getRelPath');
         $method->setAccessible(true);
 
         $_runPath = '/home/travis/build/seagoj';
@@ -74,9 +74,9 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('../../lib/', $method->invoke(new \Devtools\Autoload(), $_runPath, $_libPath));
     }
 
-    public function test_getPath()
+    public function testGetPath()
     {
-        $method = new ReflectionMethod('Devtools\Autoload', '_getPath');
+        $method = new ReflectionMethod('Devtools\Autoload', 'getPath');
         $method->setAccessible(true);
 
         $file = '/home/travis/build/seagoj/testFile.php';
@@ -85,6 +85,6 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
 
     public function tearDown()
     {
-        unlink(__CLASS__.'.log');
+       // unlink(__CLASS__.'.log');
     }
 }

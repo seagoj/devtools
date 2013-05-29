@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+    <parser>
+        <target>deprecated/doc</target>
+    </parser>
+    <transformer>
+        <target>deprecated/doc</target>
+    </transformer>
+    <files>
+        <directory>.</directory>
+        <ignore>lib/*</ignore>
+        <ignore>config/*</ignore>
+        <ignore>vendor/*</ignore>
+        <ignore>deprecated/*</ignore>
+        <ignore>tests/*</ignore>
+    </files>
+    <extensions>
+        <extension>php</extension>
+    </extensions>
+</phpdoc>
