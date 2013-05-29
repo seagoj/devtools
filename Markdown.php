@@ -24,7 +24,7 @@ namespace Devtools;
  *  Standard: http:// daringfireball.net/projects/markdown/syntax
  *  GitHub: https://help.github.com/articles/github-flavored-markdown
  *
- */
+ **/
 class Markdown
 {
     /**

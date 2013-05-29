@@ -29,7 +29,18 @@ namespace Devtools;
  */
 class Autoload
 {
+    /**
+     * Path to library/include files
+     *
+     * Contains the path to the library/include files defined by the class
+     **/
     private $libPath;
+
+    /**
+     * Run path of the script
+     *
+     * Contains the current working directory of the project
+     **/
     private $runPath;
 
     /**
@@ -55,6 +66,16 @@ class Autoload
         }
     }
 
+    /**
+     * Autoload::checkEnv
+     *
+     * Returns current running environment
+     *
+     * Determines if script is being run in production or a testing/development
+     * environment
+     *
+     * @Return  string  Descriptor of environment
+     **/
     public function checkEnv()
     {
         $path = explode('/', $_SERVER['SCRIPT_FILENAME']);
@@ -111,6 +132,9 @@ class Autoload
      * Private Autoload::getRelPath
      *
      * Returns Path to $libPath relative to $runPath
+     *
+     * @param string $runPath Path to be used as home directory
+     * @param string $libPath Path to find relative path to
      *
      * @return string Path to $file
      */
