@@ -218,10 +218,9 @@ class Log
      **/
     public function __destruct()
     {
-        if (!$this->first) {
-            $start = $this->testCount===0 ? 0 : 1;
+        if ($this->testCount !== 0) {
             $footers = array(
-                'tap'=>$start.'..'.$this->testCount."\r\n"
+                'tap'=>'1..'.$this->testCount."\r\n"
             );
 
             $this->write($footers[$this->config['format']]);
