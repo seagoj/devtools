@@ -24,7 +24,7 @@
 
     <logging>
         <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
-        <log type="tap" target="/tmp/logfile.tap"/>
+        <!--//<log type="tap" target="tmp/logfile.tap"/>//-->
     </logging>
 
 </phpunit>
