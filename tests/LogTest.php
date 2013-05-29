@@ -13,6 +13,9 @@ class LogTest extends PHPUnit_Framework_TestCase
 
     public function tearDown()
     {
+        if(is_file('Log.log')) {
+            unlink('Log.log');
+        }
     }
 
     public function testInstanceOf()
@@ -68,6 +71,7 @@ class LogTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue(is_file($options['file']));
         $this->assertTrue(file_get_contents($options['file'])!=='');
+        unlink(__METHOD__.'.log');
     }
 
     public function testTapifyTrue()
