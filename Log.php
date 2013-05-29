@@ -201,7 +201,7 @@ class Log
             }
         }
 
-        if($this->first) {
+        if ($this->first) {
             $content = date("m-d-Y H:i:s").PHP_EOL.$content;
             $this->first=false;
         }
@@ -218,7 +218,7 @@ class Log
      **/
     public function __destruct()
     {
-        if(!$this->first) {
+        if (!$this->first) {
             $start = $this->testCount===0 ? 0 : 1;
             $footers = array(
                 'tap'=>$start.'..'.$this->testCount."\r\n"
