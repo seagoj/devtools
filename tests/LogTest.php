@@ -27,6 +27,7 @@ class LogTest extends PHPUnit_Framework_TestCase
         );
         $this->assertTrue(is_file('Log.php'));
         $this->assertTrue(file_get_contents('Log.php')!=='');
+        unlink('Log.log');
     }
 
     public function testCustomTypeValid()
