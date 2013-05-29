@@ -44,6 +44,13 @@ class Log
     public $type;
 
     /**
+     * Determines if current message is the first message
+     *
+     * True if yes; false if no
+     **/
+    public $first;
+
+    /**
      * Log::__construct
      *
      * Initializes this.config, writes log header and sets testCount to 0
@@ -52,7 +59,6 @@ class Log
      *
      * @return void
      *
-     * @todo move writing of headers to write method
      * @todo validate $options array
      **/
     public function __construct($options = [])
@@ -63,14 +69,10 @@ class Log
             'format'=>'tap'
         ];
 
-        $headers = array(
-            'tap'=>date("m-d-Y H:i:s")
-        );
-
         $this->config = array_merge($defaults, $options);
         $this->type = $this->config['type'];
-        $this->write($headers[$this->config['format']]);
         $this->testCount = 0;
+        $this->first = true;
     }
 
     /**
@@ -89,14 +91,14 @@ class Log
 
         switch ($this->config['format']) {
             case 'tap':
-                $content = $this->tapify($content, $result);
+                $this->tapify($content, $result);
                 break;
             default:
                 throw new \InvalidArgumentException($this->config['format'].' is not a valid log format.');
                 break;
         }
 
-        switch ($this->config['type']) {
+        switch ($this->type) {
             case 'file':
                 $this->file($content);
                 break;
@@ -187,6 +189,7 @@ class Log
      **/
     private function tapify($content, $result)
     {
+
         $nextTest = $this->testCount+1;
         $prefix = 'ok '.$nextTest.' - ';
 
@@ -196,6 +199,11 @@ class Log
             if (!$result) {
                 $content = 'not '.$content;
             }
+        }
+
+        if($this->first) {
+            $content = date("m-d-Y H:i:s").PHP_EOL.$content;
+            $this->first=false;
         }
 
         return $content;
@@ -210,11 +218,13 @@ class Log
      **/
     public function __destruct()
     {
-        $start = $this->testCount===0 ? 0 : 1;
-        $footers = array(
-            'tap'=>$start.'..'.$this->testCount."\r\n"
-        );
+        if(!$this->first) {
+            $start = $this->testCount===0 ? 0 : 1;
+            $footers = array(
+                'tap'=>$start.'..'.$this->testCount."\r\n"
+            );
 
-        $this->write($footers[$this->config['format']]);
+            $this->write($footers[$this->config['format']]);
+        }
     }
 }

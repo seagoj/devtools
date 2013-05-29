@@ -12,7 +12,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
 
     public function tearDown()
     {
-        unlink(__CLASS__.'.log');
+//        unlink(__CLASS__.'.log');
     }
     public function test_formatInline()
     {

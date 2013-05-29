@@ -52,6 +52,7 @@ class LogTest extends PHPUnit_Framework_TestCase
         $options = array('type'=>'invalid');
         $this->setExpectedException('InvalidArgumentException');
         $log = new \Devtools\Log($options);
+        $log->write("Brokwn");
     }
 
     public function testFile()
@@ -72,7 +73,7 @@ class LogTest extends PHPUnit_Framework_TestCase
         $method = new ReflectionMethod('Devtools\Log', 'tapify');
         $method->setAccessible(true);
 
-        $this->assertEquals("ok 1 - $message", $method->invoke(new \Devtools\Log(), $message, true));
+        $this->assertTrue(false !== strpos($method->invoke(new \Devtools\Log(), $message, true), "ok 1 - $message"));
     }
 
     public function testStdout()

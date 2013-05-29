@@ -12,8 +12,7 @@ class AuthTest extends PHPUnit_Framework_TestCase
 
     public function tearDown()
     {
-        if($this->_log->type === 'file')
-            unlink(__CLASS__.'.log');
+            //unlink(__CLASS__.'.log');
     }
 
     public function testAuth()
