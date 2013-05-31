@@ -15,7 +15,6 @@
 
     <filter>
         <whitelist>
-            <!--//<directory>./lib/</directory>//-->
             <exclude>
                 <directory>./tests</directory>
             </exclude>
