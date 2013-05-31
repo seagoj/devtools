@@ -101,16 +101,19 @@ class Model
      *
      * @param   string  $key    Name given to data value
      * @param   string  $value  Value of data to be stored
+     * @param   string  $hash   Hash to be used in key/value store
      *
      * @throws  Exception if datastore type is not supported
      *
      * @return  boolean     Result of insertion
      **/
-    public function set($key, $value)
+    public function set($key, $value, $hash = null)
     {
         switch($this->config['type']) {
             case 'redis':
-                return $this->connection->set($key, $value);
+                return isset($hash) ?
+                    $this->connection->hset($hash, $key, $value) :
+                    $this->connection->set($key, $value);
                 break;
             default:
                 throw new \Exception($this->config['type']." is not a support database type");
@@ -124,16 +127,17 @@ class Model
      * Returns data stored under $key
      *
      * @param   string  $key    Name of data to be retrieved
+     * @param   string  $hash   Hash to retrieve $key from; defaults to null
      *
      * @throws  Exception if datastore type is not supported
      * 
      * @return  multiple    Data retrieved or false if retrieval fails
      **/
-    public function get($key)
+    public function get($key, $hash = null)
     {
         switch($this->config['type']) {
             case 'redis':
-                return $this->connection->get($key);
+                return isset($hash) ? $this->connection->hget($hash, $key) : $this->connection->get($key);
                 break;
             default:
                 throw new \Exception($this->config['type'])." is not a supported database type.";
