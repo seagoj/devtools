@@ -2,12 +2,12 @@
 
 class RandDataTest extends PHPUnit_Framework_TestCase
 {
-    private $_log;
+    private $log;
 
     public function setup()
     {
-        $options = array('file'=>__CLASS__.'.log');
-        $this->_log = new \Devtools\Log($options);
+        $options = array('type'=>'stdout');
+        $this->log = new \Devtools\Log($options);
     }
 
     public function testGet()
@@ -22,6 +22,5 @@ class RandDataTest extends PHPUnit_Framework_TestCase
 
     public function tearDown()
     {
-//        unlink(__CLASS__.'.log');
     }
 }

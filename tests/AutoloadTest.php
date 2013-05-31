@@ -8,7 +8,7 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
 
     public function setup()
     {
-        $options = array('file'=>__CLASS__.'.log');
+        $options = array('type' => 'stdout');
         $this->_log = new \Devtools\Log($options);
         $this->_validClass = "Devtools\Autoload";
         $this->_validMethod = "autoload";
@@ -85,6 +85,5 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
 
     public function tearDown()
     {
-       // unlink(__CLASS__.'.log');
     }
 }
