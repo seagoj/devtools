@@ -155,4 +155,27 @@ class Model
                 break;
         }
     }
+
+    /**
+     * Model::expire
+     *
+     * Sets expiration period for a particular data entry
+     *
+     * @param   string  $key    Key to set the expiration for
+     * @param   string  $expiry Expiration
+     *
+     * @throws  Exception if datastore type is not supported
+     *
+     * @return  boolean Result of setting the expiration
+     **/
+    public function expire($key, $expiry)
+    {
+        switch($this->config['type']) {
+            case 'redis':
+                return $this->connection->expire($key, $expiry);
+            default:
+                throw new \Exception($this->config['type']." is not a supported datastore");
+                break;
+        }
+    }
 }

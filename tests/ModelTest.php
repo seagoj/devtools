@@ -80,4 +80,15 @@ class ModelTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($model->set('Method', __METHOD__, __CLASS__));
         $this->assertEquals(__METHOD__, $model->get('Method', __CLASS__));
     }
+
+    /**
+     * @covers Devtools\Model::expire
+     **/
+    public function testRedisExpire()
+    {
+        $model = new \Devtools\Model();
+
+        $model->set('Method', __METHOD__);
+        $this->assertTrue($model->expire('Method', 100));
+    }
 }
