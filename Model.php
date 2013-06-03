@@ -72,6 +72,48 @@ class Model
     }
 
     /**
+     * Model::validate
+     *
+     * Encapsulates configuration validation in one function called prior to
+     * connection so it can be ignored in the reset of the class.
+     *
+     * @throws  Exception if datastore type is not supported
+     *
+     * @return  boolean    Status of validation
+     **/
+    private function validate()
+    {
+        $validTypes = [
+            'redis'
+        ];
+
+        if (in_array($this->config['type'], $validTypes)) {
+            return true;
+        } else {
+            throw new \Exception($this->config['type']." is not a supported datastore type.");
+        }
+    }
+
+    /**
+     * Model::checkConnection()
+     *
+     * Checks for valid connection prior to performing an action on the
+     * datastore
+     *
+     * @throws  Exception if connection does not exist
+     *
+     * @return  Boolean     Status of connection
+     **/
+    private function checkConnection()
+    {
+        if (isset($this->connected)) {
+            return true;
+        } else {
+            throw new \Exception("Connection is not established.");
+        }
+    }
+
+    /**
      * Model::connect
      * 
      * Connects model to datastore
@@ -92,15 +134,80 @@ class Model
             'port' => $this->config['port']
         ];
 
-        switch($this->config['type']) {
-            case 'redis':
-                $this->connection = new \Predis\Client($clientOptions);
-                return $this->connected = isset($this->connection);
-                break;
-            default:
-                throw new \Exception($this->config['type']." is not a supported database type");
-                break;
-        }
+        $this->validate();
+
+        $func = 'connect'.ucfirst($this->config['type']);
+        $this->$func();
+    }
+
+    /**
+     * Model::connectRedis
+     *
+     * Connects model to redis datastore
+     *
+     * @return  boolean     Status of connection
+     **/
+    private function connectRedis()
+    {
+        $clientOptions = [
+            'scheme' => $this->config['scheme'],
+            'host' => $this->config['host'],
+            'port' => $this->config['port']
+        ];
+
+        $this->connection = new \Predis\Client($clientOptions);
+        return $this->connected = isset($this->connection);
+    }
+
+    /**
+     * Model::setRedis
+     *
+     * Performs the set operation on redis datastores
+     *
+     * @param   string  $key    Name given to data value
+     * @param   string  $value  Value of data to be stored
+     * @param   string  $hash   Hash to be used in key/value store
+     *
+     * @return  boolean Result of insertion
+     **/
+    private function setRedis($key, $value, $hash)
+    {
+        return is_null($hash) ?
+            $this->connection->set($key, $value) :
+            is_bool($this->connection->hset($hash, $key, $value));
+    }
+
+    /**
+     * Model::getRedis
+     *
+     * Performs the get operation on redis datastores
+     *
+     * @param   string  $key    Name of data to be retrieved
+     * @param   string  $hash   Hash modifier for name
+     *
+     * @return  multi   Value of data retrieved
+     **/
+    private function getRedis($key, $hash)
+    {
+        return is_null($hash) ?
+            $this->connection->get($key) :
+            $this->connection->hget($hash, $key);
+    }
+
+    /**
+     * Model::expireRedis
+     *
+     * Performs the expiration operation on redis datastores
+     *
+     * @param   string  $key    Name of data to be modified
+     * @param   integer $expiry Expiration to be applied
+     *
+     * @return  boolean Status of setting the expiration
+     **/
+    private function expireRedis($key, $expiry)
+    {
+        return $this->connection->expire($key, $expiry);
+        
     }
 
     /**
@@ -118,16 +225,10 @@ class Model
      **/
     public function set($key, $value, $hash = null)
     {
-        switch($this->config['type']) {
-            case 'redis':
-                return is_null($hash) ?
-                     $this->connection->set($key, $value) :
-                     is_bool($this->connection->hset($hash, $key, $value));
-                break;
-            default:
-                throw new \Exception($this->config['type']." is not a supported database type");
-                break;
-        }
+        $this->checkConnection();
+
+        $func = 'set'.ucfirst($this->config['type']);
+        return $this->$func($key, $value, $hash);
     }
 
     /**
@@ -144,16 +245,10 @@ class Model
      **/
     public function get($key, $hash = null)
     {
-        switch($this->config['type']) {
-            case 'redis':
-                return is_null($hash) ?
-                    $this->connection->get($key) :
-                    $this->connection->hget($hash, $key);
-                break;
-            default:
-                throw new \Exception($this->config['type'])." is not a supported database type.";
-                break;
-        }
+        $this->checkConnection();
+
+        $func = 'get'.ucfirst($this->config['type']);
+        return $this->$func($key, $hash);
     }
 
     /**
@@ -170,12 +265,9 @@ class Model
      **/
     public function expire($key, $expiry)
     {
-        switch($this->config['type']) {
-            case 'redis':
-                return $this->connection->expire($key, $expiry);
-            default:
-                throw new \Exception($this->config['type']." is not a supported datastore");
-                break;
-        }
+        $this->checkConnection();
+
+        $func = 'expire'.ucfirst($this->config['type']);
+        return $this->$func($key, $expiry);
     }
 }
