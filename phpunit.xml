@@ -2,7 +2,7 @@
 
 <phpunit bootstrap="./tests/autoloader.php" colors="true">
     <php>
-<!--//        <var name="db_dsn" value="mysql:dbname=hello_world_test;host=localhost"/>
+<!--//  <var name="db_dsn" value="mysql:dbname=hello_world_test;host=localhost"/>
         <var name="db_username" value="root"/>
         <var name="db_password" value=""/>//-->
     </php>
@@ -10,6 +10,7 @@
     <testsuites>
         <testsuite name="Devtools Test Suite">
             <directory>./tests/</directory>
+            <!--//<directory>./lib/predis/tests/Predis</directory>//-->
         </testsuite>
     </testsuites>
 
@@ -19,6 +20,9 @@
                 <directory>./tests</directory>
             </exclude>
         </whitelist>
+        <blacklist>
+            <directory>.lib/predis</directory>
+        </blacklist>
     </filter>
 
     <logging>
@@ -26,4 +30,18 @@
         <!--//<log type="tap" target="tmp/logfile.tap"/>//-->
     </logging>
 
+    <!-- Predis Testing -->
+        <php>
+        <!-- Redis
+        <const name="REDIS_SERVER_VERSION" value="2.6" />
+        <const name="REDIS_SERVER_HOST" value="127.0.0.1" />
+        <const name="REDIS_SERVER_PORT" value="6379" />
+        <const name="REDIS_SERVER_DBNUM" value="15" />
+        -->
+
+        <!-- Webdis
+        <const name="WEBDIS_SERVER_HOST" value="127.0.0.1" />
+        <const name="WEBDIS_SERVER_PORT" value="7379" />
+        -->
+    </php>
 </phpunit>

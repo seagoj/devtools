@@ -15,3 +15,6 @@
 require 'Autoload.php';
 
 \Devtools\Autoload::register();
+
+//require 'lib/predis/tests/bootstrap.php';
+

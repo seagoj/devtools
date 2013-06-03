@@ -57,7 +57,10 @@ class Model
     {
         $defaults = [
             'connect' => true,
-            'type' => 'redis'
+            'type' => 'redis',
+            'scheme' => 'tcp',
+            'host' => '127.0.0.1',
+            'port' => 6379
         ];
 
         $this->config = array_merge($defaults, $options);
@@ -83,9 +86,15 @@ class Model
     {
         $this->config = array_merge($this->config, $options);
 
+        $clientOptions = [
+            'scheme' => $this->config['scheme'],
+            'host' => $this->config['host'],
+            'port' => $this->config['port']
+        ];
+
         switch($this->config['type']) {
             case 'redis':
-                $this->connection = new \Predis\Client();
+                $this->connection = new \Predis\Client($clientOptions);
                 return $this->connected = isset($this->connection);
                 break;
             default:
@@ -111,12 +120,12 @@ class Model
     {
         switch($this->config['type']) {
             case 'redis':
-                return isset($hash) ?
-                    $this->connection->hset($hash, $key, $value) :
-                    $this->connection->set($key, $value);
+                return is_null($hash) ?
+                     $this->connection->set($key, $value) :
+                     is_bool($this->connection->hset($hash, $key, $value));
                 break;
             default:
-                throw new \Exception($this->config['type']." is not a support database type");
+                throw new \Exception($this->config['type']." is not a supported database type");
                 break;
         }
     }
@@ -137,7 +146,9 @@ class Model
     {
         switch($this->config['type']) {
             case 'redis':
-                return isset($hash) ? $this->connection->hget($hash, $key) : $this->connection->get($key);
+                return is_null($hash) ?
+                    $this->connection->get($key) :
+                    $this->connection->hget($hash, $key);
                 break;
             default:
                 throw new \Exception($this->config['type'])." is not a supported database type.";
