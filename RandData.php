@@ -61,7 +61,7 @@ class RandData
         if (in_array(ucfirst(strtolower($type)), $this->dataTypes)) {
             return $this->$func();
         } else {
-            die("Data of type $type could not be generated.");
+            throw new \InvalidArgumentException("Data of type $type could not be generated.");
         }
     }
 

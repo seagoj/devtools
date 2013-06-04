@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @covers Devtools\Markdown
+ **/
 class MarkdownTest extends PHPUnit_Framework_TestCase
 {
     private $log;
@@ -14,50 +17,54 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
     {
     }
 
-    /*
-    public function test_formatInline()
+    /**
+     * @covers Devtools\Markdown::__construct
+     * @covers Devtools\Markdown::validateConfig
+     **/
+    public function testValidateConfigValid()
     {
-        $md = new \Devtools\Markdown();
+        $valid = [
+            'flavor' => 'standard',
+            'logType' => 'stdout'
+        ];
 
-        $sample = "*Test*\n";
-        $output = "<ul>\n<li>Test</li>\n</ul>\n\n";
-        $swap = false;
-
-        $syntax = '*';
-
-        foreach (explode("\n", $sample) as $line) {
-            $first = strpos($line, $syntax);
-            if ($first!==false) {
-                $second = strpos($line, $syntax, $first+strlen($syntax));
-            }
-            if ($first!==false && $second!==false) {
-                $swap = true;
-            }
-        }
-
-        $this->assertEquals($swap, true);
+        $this->assertInstanceOf(
+            'Devtools\Markdown', 
+            new \Devtools\Markdown($valid)
+        );
     }
 
-    public function testFormatLink()
+    /**
+     * @covers Devtools\Markdown::__construct
+     * @covers Devtools\Markdown::validateConfig
+     *
+     * @expectedException           InvalidArgumentException
+     * @expectedExceptionMessage    color is not a valid option.
+     **/
+    public function testValidateConfigInvalidVar()
     {
-        $line = "[link](http://google.com)";
-
-        $squareOpen = strpos($line, '[');
-        $textBegin = $squareOpen+strlen('[');
-        $squareClose = strpos($line, ']', $textBegin);
-        $textLength = $squareClose-$textBegin;
-        $text = substr($line, $textBegin, $textLength);
-
-        $parensOpen = strpos($line, '(', $squareClose);
-        $pathBegin = $parensOpen+strlen('(');
-        $parensClose = strpos($line, ')', $pathBegin);
-        $pathLength = $parensClose-$pathBegin;
-        $path = substr($line, $pathBegin, $pathLength);
-
-        $this->assertEquals($text, 'link');
-        $this->assertEquals($path, 'http://google.com');
+        $invalidVar = [
+            'color' => 'purple'
+        ];
+   
+        new \Devtools\Markdown($invalidVar);
     }
-    */
+
+    /**
+     * @covers Devtools\Markdown::__construct
+     * @covers Devtools\Markdown::validateConfig
+     *
+     * @expectedException           InvalidArgumentException
+     * @expectedExceptionMessage    savory is not a valid value for flavor
+     **/
+    public function testValidateConfigInvalidValue()
+    {
+        $invalidValue = [
+            'flavor' => 'savory'
+        ];
+
+        new \Devtools\Markdown($invalidValue);
+    }
 
     /**
      * @covers Devtools\Markdown::__construct
@@ -142,6 +149,8 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $mdStr .= "\n";
 
         $this->assertEquals($resultStr, $md->convert($mdStr));
+
+        $this->assertEquals("<p>\ntest. test\n</p>\n", $md->convert("test. test"));
     }
 
     /**
@@ -169,6 +178,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
      * @covers Devtools\Markdown::validateConfig
      * @covers Devtools\Markdown::convert
      * @covers Devtools\Markdown::formatInline
+     * @covers Devtools\Markdown::formatParagraph
      **/
     public function testBold()
     {
@@ -177,11 +187,15 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $sample = __METHOD__." ";
         $resultStr = $mdStrStar = $mdStrUS = "";
 
-        for ($i=1; $i<=5; $i++) {
+        for ($i=1; $i<=4; $i++) {
             $resultStr .= "<strong>$sample$i</strong> ";
             $mdStrStar .= "**$sample$i** ";
             $mdStrUS .= "__".$sample.$i."__ ";
         }
+
+        $resultStr .= "<strong>".$sample."5</strong>";
+        $mdStrStar .= "**".$sample."5**";
+        $mdStrUS .= "__".$sample."5__";
 
         $resultStr = "<p>\n$resultStr\n</p>\n";
 
@@ -194,6 +208,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
      * @covers Devtools\Markdown::validateConfig
      * @covers Devtools\Markdown::convert
      * @covers Devtools\Markdown::formatInline
+     * @covers Devtools\Markdown::formatParagraph
      **/
     public function testItalics()
     {
@@ -219,6 +234,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
      * @covers Devtools\Markdown::validateConfig
      * @covers Devtools\Markdown::convert
      * @covers Devtools\Markdown::formatInline
+     * @covers Devtools\Markdown::formatParagraph
      **/
     public function testInlineCode()
     {
@@ -282,6 +298,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
      * @covers Devtools\Markdown::convert
      * @covers Devtools\Markdown::getTextPath
      * @covers Devtools\Markdown::formatImage
+     * @covers Devtools\Markdown::formatParagraph
      **/
     public function testFormatImage()
     {
@@ -298,6 +315,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
      * @covers Devtools\Markdown::convert
      * @covers Devtools\Markdown::getTextPath
      * @covers Devtools\Markdown::formatLink
+     * @covers Devtools\Markdown::formatParagraph
      **/
     public function testFormatLink()
     {
@@ -316,7 +334,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
      **/
     public function testFullPage()
     {
-        $mdStr = file_get_contents('tests/test.markdown');
+        $mdStr = 'tests/test.markdown';
         $resultStr = file_get_contents('tests/test.html');
 
         $md = new \Devtools\Markdown();

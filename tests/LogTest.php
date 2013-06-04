@@ -96,6 +96,16 @@ class LogTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers Devtools\Log::__construct
+     **/
+    public function testInvalidFormat()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $log = new \Devtools\Log(['format' => 'invalid']);
+        $log->write("Brgasjk");
+    }
+
+    /**
+     * @covers Devtools\Log::__construct
      * @covers Devtools\Log::write
      * @covers Devtools\Log::stringify
      * @covers Devtools\Log::file
@@ -121,7 +131,7 @@ class LogTest extends PHPUnit_Framework_TestCase
      * @covers Devtools\Log::stringify
      * @covers Devtools\Log::tapify
      **/
-    public function testTapifyTrue()
+    public function testTapify()
     {
         $message = "Sample Output";
 
@@ -137,6 +147,17 @@ class LogTest extends PHPUnit_Framework_TestCase
                 ),
                 "ok 1 - $message"
             ) !== false
+        );
+
+        $this->assertTrue(
+            strpos(
+                $method->invoke(
+                    new \Devtools\Log(),
+                    $message,
+                    false
+                ),
+                "not ok 1 - $message"
+            ) !==false
         );
     }
 
@@ -183,7 +204,13 @@ class LogTest extends PHPUnit_Framework_TestCase
         ob_start();
         $log->write($message);
         $this->assertEquals("<div>$message</div>".PHP_EOL, ob_get_clean());
-        
+
+        ob_start();
+        $log->write($message, true);
+        $this->assertEquals(
+            "<div>".true.": $message</div>".PHP_EOL,
+            ob_get_clean()
+        );
     }
 
     private function stripHeader()

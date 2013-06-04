@@ -59,10 +59,12 @@ class Autoload
                 $this->runPath = $this->getPath($currentDir);
                 $this->libPath = $this->runPath.'/lib';
                 break;
+                // @codeCoverageIgnoreStart
             default:
                 $this->runPath = $this->getPath($_SERVER['SCRIPT_FILENAME']);
                 $this->libPath = $this->getPath($currentDir);
                 break;
+                // @codeCoverageIgnoreEnd
         }
     }
 
@@ -109,9 +111,9 @@ class Autoload
      */
     private function autoload($class)
     {
-        if (is_file($file = $this->getRelPath().implode(DIRECTORY_SEPARATOR, explode('\\', $class)).'.php')) {
-            include $file;
-        }
+        return is_file(
+            $file = $this->getRelPath().implode(DIRECTORY_SEPARATOR, explode('\\', $class)).'.php'
+        ) ? include $file : null;
     }
 
     /**

@@ -50,6 +50,16 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
     {
         $log = new \Devtools\Log();
         $this->assertInstanceOf("\Devtools\Log", $log);
+
+        $method = new ReflectionMethod('Devtools\Autoload', 'autoload');
+        $method->setAccessible(true);
+
+        $this->assertEquals(
+            $method->invoke(new \Devtools\Autoload(), 'Devtools\RandData'),
+            1
+        );
+
+        
     }
 
     /**
@@ -58,7 +68,9 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
      **/
     public function testCheckEnv()
     {
-        $_SERVER['SCRIPT_FILENAME'] = '/home/travis/build/seagoj/php/bin/phpunit';
+        $_SERVER['SCRIPT_FILENAME'] =
+            '/home/travis/build/seagoj/php/bin/phpunit';
+
         $autoload = new \Devtools\Autoload();
         $this->assertEquals($autoload->checkEnv(), 'PHPUNIT');
 

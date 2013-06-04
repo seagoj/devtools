@@ -128,11 +128,12 @@ class Log
     }
 
     /**
-     * Log::html
+     * Log::htmlify
      *
      * Formats content as HTML
      *
-     * @param string $content String to be formatted
+     * @param string    $content    String to be formatted
+     * @param boolean   $result     Result of the test
      *
      * @return void
      **/

@@ -80,9 +80,11 @@ class Auth
      **/
     public function validate($email_attempt, $pass_attempt)
     {
+        // @codeCoverageIgnoreStart
         if ('PHP_VERSION_ID'>=5.5) {
             return $this->email==$email_attempt &&
                 password_verify($this->hash($pass_attempt), $this->hash);
+            // @codeCoverageIgnoreEnd
         } else {
             return $this->email==$email_attempt && $this->hash == $pass_attempt;
         }
@@ -119,10 +121,12 @@ class Auth
             'salt'=> $salt
         ];
 
+        // @codeCoverageIgnoreStart
         if ('PHP_VERSION_ID'>=5.5) {
             return password_hash(Auth::sanitize($pass), PASSWORD_DEFAULT, $options);
         } else {
             return $pass;
         }
+        // @codeCoverageIgnoreEnd
     }
 }

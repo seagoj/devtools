@@ -64,6 +64,8 @@ class Model
         ];
 
         $this->config = array_merge($defaults, $options);
+        $this->validateConfig();
+
         if ($this->config['connect']) {
             $this->connect();
         }
@@ -81,7 +83,7 @@ class Model
      *
      * @return  boolean    Status of validation
      **/
-    private function validate()
+    private function validateConfig()
     {
         $validTypes = [
             'redis'
@@ -106,7 +108,7 @@ class Model
      **/
     private function checkConnection()
     {
-        if (isset($this->connected)) {
+        if ($this->connected === true) {
             return true;
         } else {
             throw new \Exception("Connection is not established.");
@@ -134,7 +136,7 @@ class Model
             'port' => $this->config['port']
         ];
 
-        $this->validate();
+        $this->validateConfig();
 
         $func = 'connect'.ucfirst($this->config['type']);
         $this->$func();
@@ -225,7 +227,11 @@ class Model
      **/
     public function set($key, $value, $hash = null)
     {
-        $this->checkConnection();
+        try {
+            $this->checkConnection();
+        } catch (\Exception $E) {
+            throw $E;
+        }
 
         $func = 'set'.ucfirst($this->config['type']);
         return $this->$func($key, $value, $hash);
@@ -289,9 +295,11 @@ class Model
             case 'html':
                 $data = htmlspecialchars($data);
                 break;
+            /*
             case 'mysql':
-                $data = mysql_escape_string($data);
+                $data = mysql_real_escape_string($data);
                 break;
+            */
             case 'shellcmd':
                 $data = escapeshellcmd($data);
                 break;

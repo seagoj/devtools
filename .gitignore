@@ -2,6 +2,7 @@ config
 vendor
 *.log
 deprecated
+tmp
 
 ############
 ## Git

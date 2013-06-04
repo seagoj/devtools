@@ -10,6 +10,9 @@ class RandDataTest extends PHPUnit_Framework_TestCase
         $this->log = new \Devtools\Log($options);
     }
 
+    public function tearDown()
+    {
+    }
     /**
      * @covers Devtools\RandData::__construct
      * @covers Devtools\RandData::get
@@ -30,7 +33,16 @@ class RandDataTest extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function tearDown()
+
+    /**
+     * @covers Devtools\RandData::get
+     *
+     * @expectedException           InvalidArgumentException
+     * @expectedExceptionMessage    Data of type invalid could not be generated.
+     **/
+    public function testGetInvalid()
     {
+        $randData = new \Devtools\RandData();
+        $randData->get('invalid');
     }
 }

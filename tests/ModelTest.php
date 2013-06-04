@@ -103,6 +103,14 @@ class ModelTest extends PHPUnit_Framework_TestCase
             'html' => [
                 'input' => '<body>test</body>',
                 'output' => '&lt;body&gt;test&lt;/body&gt;'
+            ],
+            'shellcmd' => [
+                'input' => 'ls -al',
+                'output' => escapeshellcmd('ls -al')
+            ],
+            'shellarg' => [
+                'input' => 'ls -al',
+                'output' => escapeshellarg('ls -al')
             ]
         ];
 
@@ -112,5 +120,28 @@ class ModelTest extends PHPUnit_Framework_TestCase
                 $model->sanitize($options['input'], $type)
             );
         }
+    }
+
+    /**
+     * @covers Devtools\Model::validateConfig
+     *
+     * @expectedException           Exception
+     * @expectedExceptionMessage    invalid is not a supported datastore type
+     **/
+    public function testValidateConfigInvalid()
+    {
+        new \Devtools\Model(['type' => 'invalid']);
+    }
+
+    /**
+     * @covers Devtools\Model::checkConnection
+     *
+     * @expectedException           Exception
+     * @expectedExceptionMessage    Connection is not established
+     **/
+    public function testCheckConnectionInvalid()
+    {
+        $model = new \Devtools\Model(['connect'=>false]);
+        $model->set('key', 'value');
     }
 }

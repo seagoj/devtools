@@ -95,13 +95,13 @@ class Markdown
 
         foreach ($this->config as $var => $value) {
             if (!array_key_exists($var, $valid)) {
-                throw new \Exception("$var is not a valid option.");
+                throw new \InvalidArgumentException("$var is not a valid option.");
             } elseif (!in_array($value, $valid[$var])) {
-                throw new \Exception("$value is not a valid value for $var.");
-            } else {
-                return true;
+                throw new \InvalidArgumentException("$value is not a valid value for $var.");
             }
         }
+
+        return true;
     }
 
     /**
@@ -247,14 +247,13 @@ class Markdown
      **/
     private function formatInline()
     {
-        $syntaxMap = array(
+        $syntaxMap = [
             '`'=>'code',
             '**' => 'strong',
             '__' => 'strong',
             '*' => 'em',
             '_' => 'em'
-        );
-        $first = false;
+        ];
 
         foreach ($syntaxMap as $syntax => $tag) {
             $result = array();
@@ -512,6 +511,8 @@ class Markdown
      * @param string $line Line of raw Markdown to be converted
      * @param string $type Type of element to look for and return values
      *                          formatted accordingly
+     * @param string $type Type of element to look for and return values
+     *                          formatted accordingly
      *
      * @return string Formatted line
      **/
@@ -539,24 +540,29 @@ class Markdown
             ($parensOpen = strpos($line, $pathDelimStart, $squareClose))!==false &&
             ($parensClose = strpos($line, $pathDelimEnd, ($pathBegin=$parensOpen+strlen($pathDelimStart))))!==false
         ) {
-            $text = substr($line, $textBegin, $squareClose-$textBegin);
-            $path = substr($line, $pathBegin, $parensClose-$pathBegin);
-            $prefix = substr($line, 0, $squareOpen);
-            $postfix = substr($line, $parensClose+1);
+            $vars = [
+                'text' => substr($line, $textBegin, $squareClose-$textBegin),
+                'path' => substr($line, $pathBegin, $parensClose-$pathBegin),
+                'prefix' => substr($line, 0, $squareOpen),
+                'postfix' => substr($line, $parensClose+1)
+            ];
 
+            $line = \Devtools\Template::autofill($template, $vars);
+            /*
             $line = str_replace(
                 '{{prefix}}',
-                $prefix,
+                $vars['prefix'],
                 str_replace(
                     '{{path}}',
-                    $path,
+                    $vars['path'],
                     str_replace(
                         '{{text}}',
-                        $text,
-                        str_replace('{{postfix}}', $postfix, $template)
+                        $vars['text'],
+                        str_replace('{{postfix}}', $vars['postfix'], $template)
                     )
                 )
             );
+            */
         }
 
         return $line;
