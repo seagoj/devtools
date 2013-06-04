@@ -32,7 +32,7 @@ class Template
      *
      * Sets configuration for class
      *
-     * @param   array   $options    Array of configuration options
+     * @param array $options Array of configuration options
      *
      * @return void
      **/
@@ -48,13 +48,15 @@ class Template
      *
      * Autofills the template variables
      *
-     * @param   string  $template   Template to fill
-     * @param   array   $vars       Array of variables and values to fill from
+     * @param string $template Template to fill
+     * @param array  $vars     Array of variables and values to fill from
      *
-     * return   string  Filled template
+     * @return   string  Filled template
      **/
     public static function autofill($template, $vars)
     {
+        $template = is_file($template) ? file_get_contents($template) : $template;
+
         foreach ($vars as $var => $value) {
             if (($swap = str_replace('{{'.$var.'}}', $value, $template))!==false) {
                 $template = $swap;

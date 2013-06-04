@@ -83,6 +83,7 @@ class LogTest extends PHPUnit_Framework_TestCase
      * @covers Devtools\Log::write
      * @covers Devtools\Log::stringify
      **/
+    
     public function testWrongType()
     {
         $options = [
@@ -134,31 +135,26 @@ class LogTest extends PHPUnit_Framework_TestCase
     public function testTapify()
     {
         $message = "Sample Output";
+        $log = new \Devtools\Log();
 
-        $method = new ReflectionMethod('Devtools\Log', 'tapify');
-        $method->setAccessible(true);
-
-        $this->assertTrue(
-            strpos(
-                $method->invoke(
-                    new \Devtools\Log(), 
-                    $message, 
-                    true
-                ),
-                "ok 1 - $message"
-            ) !== false
+        ob_start();
+        $log->write($message);
+        $this->assertEquals(
+            $message.PHP_EOL,
+            $this->stripHeader(ob_get_clean())
         );
 
-        $this->assertTrue(
-            strpos(
-                $method->invoke(
-                    new \Devtools\Log(),
-                    $message,
-                    false
-                ),
-                "not ok 1 - $message"
-            ) !==false
-        );
+        ob_start();
+        $log->write($message, true);
+        $this->assertEquals("ok 1 - $message".PHP_EOL, ob_get_clean());
+
+        ob_start();
+        $log->write($message, false);
+        $this->assertEquals("not ok 2 - $message".PHP_EOL, ob_get_clean());
+            
+        ob_start();
+        unset($log);
+        ob_get_clean();
     }
 
     /**
@@ -179,9 +175,10 @@ class LogTest extends PHPUnit_Framework_TestCase
 
         ob_start();
         $log->write($message);
+        unset($log);
         $this->assertEquals(
             $message.PHP_EOL,
-            $this->stripHeader()
+            $this->stripHeader(ob_get_clean())
         );
     }
 
@@ -207,16 +204,19 @@ class LogTest extends PHPUnit_Framework_TestCase
 
         ob_start();
         $log->write($message, true);
+        $log->__destruct();
+        unset($log);
         $this->assertEquals(
             "<div>".true.": $message</div>".PHP_EOL,
             ob_get_clean()
         );
     }
 
-    private function stripHeader()
+    private function stripHeader($buffer)
     {
+
         return substr(
-            $buffer = ob_get_clean(),
+            $buffer,
             strpos(
                 $buffer,
                 PHP_EOL

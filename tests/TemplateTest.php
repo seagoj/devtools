@@ -24,11 +24,21 @@ class TemplateTest extends PHPUnit_Framework_TestCase
     public function testAutofill()
     {
         $template = "prefix {{data}} postfix";
+        file_put_contents($file = 'template.html', $template);
+        $data = ['data' => 7];
+        $result = "prefix 7 postfix";
 
         $this->assertEquals(
-            \Devtools\Template::autofill($template, ['data'=>7]),
-            "prefix 7 postfix"
+            \Devtools\Template::autofill($template, $data),
+            $result
         );
+
+        $this->assertEquals(
+            \Devtools\Template::autofill($file, $data),
+            $result
+        );
+
+        unlink($file);
     }
     
 }
