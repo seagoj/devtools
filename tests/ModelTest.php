@@ -107,7 +107,10 @@ class ModelTest extends PHPUnit_Framework_TestCase
         ];
 
         foreach($expected as $type => $options) {
-            $this->assertEquals($options['output'], $model->sanitize($options['input'], $type));
+            $this->assertEquals(
+                $options['output'], 
+                $model->sanitize($options['input'], $type)
+            );
         }
     }
 }
