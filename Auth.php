@@ -56,10 +56,8 @@ class Auth
      **/
     public function __construct($email = null, $pass = null)
     {
-        if ($email!=null) {
+        if (!is_null($email) && !is_null($pass)) {
             $this->email = $email;
-        }
-        if ($pass!=null) {
             $this->hash = $this->hash($pass);
         }
     }
@@ -80,14 +78,9 @@ class Auth
      **/
     public function validate($email_attempt, $pass_attempt)
     {
-        // @codeCoverageIgnoreStart
-        if ('PHP_VERSION_ID'>=5.5) {
-            return $this->email==$email_attempt &&
-                password_verify($this->hash($pass_attempt), $this->hash);
-            // @codeCoverageIgnoreEnd
-        } else {
-            return $this->email==$email_attempt && $this->hash == $pass_attempt;
-        }
+        return 'PHP_VERSION_ID'>=5.5 ?
+            ($this->email===$email_attempt) && password_verify($this->hash($pass_attempt), $this->hash) :
+            ($this->email===$email_attempt) && ($this->hash===$pass_attempt);
     }
 
     /*

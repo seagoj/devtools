@@ -141,7 +141,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
      **/
     public function testCheckConnectionInvalid()
     {
-        $model = new \Devtools\Model(['connect'=>false]);
+        $model = new \Devtools\Model(['connect' => false]);
         $model->set('key', 'value');
     }
 }

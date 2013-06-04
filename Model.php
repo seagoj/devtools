@@ -139,7 +139,7 @@ class Model
         $this->validateConfig();
 
         $func = 'connect'.ucfirst($this->config['type']);
-        $this->$func();
+        return $this->$func();
     }
 
     /**
