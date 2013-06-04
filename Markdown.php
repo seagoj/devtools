@@ -548,21 +548,6 @@ class Markdown
             ];
 
             $line = \Devtools\Template::autofill($template, $vars);
-            /*
-            $line = str_replace(
-                '{{prefix}}',
-                $vars['prefix'],
-                str_replace(
-                    '{{path}}',
-                    $vars['path'],
-                    str_replace(
-                        '{{text}}',
-                        $vars['text'],
-                        str_replace('{{postfix}}', $vars['postfix'], $template)
-                    )
-                )
-            );
-            */
         }
 
         return $line;

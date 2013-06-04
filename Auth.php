@@ -83,15 +83,6 @@ class Auth
             ($this->email===$email_attempt) && ($this->hash===$pass_attempt);
     }
 
-    /*
-    public function sanitize($pass)
-    {
-        $db = new \PDO('sqlite::memory:');
-
-        return $db->prepare($pass);
-    }
-    */
-
     /**
      * Auth::hash
      *
@@ -114,12 +105,8 @@ class Auth
             'salt'=> $salt
         ];
 
-        // @codeCoverageIgnoreStart
-        if ('PHP_VERSION_ID'>=5.5) {
-            return password_hash(Auth::sanitize($pass), PASSWORD_DEFAULT, $options);
-        } else {
-            return $pass;
-        }
-        // @codeCoverageIgnoreEnd
+        return 'PHP_VERSION_ID'>=5.5 ?
+            password_hash(Model::sanitize($pass), PASSWORD_DEFAULT, $options) :
+            $pass;
     }
 }
