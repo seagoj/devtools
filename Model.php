@@ -256,6 +256,36 @@ class Model
         $func = 'get'.ucfirst($this->config['type']);
         return $this->$func($key, $hash);
     }
+    /**
+     * Model::getAll
+     *
+     * Returns all keys related to $hash
+     *
+     * @param string $hash Hash used to lookup keys
+     *
+     * @return array Array of keys and values
+     **/
+    public function getAll($hash)
+    {
+        $this->checkConnection();
+
+        $func = 'getAll'.ucfirst($this->config['type']);
+        return $this->$func($hash);
+    }
+
+    /**
+     * Model::getAllRedis
+     *
+     * Returns all keys related to $hash from a redis datastore
+     *
+     * @param string $hash Hash used to lookup keys
+     *
+     * @return array Array of keys and values
+     **/
+    private function getAllRedis($hash)
+    {
+        return $this->connection->hgetall($hash);
+    }
 
     /**
      * Model::expire

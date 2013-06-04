@@ -144,4 +144,19 @@ class ModelTest extends PHPUnit_Framework_TestCase
         $model = new \Devtools\Model(['connect' => false]);
         $model->set('key', 'value');
     }
+
+    /**
+     * @covers Devtools\Model::getAll
+     **/
+    public function testGetAll()
+    {
+        $expected = [
+            'key1'=>'value',
+            'key2'=>'value'
+        ];
+        $model = new \Devtools\Model();
+        $model->set('key1', 'value', __METHOD__);
+        $model->set('key2', 'value', __METHOD__);
+        $this->assertEquals($expected, $model->getAll(__METHOD__));
+    }
 }
