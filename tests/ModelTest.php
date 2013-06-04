@@ -91,4 +91,23 @@ class ModelTest extends PHPUnit_Framework_TestCase
         $model->set('Method', __METHOD__);
         $this->assertTrue($model->expire('Method', 100));
     }
+
+    /**
+     * @covers Devtools\Model::sanitize
+     **/
+    public function testSanitize()
+    {
+        $model = new Devtools\Model();
+        
+        $expected = [
+            'html' => [
+                'input' => '<body>test</body>',
+                'output' => '&lt;body&gt;test&lt;/body&gt;'
+            ]
+        ];
+
+        foreach($expected as $type => $options) {
+            $this->assertEquals($options['output'], $model->sanitize($options['input'], $type));
+        }
+    }
 }

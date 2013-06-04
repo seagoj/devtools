@@ -270,4 +270,36 @@ class Model
         $func = 'expire'.ucfirst($this->config['type']);
         return $this->$func($key, $expiry);
     }
+
+    /**
+     * Model::sanitize
+     *
+     * Sanitizes data for manipulation in PHP
+     *
+     * @param   string  $data   Data to be sanitized
+     * @param   string  $type   Type of system to sanitize for
+     *
+     * @throws  Exception if data cannot be sanitized
+     *
+     * @return  string  Sanitized data
+     **/
+    public function sanitize($data, $type = 'html')
+    {
+        switch($type) {
+            case 'html':
+                $data = htmlspecialchars($data);
+                break;
+            case 'mysql':
+                $data = mysql_escape_string($data);
+                break;
+            case 'shellcmd':
+                $data = escapeshellcmd($data);
+                break;
+            case 'shellarg':
+                $data = escapeshellarg($data);
+                break;
+        }
+
+        return $data;
+    }
 }
