@@ -12,8 +12,9 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
 
     public function tearDown()
     {
-//        unlink(__CLASS__.'.log');
     }
+
+    /*
     public function test_formatInline()
     {
         $md = new \Devtools\Markdown();
@@ -37,7 +38,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($swap, true);
     }
 
-    public function test_Link()
+    public function testFormatLink()
     {
         $line = "[link](http://google.com)";
 
@@ -56,13 +57,24 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($text, 'link');
         $this->assertEquals($path, 'http://google.com');
     }
+    */
 
+    /**
+     * @covers Devtools\Markdown::__construct
+     * @covers Devtools\Markdown::validateConfig
+     **/
     public function testMarkdown()
     {
         $md = new \Devtools\Markdown();
         $this->assertInstanceOf('Devtools\Markdown', $md);
     }
 
+    /*
+     * @covers Devtools\Markdown::__construct
+     * @covers Devtools\Markdown::validateConfig
+     * @covers Devtools\Markdown::convert
+     * @covers Devtools\Markdown::formatHeader
+     **/
     public function testHeaders()
     {
         $md = new \Devtools\Markdown();
@@ -76,6 +88,12 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * @covers Devtools\Markdown::__construct
+     * @covers Devtools\Markdown::validateConfig
+     * @covers Devtools\Markdown::convert
+     * @covers Devtools\Markdown::formatUnorderedList
+     **/
     public function testUnorderedList()
     {
         $md = new \Devtools\Markdown();
@@ -101,6 +119,12 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($resultStr, $md->convert($mdStrPlus));
     }
 
+    /**
+     * @covers Devtools\Markdown::__construct
+     * @covers Devtools\Markdown::validateConfig
+     * @covers Devtools\Markdown::convert
+     * @covers Devtools\Markdown::formatOrderedList
+     **/
     public function testOrderedList()
     {
         $md = new \Devtools\Markdown();
@@ -120,7 +144,10 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($resultStr, $md->convert($mdStr));
     }
 
-    public function test_tagReplace()
+    /**
+     * @covers Devtools\Markdown::tagReplace
+     **/
+    public function testTagReplace()
     {
         $sample = __METHOD__." ";
         $resultStr = "";
@@ -137,6 +164,12 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($resultStr, $result);
     }
 
+    /**
+     * @covers Devtools\Markdown::__construct
+     * @covers Devtools\Markdown::validateConfig
+     * @covers Devtools\Markdown::convert
+     * @covers Devtools\Markdown::formatInline
+     **/
     public function testBold()
     {
         $md = new \Devtools\Markdown();
@@ -156,6 +189,12 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($resultStr, $md->convert($mdStrUS));
     }
 
+    /**
+     * @covers Devtools\Markdown::__construct
+     * @covers Devtools\Markdown::validateConfig
+     * @covers Devtools\Markdown::convert
+     * @covers Devtools\Markdown::formatInline
+     **/
     public function testItalics()
     {
         $md = new \Devtools\Markdown();
@@ -175,6 +214,12 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($resultStr, $md->convert($mdStrUS));
     }
 
+    /**
+     * @covers Devtools\Markdown::__construct
+     * @covers Devtools\Markdown::validateConfig
+     * @covers Devtools\Markdown::convert
+     * @covers Devtools\Markdown::formatInline
+     **/
     public function testInlineCode()
     {
         $md = new \Devtools\Markdown();
@@ -185,6 +230,12 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($resultStr, $md->Convert($mdStr));
     }
 
+    /**
+     * @covers Devtools\Markdown::__construct
+     * @covers Devtools\Markdown::validateConfig
+     * @covers Devtools\Markdown::convert
+     * @covers Devtools\Markdown::formatHR
+     **/
     public function testHR()
     {
         $md = new \Devtools\Markdown();
@@ -195,7 +246,13 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($resultStr, $md->convert($mdStr));
     }
 
-    public function test_formatCode()
+    /**
+     * @covers Devtools\Markdown::__construct
+     * @covers Devtools\Markdown::validateConfig
+     * @covers Devtools\Markdown::convert
+     * @covers Devtools\Markdown::formatCode
+     **/
+    public function testFormatCode()
     {
         $mdStr = "    code1\n    code2\n";
         $resultStr = "<code>\n\tcode1\n\tcode2\n</code>\n";
@@ -204,7 +261,13 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($resultStr, $md->convert($mdStr));
     }
 
-    public function test_formatBlockquote()
+    /**
+     * @covers Devtools\Markdown::__construct
+     * @covers Devtools\Markdown::validateConfig
+     * @covers Devtools\Markdown::convert
+     * @covers Devtools\Markdown::formatBlockquote
+     **/
+    public function testFormatBlockquote()
     {
         $mdStr = "> line1\n> line2\n";
         $resultStr = "<blockquote>\n    line1\n    line2\n</blockquote>\n";
@@ -213,7 +276,14 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($resultStr, $md->convert($mdStr));
     }
 
-    public function test_formatImage()
+    /**
+     * @covers Devtools\Markdown::__construct
+     * @covers Devtools\Markdown::validateConfig
+     * @covers Devtools\Markdown::convert
+     * @covers Devtools\Markdown::getTextPath
+     * @covers Devtools\Markdown::formatImage
+     **/
+    public function testFormatImage()
     {
         $mdStr = "![Alt Text](http://pathtoimage.com/image.jpg)\n";
         $resultStr = "<p>\n<img src='http://pathtoimage.com/image.jpg' alt='Alt Text' />\n</p>\n";
@@ -222,7 +292,14 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($resultStr, $md->convert($mdStr));
     }
 
-    public function test_formatLink()
+    /**
+     * @covers Devtools\Markdown::__construct
+     * @covers Devtools\Markdown::validateConfig
+     * @covers Devtools\Markdown::convert
+     * @covers Devtools\Markdown::getTextPath
+     * @covers Devtools\Markdown::formatLink
+     **/
+    public function testFormatLink()
     {
         $mdStr = "[link](http://google.com)\n";
         $resultStr = "<p>\n<a href='http://google.com' >link</a>\n</p>\n";
@@ -231,6 +308,12 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($resultStr, $md->convert($mdStr));
     }
 
+    /**
+     * @covers Devtools\Markdown::__construct
+     * @covers Devtools\Markdown::validateConfig
+     * @covers Devtools\Markdown::convert
+     * @covers Devtools\Markdown::formatParagraph
+     **/
     public function testFullPage()
     {
         $mdStr = file_get_contents('tests/test.markdown');

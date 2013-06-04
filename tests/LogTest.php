@@ -17,12 +17,18 @@ class LogTest extends PHPUnit_Framework_TestCase
             unlink('Log.log');
         }
     }
-
+    
+    /**
+     * @covers Devtools\Log::__construct
+     **/
     public function testInstanceOf()
     {
         $this->assertInstanceOf('Devtools\Log', new \Devtools\Log());
     }
 
+    /**
+     * @covers Devtools\Log::__construct
+     **/
     public function testDefaults()
     {
         $log = new \Devtools\Log();
@@ -31,17 +37,20 @@ class LogTest extends PHPUnit_Framework_TestCase
             'config',
             $log
         );
-//        $this->assertTrue(is_file(__CLASS__.'.log'));
-//        $this->assertTrue(file_get_contents(__CLASS__.'.log')!=='');
-//        unlink(__CLASS__.'.log');
     }
 
+    /**
+     * @covers Devtools\Log::__construct
+     **/
     public function testCustomTypeValid()
     {
         $options = array('type'=>'html');
         $log = new \Devtools\Log($options);
     }
 
+    /**
+     * @covers Devtools\Log::__construct
+     **/
     public function testCustomFileValid()
     {
         $options = array('file'=>__METHOD__.'.log');
@@ -54,6 +63,11 @@ class LogTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @covers Devtools\Log::__construct
+     * @covers Devtools\Log::write
+     * @covers Devtools\Log::stringify
+     **/
     public function testWrongType()
     {
         $options = array('type'=>'invalid');
@@ -62,6 +76,12 @@ class LogTest extends PHPUnit_Framework_TestCase
         $log->write("Brokwn");
     }
 
+    /**
+     * @covers Devtools\Log::__construct
+     * @covers Devtools\Log::write
+     * @covers Devtools\Log::stringify
+     * @covers Devtools\Log::file
+     **/
     public function testFile()
     {
         $options = array('file'=>__METHOD__.'.log');
@@ -74,6 +94,12 @@ class LogTest extends PHPUnit_Framework_TestCase
         unlink(__METHOD__.'.log');
     }
 
+    /**
+     * @covers Devtools\Log::__construct
+     * @covers Devtools\Log::write
+     * @covers Devtools\Log::stringify
+     * @covers Devtools\Log::tapify
+     **/
     public function testTapifyTrue()
     {
         $message = "Sample Output";
@@ -81,9 +107,24 @@ class LogTest extends PHPUnit_Framework_TestCase
         $method = new ReflectionMethod('Devtools\Log', 'tapify');
         $method->setAccessible(true);
 
-        $this->assertTrue(false !== strpos($method->invoke(new \Devtools\Log(), $message, true), "ok 1 - $message"));
+        $this->assertTrue(
+            strpos(
+                $method->invoke(
+                    new \Devtools\Log(), 
+                    $message, 
+                    true
+                ),
+                "ok 1 - $message"
+            ) !== false
+        );
     }
 
+    /**
+     * @covers Devtools\Log::__construct
+     * @covers Devtools\Log::write
+     * @covers Devtools\Log::stringify
+     * @covers Devtools\Log::stdout
+     **/
     public function testStdout()
     {
         $message = __METHOD__;

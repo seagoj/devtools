@@ -14,12 +14,22 @@ class AuthTest extends PHPUnit_Framework_TestCase
     {
     }
 
+    /**
+     * @covers Devtools\Auth::__construct
+     * @covers Devtools\Auth::hash
+     * @covers Devtools\Auth::validate
+     **/
     public function testAuth()
     {
         $auth = new \Devtools\Auth("user", "password");
         $this->assertInstanceOf('Devtools\Auth', $auth);
     }
 
+    /**
+     * @covers Devtools\Auth::__construct
+     * @covers Devtools\Auth::hash
+     * @covers Devtools\Auth::validate
+     **/
     public function testValidate()
     {
         $auth = new \Devtools\Auth("user", "password");

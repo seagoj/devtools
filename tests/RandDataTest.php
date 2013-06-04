@@ -10,6 +10,16 @@ class RandDataTest extends PHPUnit_Framework_TestCase
         $this->log = new \Devtools\Log($options);
     }
 
+    /**
+     * @covers Devtools\RandData::__construct
+     * @covers Devtools\RandData::get
+     * @covers Devtools\RandData::randSign
+     * @covers Devtools\RandData::randArray
+     * @covers Devtools\RandData::randString
+     * @covers Devtools\RandData::randInteger
+     * @covers Devtools\RandData::randBool
+     * @covers Devtools\RandData::randDouble
+     **/
     public function testGet()
     {
         $randData = new \Devtools\RandData();
