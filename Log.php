@@ -64,13 +64,12 @@ class Log
     public function __construct($options = [])
     {
         $defaults = [
-            'type'=>'file',
-            'file'=>'Log.log',
-            'format'=>'tap'
+            'type' => 'stdout',
+            'file' => 'Log.log',
+            'format' => 'tap'
         ];
 
         $this->config = array_merge($defaults, $options);
-        $this->type = $this->config['type'];
         $this->testCount = 0;
         $this->first = true;
     }
@@ -85,25 +84,25 @@ class Log
      *
      * @return void
      **/
-    public function write($content, $result = 'EMPTY')
+    public function write($content, $result = null)
     {
         $content = $this->stringify($content);
 
         switch ($this->config['format']) {
             case 'tap':
-                $this->tapify($content, $result);
+                $content = $this->tapify($content, $result);
+                break;
+            case 'html':
+                $content = $this->htmlify($content, $result);
                 break;
             default:
                 throw new \InvalidArgumentException($this->config['format'].' is not a valid log format.');
                 break;
         }
 
-        switch ($this->type) {
+        switch ($this->config['type']) {
             case 'file':
                 $this->file($content);
-                break;
-            case 'html':
-                $this->html($content);
                 break;
             case 'stdout':
                 $this->stdout($content);
@@ -125,24 +124,25 @@ class Log
      **/
     private function file($content)
     {
-        $endline = "\r\n";
-
-        return file_put_contents($this->config['file'], $content.$endline, FILE_APPEND);
+        return file_put_contents($this->config['file'], $content.PHP_EOL, FILE_APPEND);
     }
 
     /**
      * Log::html
      *
-     * Formats content as HTML and prints to screen
+     * Formats content as HTML
      *
-     * @param string $content String to be formatted and output
+     * @param string $content String to be formatted
      *
      * @return void
      **/
-    private function html($content)
+    private function htmlify($content, $result)
     {
         $tag = 'div';
-        print "<$tag>$content</$tag>";
+
+        return is_null($result) ?
+            "<$tag>$content</$tag>" :
+            "<$tag>$result: $content</$tag>";
     }
 
     /**
@@ -156,7 +156,7 @@ class Log
      **/
     private function stdout($content)
     {
-        print $content."\n";
+        print $content.PHP_EOL;
     }
 
     /**
@@ -170,11 +170,9 @@ class Log
      **/
     private function stringify($content)
     {
-        if (is_array($content)) {
-            return serialize($content);
-        } else {
-            return $content;
-        }
+        return is_array($content) ?
+            serialize($content) :
+            $content;
     }
 
     /**
@@ -193,7 +191,7 @@ class Log
         $nextTest = $this->testCount+1;
         $prefix = 'ok '.$nextTest.' - ';
 
-        if ($result!=='EMPTY') {
+        if (!is_null($result)) {
                 $this->testCount = $nextTest;
                 $content = $prefix.$content;
             if (!$result) {
@@ -220,7 +218,7 @@ class Log
     {
         if ($this->testCount !== 0) {
             $footers = array(
-                'tap'=>'1..'.$this->testCount."\r\n"
+                'tap'=>'1..'.$this->testCount.PHP_EOL
             );
 
             $this->write($footers[$this->config['format']]);

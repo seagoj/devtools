@@ -122,7 +122,7 @@ class Markdown
             $code = $input;
         }
 
-        $this->code = explode("\n", $code);
+        $this->code = explode(PHP_EOL, $code);
 
         $this->formatInline();
         $this->formatHeader();
@@ -137,7 +137,7 @@ class Markdown
 
         $html = '';
         foreach ($this->code as $line) {
-            $html .= $line."\n";
+            $html .= $line.PHP_EOL;
         }
 
         return $html;
@@ -344,7 +344,7 @@ class Markdown
                 $triggered = true;
                 $li = substr($line, strpos($line, ' ')+1);
                 if ($first === true) {
-                    array_push($result, "<ul>\n<li>$li</li>");
+                    array_push($result, "<ul>".PHP_EOL."<li>$li</li>");
                     $first = false;
                 } else {
                     array_push($result, "<li>$li</li>");
@@ -354,7 +354,7 @@ class Markdown
                     array_push($result, "</ul>");
                     $triggered = false;
                 }
-                if ($line!="\n") {
+                if ($line!= PHP_EOL) {
                     array_push($result, $line);
                 }
             }
@@ -391,7 +391,7 @@ class Markdown
                     array_push($result, "</ol>");
                     $triggered = false;
                 }
-                if ($line != "\n") {
+                if ($line != PHP_EOL) {
                     array_push($result, $line);
                 }
                 $first = true;

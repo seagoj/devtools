@@ -42,6 +42,9 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
     /**
      * @covers Devtools\Autoload::__construct
      * @covers Devtools\Autoload::checkEnv
+     * @covers Devtools\Autoload::getRelPath
+     * @covers Devtools\Autoload::getPath
+     * @covers Devtools\Autoload::autoload
      **/
     public function testAutoload()
     {

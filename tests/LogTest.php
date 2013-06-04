@@ -33,7 +33,11 @@ class LogTest extends PHPUnit_Framework_TestCase
     {
         $log = new \Devtools\Log();
         $this->assertAttributeEquals(
-            array('type'=>'file', 'file'=>'Log.log', 'format'=>'tap'),
+            [
+                'type' => 'stdout',
+                'file' => 'Log.log',
+                'format' => 'tap'
+            ],
             'config',
             $log
         );
@@ -44,7 +48,10 @@ class LogTest extends PHPUnit_Framework_TestCase
      **/
     public function testCustomTypeValid()
     {
-        $options = array('type'=>'html');
+        $options = [
+            'type' => 'html'
+        ];
+
         $log = new \Devtools\Log($options);
     }
 
@@ -53,11 +60,19 @@ class LogTest extends PHPUnit_Framework_TestCase
      **/
     public function testCustomFileValid()
     {
-        $options = array('file'=>__METHOD__.'.log');
+        $options = [
+            'type' => 'file',
+            'file' => __METHOD__.'.log'
+        ];
+
         $log = new \Devtools\Log($options);
 
         $this->assertAttributeEquals(
-            array('type'=>'file', 'file'=>__METHOD__.'.log', 'format'=>'tap'),
+            [
+                'type' => 'file',
+                'file' => __METHOD__.'.log',
+                'format' => 'tap'
+            ],
             'config',
             $log
         );
@@ -70,7 +85,10 @@ class LogTest extends PHPUnit_Framework_TestCase
      **/
     public function testWrongType()
     {
-        $options = array('type'=>'invalid');
+        $options = [
+            'type'=>'invalid'
+        ];
+
         $this->setExpectedException('InvalidArgumentException');
         $log = new \Devtools\Log($options);
         $log->write("Brokwn");
@@ -84,7 +102,10 @@ class LogTest extends PHPUnit_Framework_TestCase
      **/
     public function testFile()
     {
-        $options = array('file'=>__METHOD__.'.log');
+        $options = [
+            'type' => 'file',
+            'file' => __METHOD__.'.log'
+        ];
 
         $log = new \Devtools\Log($options);
         $log->write('Test');
@@ -123,16 +144,56 @@ class LogTest extends PHPUnit_Framework_TestCase
      * @covers Devtools\Log::__construct
      * @covers Devtools\Log::write
      * @covers Devtools\Log::stringify
+     * @covers Devtools\Log::tapify
      * @covers Devtools\Log::stdout
      **/
     public function testStdout()
     {
         $message = __METHOD__;
-        $options = array('type'=>'stdout');
+        $options = [
+            'type'=>'stdout'
+        ];
+
         $log = new \Devtools\Log($options);
 
         ob_start();
         $log->write($message);
-        $this->assertEquals($message."\n", ob_get_clean());
+        $this->assertEquals(
+            $message.PHP_EOL,
+            $this->stripHeader()
+        );
+    }
+
+    /**
+     * @covers Devtools\Log::__construct
+     * @covers Devtools\Log::write
+     * @covers Devtools\Log::stringify
+     * @covers Devtools\Log::htmlify
+     **/
+    public function testHtml()
+    {
+        $message = __METHOD__;
+        $options = [
+            'format' => 'html',
+            'type' => 'stdout'
+        ];
+
+        $log = new \Devtools\Log($options);
+
+        ob_start();
+        $log->write($message);
+        $this->assertEquals("<div>$message</div>".PHP_EOL, ob_get_clean());
+        
+    }
+
+    private function stripHeader()
+    {
+        return substr(
+            $buffer = ob_get_clean(),
+            strpos(
+                $buffer,
+                PHP_EOL
+            )+strlen(PHP_EOL)
+        );
     }
 }

@@ -140,12 +140,8 @@ class Autoload
      */
     private function getRelPath($runPath = null, $libPath = null)
     {
-        if ($runPath == null) {
-            $runPath = $this->runPath;
-        }
-        if ($libPath == null) {
-            $libPath = $this->libPath;
-        }
+        $runPath = is_null($runPath) ? $this->runPath : $runPath;
+        $libPath = is_null($libPath) ? $this->libPath : $libPath;
 
         if ($runPath==$libPath) {
             return '';
