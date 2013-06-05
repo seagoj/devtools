@@ -62,7 +62,7 @@ class Markdown
     public function __construct($options = [])
     {
         $defaults = [
-            'flavor' => 'standard',
+            'flavor' => 'multimarkdown',
             'logType' => 'stdout'
         ];
 
@@ -86,7 +86,8 @@ class Markdown
         $valid = [
             'flavor' => [
                 'standard',
-                'github'
+                'github',
+                'multimarkdown'
             ],
             'logType' => [
                 'stdout',
