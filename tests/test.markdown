@@ -1,3 +1,7 @@
+title:          This is the title
+author:         Jeremy Seago
+description:    Test Description
+
 # A First Level Header
 
 ## A Second Level Header

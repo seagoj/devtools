@@ -125,6 +125,7 @@ class Markdown
 
         $this->code = explode(PHP_EOL, $code);
 
+        $this->formatMetadata();
         $this->formatInline();
         $this->formatHeader();
         $this->formatUnorderedList();
@@ -141,7 +142,72 @@ class Markdown
             $html .= $line.PHP_EOL;
         }
 
-        return $html;
+        return "<html>\n".$html."</html>\n";
+    }
+
+    /**
+     * Markdown::formatMetadata()
+     * 
+     * Adds metadata tags from Multimarkdown compatible files
+     *
+     * @return void
+     **/
+    private function formatMetadata()
+    {
+        $syntax = [
+            ' ',
+            '<',
+            '*',
+            '_',
+            '#'
+        ];
+
+        $first = true;
+        $result = [];
+        $ended = false;
+
+        if ($this->config['flavor'] === 'multimarkdown') {
+            foreach ($this->code as $index => $line) {
+                $md = '';
+                
+                if ($ended !== true && $line !== '' &&
+                    !in_array($line[0], $syntax) &&
+                    ($pivot = strpos($line, ':', 1)) !==false &&
+                    ($label = substr($line, 0, $pivot)) !==false &&
+                    ($value = substr($line, $pivot+1)) !==false &&
+                    ($link = strpos($label, 'http'))===false) {
+
+                    $md = $first ? "<head>\n" : "";
+                    $first = false;
+
+                    switch ($label) {
+                        case 'title':
+                            $md .= "<title>".trim($value)."</title>";
+                            break;
+                        case 'author':
+                        case 'description':
+                        case 'keywords':
+                        case 'date':
+                            $md .= "<meta name='".$label."' content='".trim($value)."'>";
+                            break;
+                        default:
+                            throw new \InvalidArgumentException("$label is not a valid metadata tag");
+                            break;
+                    }
+                } else {
+                    if ($first===false && $ended===false) {
+                        $md .= "</head>\n";
+                        $ended = true;
+                    } else {
+                        $md = $line;
+                    }
+                }
+
+                array_push($result, $md);
+                
+            }
+            $this->code = $result;
+        }
     }
 
     /**
@@ -162,7 +228,11 @@ class Markdown
             'li',
             'hr',
             'code', '/code',
-            'blockquote', '/blockquote'
+            'blockquote', '/blockquote',
+            'head', '/head',
+            'title', '/title',
+            'meta',
+            'html', '/html'
         );
 
         $blockElements = array('code', 'blockquote');
@@ -172,7 +242,10 @@ class Markdown
         $block = false;
         foreach ($this->code as $line) {
             if ($line!=='' && $line[0]==='<') {
-                $tag = substr($line, 1, ($end = strpos($line, '>')-1));
+                $tag = substr($line, 1, ($end = strpos($line, '>', 1))-1);
+                if (($space = strpos($tag, ' ')) !== false) {
+                    $tag = substr($tag, 0, $space);
+                }
                 if (in_array($tag, $rootElements)) {
                     if (in_array($tag, $blockElements)) {
                         $block=true;

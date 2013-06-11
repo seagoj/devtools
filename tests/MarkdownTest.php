@@ -90,7 +90,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         for ($i=1; $i<=5; $i++) {
             for($count=1; $count<=$i; $count++)
                 $head.="#";
-            $this->assertEquals("<h$i>H$i</h$i>\n", $md->convert("$head H$i"));
+            $this->assertEquals("<html>\n<h$i>H$i</h$i>\n</html>\n", $md->convert("$head H$i"));
             $head = "";
         }
     }
@@ -106,7 +106,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $md = new \Devtools\Markdown();
 
         $li = "List Item ";
-        $resultStr = "<ul>\n";
+        $resultStr = "<html>\n<ul>\n";
         $mdStrStar = $mdStrMinus = $mdStrPlus = "";
 
         for ($i=1; $i<=5; $i++) {
@@ -116,7 +116,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
             $mdStrPlus .= "+ $li$i\n";
         }
 
-        $resultStr .= "</ul>\n";
+        $resultStr .= "</ul>\n</html>\n";
         $mdStrStar .= "\n";
         $mdStrMinus .= "\n";
         $mdStrPlus .= "\n";
@@ -137,7 +137,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $md = new \Devtools\Markdown();
 
         $li = "List Item ";
-        $resultStr = "<ol>\n";
+        $resultStr = "<html>\n<ol>\n";
         $mdStr = "";
 
         for ($i=1; $i<=5; $i++) {
@@ -145,12 +145,12 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
             $mdStr .= "$i. $li$i\n";
         }
 
-        $resultStr .= "</ol>\n";
+        $resultStr .= "</ol>\n</html>\n";
         $mdStr .= "\n";
 
         $this->assertEquals($resultStr, $md->convert($mdStr));
 
-        $this->assertEquals("<p>\ntest. test\n</p>\n", $md->convert("test. test"));
+        $this->assertEquals("<html>\n<p>\ntest. test\n</p>\n</html>\n", $md->convert("test. test"));
     }
 
     /**
@@ -185,7 +185,8 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $md = new \Devtools\Markdown();
 
         $sample = __METHOD__." ";
-        $resultStr = $mdStrStar = $mdStrUS = "";
+        $resultStr = "<html>\n<p>\n";
+        $mdStrStar = $mdStrUS = "";
 
         for ($i=1; $i<=4; $i++) {
             $resultStr .= "<strong>$sample$i</strong> ";
@@ -197,7 +198,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $mdStrStar .= "**".$sample."5**";
         $mdStrUS .= "__".$sample."5__";
 
-        $resultStr = "<p>\n$resultStr\n</p>\n";
+        $resultStr .= "\n</p>\n</html>\n";
 
         $this->assertEquals($resultStr, $md->convert($mdStrStar));
         $this->assertEquals($resultStr, $md->convert($mdStrUS));
@@ -215,7 +216,8 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $md = new \Devtools\Markdown();
 
         $sample = __METHOD__." ";
-        $resultStr = $mdStrStar = $mdStrUS = "";
+        $resultStr = "<html>\n<p>\n";
+        $mdStrStar = $mdStrUS = "";
 
         for ($i=1; $i<=5; $i++) {
             $resultStr .= "<em>$sample$i</em> ";
@@ -223,7 +225,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
             $mdStrUS .= "_".$sample.$i."_ ";
         }
 
-        $resultStr = "<p>\n$resultStr\n</p>\n";
+        $resultStr .= "\n</p>\n</html>\n";
 
         $this->assertEquals($resultStr, $md->convert($mdStrStar));
         $this->assertEquals($resultStr, $md->convert($mdStrUS));
@@ -241,7 +243,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $md = new \Devtools\Markdown();
 
         $mdStr = "not code `code` not code\n";
-        $resultStr = "<p>\nnot code <code>code</code> not code\n</p>\n";
+        $resultStr = "<html>\n<p>\nnot code <code>code</code> not code\n</p>\n</html>\n";
 
         $this->assertEquals($resultStr, $md->Convert($mdStr));
     }
@@ -257,7 +259,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $md = new \Devtools\Markdown();
 
         $mdStr = "---\n";
-        $resultStr = "<hr>\n";
+        $resultStr = "<html>\n<hr>\n</html>\n";
 
         $this->assertEquals($resultStr, $md->convert($mdStr));
     }
@@ -271,7 +273,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
     public function testFormatCode()
     {
         $mdStr = "    code1\n    code2\n";
-        $resultStr = "<code>\n\tcode1\n\tcode2\n</code>\n";
+        $resultStr = "<html>\n<code>\n\tcode1\n\tcode2\n</code>\n</html>\n";
 
         $md = new \Devtools\Markdown();
         $this->assertEquals($resultStr, $md->convert($mdStr));
@@ -286,7 +288,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
     public function testFormatBlockquote()
     {
         $mdStr = "> line1\n> line2\n";
-        $resultStr = "<blockquote>\n    line1\n    line2\n</blockquote>\n";
+        $resultStr = "<html>\n<blockquote>\n    line1\n    line2\n</blockquote>\n</html>\n";
 
         $md = new \Devtools\Markdown();
         $this->assertEquals($resultStr, $md->convert($mdStr));
@@ -303,7 +305,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
     public function testFormatImage()
     {
         $mdStr = "![Alt Text](http://pathtoimage.com/image.jpg)\n";
-        $resultStr = "<p>\n<img src='http://pathtoimage.com/image.jpg' alt='Alt Text' />\n</p>\n";
+        $resultStr = "<html>\n<p>\n<img src='http://pathtoimage.com/image.jpg' alt='Alt Text' />\n</p>\n</html>\n";
 
         $md = new \Devtools\Markdown();
         $this->assertEquals($resultStr, $md->convert($mdStr));
@@ -320,7 +322,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
     public function testFormatLink()
     {
         $mdStr = "[link](http://google.com)\n";
-        $resultStr = "<p>\n<a href='http://google.com' >link</a>\n</p>\n";
+        $resultStr = "<html>\n<p>\n<a href='http://google.com' >link</a>\n</p>\n</html>\n";
 
         $md = new \Devtools\Markdown();
         $this->assertEquals($resultStr, $md->convert($mdStr));
@@ -330,6 +332,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
      * @covers Devtools\Markdown::__construct
      * @covers Devtools\Markdown::validateConfig
      * @covers Devtools\Markdown::convert
+     * @covers Devtools\Markdown::formatMetadata
      * @covers Devtools\Markdown::formatParagraph
      **/
     public function testFullPage()
@@ -340,4 +343,22 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $md = new \Devtools\Markdown();
         $this->assertEquals($resultStr, $md->convert($mdStr));
     }
+
+    /**
+     * @covers Devtools\markdown::__construct
+     * @covers Devtools\Markdown::formatMetadata
+     *
+     * @expectedException          InvalidArgumentException
+     * @expectedExceptionMessage    invalid is not a valid metadata tag
+     **/
+    public function testInvalidMetadata()
+    {
+        $mdStr = "invalid: Test\n";
+
+        $md = new \Devtools\Markdown();
+
+        $md->convert($mdStr);
+
+    }
+
 }
