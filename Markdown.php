@@ -63,7 +63,8 @@ class Markdown
     {
         $defaults = [
             'flavor' => 'multimarkdown',
-            'logType' => 'stdout'
+            'logType' => 'stdout',
+            'htmlTag' => true
         ];
 
         $this->config = array_merge($defaults, $options);
@@ -91,6 +92,10 @@ class Markdown
             ],
             'logType' => [
                 'stdout',
+            ],
+            'htmlTag' => [
+                true,
+                false
             ]
         ];
 
@@ -142,7 +147,10 @@ class Markdown
             $html .= $line.PHP_EOL;
         }
 
-        return "<html>\n".$html."</html>\n";
+
+        return $this->config['htmlTag'] ?
+            "<html>\n".$html."</html>\n" :
+            $html;
     }
 
     /**
