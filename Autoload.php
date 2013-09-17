@@ -97,9 +97,16 @@ class Autoload
      *
      * @return void
      */
-    public static function register($prepend = false)
+    public static function register($options=[], $prepend = false)
     {
-        spl_autoload_register(array(new self, 'autoload'), true, $prepend);
+        $defaults = {
+            "prepend"=> false,
+            "cwd" = __DIR__
+        };
+
+        $options = array_merge($defaults, $options);
+
+        spl_autoload_register(array(new self($defaults['cdw'], 'autoload'), true, $prepend);
     }
 
     /**
