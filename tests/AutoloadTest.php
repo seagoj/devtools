@@ -122,6 +122,13 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
             '../../lib/', 
             $method->invoke(new \Devtools\Autoload(), $_runPath, $_libPath)
         );
+
+        $_runPath = '/usr/bin/phpunit';
+        $_libPath = '/home/code/Devtools';
+        $this->assertEquals(
+            "../lib/",
+            $method->invoke(new \Devtools\Autoload(), $_runPath, $_libPath)
+        );
     }
 
     /**
