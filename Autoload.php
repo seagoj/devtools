@@ -109,7 +109,7 @@ class Autoload
     {
         $defaults = {
             "prepend"=> false,
-            "cwd" = __DIR__
+            "cwd" => __DIR__
         };
 
         $options = array_merge($defaults, $options);
