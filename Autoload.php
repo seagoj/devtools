@@ -52,7 +52,7 @@ class Autoload
      *
      * @return void
      */
-    public function __construct($currentDir)
+    public function __construct($currentDir = __DIR__)
     {
         switch (self::checkEnv()) {
             case 'PHPUNIT':
@@ -69,7 +69,7 @@ class Autoload
                 // @codeCoverageIgnoreStart
             default:
                 $this->runPath = $this->getPath($_SERVER['SCRIPT_FILENAME']);
-                $this->libPath = $currentDir;
+                $this->libPath = $this->getPath($currentDir);
                 break;
                 // @codeCoverageIgnoreEnd
         }
@@ -105,16 +105,15 @@ class Autoload
      *
      * @return void
      */
-    public static function register($options=[], $prepend = false)
+    public static function register($options=null)
     {
-        $defaults = {
+        $defaults = array(
             "prepend"=> false,
-            "cwd" => __DIR__
-        };
+        );
 
         $options = array_merge($defaults, $options);
 
-        spl_autoload_register(array(new self($defaults['cdw']), 'autoload'), true, $prepend);
+        spl_autoload_register(array(new self, 'autoload'), true, $options['prepend']);
     }
 
     /**
@@ -126,9 +125,10 @@ class Autoload
      */
     private function autoload($class)
     {
-        return is_file(
-            $file = $this->getRelPath().implode(DIRECTORY_SEPARATOR, explode('\\', $class)).'.php'
-        ) ? include $file : null;
+        $file = $this->getRelPath().implode(DIRECTORY_SEPARATOR, explode('\\', $class)).'.php';
+        print getcwd();
+        print $file;
+        include $file;
     }
 
     /**
