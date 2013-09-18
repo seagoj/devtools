@@ -23,8 +23,10 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
         \Devtools\Autoload::register();
         $autoloadStack = spl_autoload_functions();
 
-        $this->assertEquals($this->validClass, get_class($autoloadStack[9][0]));
-        $this->assertEquals($this->validMethod, $autoloadStack[9][1]);
+        var_dump($autoloadStack);
+
+        $this->assertEquals($this->validClass, get_class($autoloadStack[1][0]));
+        $this->assertEquals($this->validMethod, $autoloadStack[a][1]);
     }
 
     /**
@@ -32,7 +34,7 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
      **/
     public function testRegisterPrepend()
     {
-        \Devtools\Autoload::register(true);
+        \Devtools\Autoload::register(array('prepend'=>true));
         $autoloadStack = spl_autoload_functions();
 
         $this->assertEquals($this->validClass, get_class($autoloadStack[0][0]));

@@ -105,7 +105,7 @@ class Autoload
      *
      * @return void
      */
-    public static function register($options=null)
+    public static function register($options=array())
     {
         $defaults = array(
             "prepend"=> false,

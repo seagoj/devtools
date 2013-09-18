@@ -3,6 +3,7 @@ vendor
 *.log
 deprecated
 tmp
+composer.lock
 
 ############
 ## Git
