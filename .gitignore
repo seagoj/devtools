@@ -4,6 +4,10 @@ vendor
 deprecated
 tmp
 composer.lock
+lib/Predis
+lib/Devtools
+lib/Bootstrap
+lib/sass
 
 ############
 ## Git

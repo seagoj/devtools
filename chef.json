@@ -6,7 +6,8 @@
         "redis": "git://github.com/seagoj/cookbook-redis.git",
         "ruby": "git://github.com/seagoj/cookbook-ruby.git",
         "sass": "git://github.com/seagoj/cookbook-sass.git",
-        "lib_bootstrap": "git://github.com/seagoj/cookbook-lib.git",
-        "lib_predis": "git://github.com/seagoj/cookbook-lib.git"
+        "lib::bootstrap": "git://github.com/seagoj/cookbook-lib.git",
+        "lib::predis": "git://github.com/seagoj/cookbook-lib.git",
+        "lib::devtools-self": "git://github.com/seagoj/cookbook-lib.git"
     }
 }
