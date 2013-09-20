@@ -126,8 +126,6 @@ class Autoload
     private function autoload($class)
     {
         $file = $this->getRelPath().implode(DIRECTORY_SEPARATOR, explode('\\', $class)).'.php';
-        print getcwd();
-        print $file;
         include $file;
     }
 
