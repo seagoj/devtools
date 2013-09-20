@@ -102,7 +102,7 @@ class Log
 
         switch ($this->config['type']) {
             case 'file':
-                $this->file($content);
+                return $this->file($content);
                 break;
             case 'stdout':
                 $this->stdout($content);

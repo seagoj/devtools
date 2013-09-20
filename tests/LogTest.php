@@ -115,7 +115,7 @@ class LogTest extends PHPUnit_Framework_TestCase
     {
         $options = [
             'type' => 'file',
-            'file' => __METHOD__.'.log'
+            'file' => 'testFile.log'
         ];
 
         $log = new \Devtools\Log($options);
@@ -123,7 +123,7 @@ class LogTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue(is_file($options['file']));
         $this->assertTrue(file_get_contents($options['file'])!=='');
-        unlink(__METHOD__.'.log');
+        unlink('testFile.log');
     }
 
     /**

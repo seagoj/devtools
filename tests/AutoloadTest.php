@@ -24,7 +24,7 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
         $autoloadStack = spl_autoload_functions();
 
         $this->assertEquals($this->validClass, get_class($autoloadStack[1][0]));
-        $this->assertEquals($this->validMethod, $autoloadStack[a][1]);
+        $this->assertEquals($this->validMethod, $autoloadStack[1][1]);
     }
 
     /**
@@ -58,8 +58,6 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
             $method->invoke(new \Devtools\Autoload(), 'Devtools\RandData'),
             1
         );
-
-        
     }
 
     /**
@@ -126,7 +124,7 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
         $_runPath = '/usr/bin/phpunit';
         $_libPath = '/home/code/Devtools';
         $this->assertEquals(
-            "../lib/",
+            "../../../home/code/Devtools/",
             $method->invoke(new \Devtools\Autoload(), $_runPath, $_libPath)
         );
     }
