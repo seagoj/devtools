@@ -26,7 +26,8 @@
             </exclude>
         </whitelist>
         <blacklist>
-            <directory>./lib/predis</directory>
+            <directory>./lib/Predis</directory>
+            <directory>vendor</directory>
         </blacklist>
     </filter>
 

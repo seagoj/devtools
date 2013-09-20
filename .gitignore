@@ -1,42 +1,35 @@
+## Config
 config
-vendor
+
+## Temp files
 *.log
 deprecated
 tmp
 composer.lock
+
+## libraries
 lib/Predis
 lib/Devtools
 lib/Bootstrap
 lib/sass
+vendor
 
-############
 ## Git
 .git
 
-############
 ## Vagrant
 .vagrant
 
-############
 ## Chef
 cookbooks
 
-############
 ## SASS
 .sass-cache
 
-############
 ## Sublime Text 2
-============
 *.sublime-project
 *.sublime-workspace
 
-############
 ## Windows
-############
-
-# Windows image file caches
 Thumbs.db
-
-# Folder config file
 Desktop.ini
