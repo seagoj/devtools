@@ -1,13 +1,13 @@
 # require 'rubygems'
 require 'json'
-# require 'fileutils'
+require 'fileutils'
 
 Vagrant::Config.run do |config|
     options = {
         :cookbook_location => 'remote',
         :cookbooks_path => 'cookbooks',
         :os => 'ubuntu',
-        :force_update => true,
+        :force_update => false,
         :gui => false
     }
 
@@ -29,8 +29,6 @@ Vagrant::Config.run do |config|
         chef.cookbooks_path = options[:cookbooks_path]
 
         case options[:cookbook_location]
-        when 'local'
-
         when 'remote'
             FileUtils.rm_rf(chef.cookbooks_path) if options[:force_update]
             Dir.mkdir(chef.cookbooks_path) unless Dir.exists?(chef.cookbooks_path)
@@ -38,7 +36,8 @@ Vagrant::Config.run do |config|
             chef.json[:ingredients].each do |k,v|
                 k = k.to_s
                 cookbook = k[0,(k.index(':') || k.length)]
-                system("git clone "+v+" #{chef.cookbooks_path}/#{cookbook}")
+                path = "#{chef.cookbooks_path}/#{cookbook}"
+                system("git clone #{v} #{path}") if !Dir.exists?(path)
                 chef.add_recipe(k)
             end
         end
