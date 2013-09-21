@@ -58,13 +58,6 @@ class Autoload
             case 'PHPUNIT':
                 $this->runPath = $currentDir;
                 $this->libPath = $this->runPath.'/lib';
-/*                var_dump(array(
-                    'Autoload' => $this,
-                    'currentDir' => $currentDir,
-                    'script_Filename' => $_SERVER['SCRIPT_FILENAME'],
-                    'checkEnv' => self::checkEnv()
-                ));
-*/
                 break;
                 // @codeCoverageIgnoreStart
             default:
@@ -89,11 +82,7 @@ class Autoload
     {
         $path = explode('/', $_SERVER['SCRIPT_FILENAME']);
         
-        if ($path[sizeof($path)-1]=='phpunit') {
-            return 'PHPUNIT';
-        } else {
-            return '';
-        }
+        return in_array('phpunit', $path) ? 'PHPUNIT' : '';
     }
 
     /**
@@ -167,15 +156,14 @@ class Autoload
             $libPathDepth = sizeof($libPathArray);
             $poppedFromRun = $poppedFromLib = $relPath = array();
 
-//            var_dump($poppedFromRun);
-
+            // @codeCoverageIgnoreStart
             if ($runPathDepth==$libPathDepth && self::checkEnv()!=='PHPUNIT') {
                 while ($runPathArray!=$libPathArray) {
                     array_push($poppedFromRun, array_pop($runPathArray));
                     array_push($poppedFromLib, array_pop($libPathArray));
                 }
-//             var_dump($poppedFromRun);
-             } else {
+            } else {
+            // @codeCoverageIgnoreEnd
                 if ($runPathDepth>$libPathDepth) {
                     $longArray = 'run';
                     $shortArray = 'lib';
@@ -196,14 +184,12 @@ class Autoload
                     $i--;
                 }
 
-//             var_dump($poppedFromRun);
                 for ($i; $i<$longArrayDepth-1; $i++) {
                     if ($i<$shortArrayDepth-1) {
                         array_push(${"poppedFrom".ucfirst($shortArray)}, array_pop(${$shortArray."PathArray"}));
                     }
                     array_push(${"poppedFrom".ucfirst($longArray)}, array_pop(${$longArray."PathArray"}));
                 }             
-//                var_dump($poppedFromRun);
             }
 
             foreach ($poppedFromRun as $pop) {

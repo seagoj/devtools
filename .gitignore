@@ -4,8 +4,8 @@ config
 ## Temp files
 *.log
 deprecated
-tmp
 composer.lock
+tests/report
 
 ## libraries
 lib/Predis

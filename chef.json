@@ -1,7 +1,7 @@
 {
     "ingredients": {
         "apt": "git://github.com/seagoj/cookbook-apt.git",
-        "php": "git://github.com/seagoj/cookbook-php.git",
+        "php::composer": "git://github.com/seagoj/cookbook-php.git",
         "nginx": "git://github.com/seagoj/cookbook-nginx.git",
         "redis": "git://github.com/seagoj/cookbook-redis.git",
         "ruby": "git://github.com/seagoj/cookbook-ruby.git",

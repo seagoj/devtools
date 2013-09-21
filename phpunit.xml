@@ -33,7 +33,7 @@
 
     <logging>
         <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
-        <log type="coverage-html" target="tmp"/>
+        <log type="coverage-html" target="tests/report"/>
         <!--//<log type="tap" target="tmp/logfile.tap"/>//-->
     </logging>
 
