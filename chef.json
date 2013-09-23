@@ -4,7 +4,6 @@
         "php::composer": "git://github.com/seagoj/cookbook-php.git",
         "nginx": "git://github.com/seagoj/cookbook-nginx.git",
         "redis": "git://github.com/seagoj/cookbook-redis.git",
-        "ruby": "git://github.com/seagoj/cookbook-ruby.git",
-        "lib::devtools-self": "git://github.com/seagoj/cookbook-lib.git"
+        "ruby": "git://github.com/seagoj/cookbook-ruby.git"
     }
 }
