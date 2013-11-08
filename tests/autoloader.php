@@ -1,45 +1,50 @@
 <?php
 
-$path = $_SERVER['SCRIPT_FILENAME'];
-$currentPathArray = explode("/", $path);
-
-while(!is_dir("$path/vendor") && !is_dir("$path/lib")) {
-    $pathArray = explode("/", $path);
-    $last = array_pop($pathArray);
-    $path = implode("/", $pathArray);
-}
-
-$rootPath = "$path";
-$rootPathArray = explode("/", $rootPath);
-
-array_pop($currentPathArray);
-
-if (file_exists("$rootPath/vendor")) {
-    $flag = 'vendor';
-} elseif (file_exists("$rootPath/lib")) {
-    $flag = 'lib';
-}
-
-$i = 0;
-while( $i<(min(count($rootPathArray), count($currentPathArray))) &&
-    ($currentPathArray[$i] === $rootPathArray[$i])
-)
+function findLibDir($pathArray)
 {
-    $i++;
+    $libDirArray = ['vendor', 'lib'];
+    $found = false;
+
+    // Traverse path to find path to libDir
+    while(!$found) {
+        $path = implode("/", $pathArray);
+        foreach ($libDirArray as $dir) {
+            if( is_dir("$path/$dir") ) {
+                array_push($pathArray, $dir); 
+                $found = true;
+                break;
+            }
+        }
+        if (!$found) array_pop($pathArray);
+    }
+    return $pathArray;
 }
 
-$currentDiff = count($currentPathArray) - $i;
-$rootDiff = count($rootPathArray) - $i;
-$relPath = array();
+// Set initial values
+$autoloadClass = "\Devtools\Autoload";
+$currentPathArray = explode("/", dirname($_SERVER['SCRIPT_FILENAME']));
+$rootPathArray = findLibDir($currentPathArray);
+$rootPathDepth = count($rootPathArray);
+$libDir = array_pop($rootPathArray);
+$currentPathDepth = count($currentPathArray);
 
-for ($j = $i; $j<count($currentPathArray); $j++) {
+// Ignore the parts of the path that are the same for each
+for ($i=0; $i<min($rootPathDepth, $currentPathDepth); $i++)
+{
+    if ($currentPathArray[$i] !== $rootPathArray[$i]) break;
+}
+
+// Build the relative path from currentDir to libDir
+$relPath = array();
+for ($j = $i; $j<$currentPathDepth; $j++) {
     array_push($relPath, "..");
 }
-
-for ($i; $i<count($rootPathArray); $i++) {
+for ($i; $i<$rootPathDepth; $i++) {
     array_push($relPath, array_pop($rootPathArray[$i]));
 }
 
-include_once(implode("/", $relPath)."/$flag/Devtools/Autoload.php");
+// Include file and register proper autoload function
+include_once implode("/", $relPath)."/$libDir".str_replace('\\', '/', $autoloadClass).".php";
+$autoloadClass::register();
 
-\Devtools\Autoload::register();
+if (isset($_REQUEST['debug'])) var_dump(spl_autoload_functions());
