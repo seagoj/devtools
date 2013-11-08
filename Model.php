@@ -86,7 +86,8 @@ class Model
     private function validateConfig()
     {
         $validTypes = [
-            'redis'
+            'redis',
+            'firebird'
         ];
 
         if (in_array($this->config['type'], $validTypes)) {
@@ -159,6 +160,39 @@ class Model
 
         $this->connection = new \Predis\Client($clientOptions);
         return $this->connected = isset($this->connection);
+    }
+
+    private function connectFirebird()
+    {
+        $options = $this->config;
+
+        $this->checkConfig();
+
+        $this->connection = ibase_pconnect(
+            $options['host'].':C:\\'.$options['environment'].'\\'.$options['location'].'\\CMPDWIN.PKF',
+            $options['dba'],
+            $options['password']
+        );
+    }
+
+    private function checkConfig()
+    {
+        switch($this->config['type'])
+        {
+            case 'firebird':
+                $required = ['host', 'environment', 'location', 'dba', 'password'];
+                break;
+            case 'redis':
+                $required = ['scheme', 'host', 'port'];
+                break;
+        }
+
+        foreach ($required as $req) {
+            if (!in_array($req, $this->config)) {
+                throw new \InvalidArgumentException("Config hash does not contain a value for : $req.");
+                return false;
+            }
+        }
     }
 
     /**

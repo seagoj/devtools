@@ -57,7 +57,7 @@ class Autoload
         switch (self::checkEnv()) {
             case 'PHPUNIT':
                 $this->runPath = $currentDir;
-                $this->libPath = $this->runPath.'/lib';
+                $this->libPath = $this->runPath.'/vendor';
                 break;
                 // @codeCoverageIgnoreStart
             default:
@@ -103,6 +103,11 @@ class Autoload
         $options = array_merge($defaults, $options);
 
         spl_autoload_register(array(new self, 'autoload'), true, $options['prepend']);
+    }
+
+    public static function autoloaderPath()
+    {
+        return $_SERVER['SCRIPT_FILENAME'];
     }
 
     /**
