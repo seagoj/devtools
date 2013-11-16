@@ -2,7 +2,7 @@
 
 function findLibDir($pathArray)
 {
-    $libDirArray = ['vendor', 'lib'];
+    $libDirArray = array('vendor', 'lib');
     $found = false;
 
     // Traverse path to find path to libDir
@@ -24,9 +24,9 @@ function findLibDir($pathArray)
 $autoloadClass = "\Devtools\Autoload";
 $currentPathArray = explode("/", dirname($_SERVER['SCRIPT_FILENAME']));
 $rootPathArray = findLibDir($currentPathArray);
-$rootPathDepth = count($rootPathArray);
 $libDir = array_pop($rootPathArray);
 $currentPathDepth = count($currentPathArray);
+$rootPathDepth = count($rootPathArray);
 
 // Ignore the parts of the path that are the same for each
 for ($i=0; $i<min($rootPathDepth, $currentPathDepth); $i++)

@@ -61,13 +61,13 @@ class Log
      *
      * @todo validate $options array
      **/
-    public function __construct($options = [])
+    public function __construct($options = array())
     {
-        $defaults = [
+        $defaults = array(
             'type' => 'stdout',
             'file' => 'Log.log',
             'format' => 'tap'
-        ];
+        );
 
         $this->config = array_merge($defaults, $options);
         $this->testCount = 0;
@@ -224,5 +224,10 @@ class Log
 
             $this->write($footers[$this->config['format']]);
         }
+    }
+
+    public static function consoleLog($var)
+    {
+        print '<script>console.log('.json_encode($var).');</script>';
     }
 }

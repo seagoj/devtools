@@ -104,7 +104,7 @@ class API
     private static function loadOptions($options)
     {
         $defaults = array(
-            'rowDelim' => '\n',
+            'rowDelim' => "\n",
             'colDelim' => "|",
             'type' => isset($_REQUEST['type']) ? $_REQUEST['type'] : ''
         );
