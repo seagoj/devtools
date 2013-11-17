@@ -6,6 +6,7 @@ config
 deprecated
 composer.lock
 tests/report
+tmp
 
 ## libraries
 lib/Predis
