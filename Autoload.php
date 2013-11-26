@@ -105,11 +105,6 @@ class Autoload
         spl_autoload_register(array(new self, 'autoload'), true, $options['prepend']);
     }
 
-    public static function autoloaderPath()
-    {
-        return $_SERVER['SCRIPT_FILENAME'];
-    }
-
     /**
      * Autoload.autoload()
      *

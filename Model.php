@@ -12,7 +12,7 @@
  * @link      https://github.com/seagoj/devtools
  *
  */
- 
+
 namespace Devtools;
 
 /**
@@ -55,14 +55,24 @@ class Model
      **/
     public function __construct($options = [])
     {
-        $defaults = [
+        // require_once 'autoloader.php';
+
+        if(is_object($options)) {
+            $options = (array) $options;
+        }
+
+        $defaults = array(
             'connect' => true,
             'type' => 'redis',
             'scheme' => 'tcp',
             'host' => '127.0.0.1',
             'port' => 6379
-        ];
+        );
 
+/*        if(empty($options) && is_file('model.json')) {
+            $options = json_decode(file_get_contents('model.json'));
+        }
+*/
         $this->config = array_merge($defaults, $options);
         $this->validateConfig();
 
@@ -86,7 +96,8 @@ class Model
     private function validateConfig()
     {
         $validTypes = [
-            'redis'
+            'redis',
+            'firebird'
         ];
 
         if (in_array($this->config['type'], $validTypes)) {
@@ -130,11 +141,11 @@ class Model
     {
         $this->config = array_merge($this->config, $options);
 
-        $clientOptions = [
+        $clientOptions = array(
             'scheme' => $this->config['scheme'],
             'host' => $this->config['host'],
             'port' => $this->config['port']
-        ];
+        );
 
         $this->validateConfig();
 
@@ -151,13 +162,24 @@ class Model
      **/
     private function connectRedis()
     {
-        $clientOptions = [
+        $clientOptions = array(
             'scheme' => $this->config['scheme'],
             'host' => $this->config['host'],
             'port' => $this->config['port']
-        ];
+        );
 
         $this->connection = new \Predis\Client($clientOptions);
+        return $this->connected = isset($this->connection);
+    }
+
+    private function connectFirebird()
+    {
+        $this->connection = \ibase_pconnect(
+            $this->config['host'].':C:\\'.$this->config['environment'].'\\'.$this->config['location'].'\\CMPDWIN.PKF',
+            $this->config['dba'],
+            $this->config['password']
+        );
+        if(!$this->connection) throw new \Exception('connection to host could not be established');
         return $this->connected = isset($this->connection);
     }
 
@@ -209,7 +231,6 @@ class Model
     private function expireRedis($key, $expiry)
     {
         return $this->connection->expire($key, $expiry);
-        
     }
 
     /**
@@ -256,6 +277,7 @@ class Model
         $func = 'get'.ucfirst($this->config['type']);
         return $this->$func($key, $hash);
     }
+
     /**
      * Model::getAll
      *
@@ -339,5 +361,45 @@ class Model
         }
 
         return $data;
+    }
+
+    public function query($sql, $reduce=true, $debug=false)
+    {
+        if(!is_array($this->config)) {
+            throw new \Exception("Options array is not an array.");
+        }
+
+        $func = 'query'.ucfirst($this->config['type']);
+        return $this->$func($sql, $reduce, $debug);
+    }
+
+    private function queryFirebird($sql, $reduce, $debug)
+    {
+        if($debug) \Devtools\Log::consoleLog($this->connection);
+        if($debug) \Devtools\Log::consoleLog($sql);
+
+        $q = ibase_query($this->connection, $query);
+        if($debug) \Devtools\Log::consoleLog($q);
+
+        $result = array();
+        while( $row = ibase_fetch_assoc($q)) {
+            if($debug) \Devtools\Log::consoleLog($row);
+            array_push($result, $r);
+        }
+
+        ibase_free_result($q);
+        if($debug) \Devtools\Log::consoleLog($result);
+
+        return ($reduce ? $this->reduceResult($result) : $result);
+    }
+
+    private function reduceResult($result)
+    {
+        if(is_array($result) && (count($result) == 1)) {
+            reset($result);
+            return $this->reduceResult($result[key($result)]);
+        } else {
+            return $result;
+        }
     }
 }

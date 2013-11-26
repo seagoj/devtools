@@ -1,5 +1,15 @@
 <?php
 
+$error = array(
+    'type'  => 'file',
+    'file'  => '/home/www/Error.log'
+);
+
+$debug = array(
+    'type'  => 'file',
+    'file'  => '/home/www/Debug.log'
+);
+
 function findLibDir($pathArray)
 {
     $libDirArray = array('vendor', 'lib');
@@ -48,3 +58,6 @@ include_once implode("/", $relPath)."/$libDir".str_replace('\\', '/', $autoloadC
 $autoloadClass::register();
 
 if (isset($_REQUEST['debug'])) var_dump(spl_autoload_functions());
+
+$errorLog = new \Devtools\Log($error);
+$debugLog = new \Devtools\Log($debug);

@@ -66,10 +66,13 @@ if(!empty($relPath)) {
     $relPath = "";
 }
 $autoloadPath = $relPath.$libDir.str_replace('\\', '/', $autoloadClass).".php";
+var_dump($autoloadPath);
 include_once $autoloadPath;
 $autoloadClass::register();
 
 if (isset($_REQUEST['debug'])) var_dump(spl_autoload_functions());
 
+var_dump("Creating Logs");
 $errorLog = new \Devtools\Log($error);
 $debugLog = new \Devtools\Log($debug);
+var_dump("Logs created");

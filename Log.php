@@ -171,7 +171,7 @@ class Log
      **/
     private function stringify($content)
     {
-        return (is_array($content) || is_object) ?
+        return (is_array($content) || is_object($content)) ?
             var_export($content, true) :
             $content;
     }

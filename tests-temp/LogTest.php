@@ -212,16 +212,6 @@ class LogTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @covers Devtools\Log::consoleLog
-     **/
-    public function testConsoleLog()
-    {
-        ob_start();
-        \Devtools\Log::consoleLog("test");
-        $this->assertEquals('<script>console.log("test");</script>', ob_get_clean());
-    }
-
     private function stripHeader($buffer)
     {
 

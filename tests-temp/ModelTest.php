@@ -159,26 +159,4 @@ class ModelTest extends PHPUnit_Framework_TestCase
         $model->set('key2', 'value', __METHOD__);
         $this->assertEquals($expected, $model->getAll(__METHOD__));
     }
-
-    /**
-     * @covers Devtools\Model::connectFirebird
-     **/
-    public function testConnectFirebird()
-    {
-        if($json = json_decode(file_get_contents('firebird-model.json')))
-        {
-            $model = new \Devtools\Model($json);
-            $this->assertTrue($model->connected);
-        }
-    }
-
-    /**
-     * @covers Devtools\Model::connectFirebird
-     * @expectedException           Exception
-     * @expectedExceptionMessage    connection to host could not be established
-     **/
-    public function testConnectFirebirdFail()
-    {
-        $model = new \Devtools\Model(array('type' =>'firebird'));
-    }
 }
