@@ -12,15 +12,13 @@ class Response
     public $status;
     public $request;
     public $message;
-    private $language;
 
     public function __construct($data=array())
     {
-        $this->language = (isset($_REQUEST['language']) ? strtolower($_REQUEST['language']) : 'javascript');
-        $this->status = true;
+        $this->status = 'OK';
         $this->request = $_REQUEST;
         if (!empty($data)) $this->data($data);
-        $this->message = ($this->status ? array() : array('Data could not be set'));
+        $this->message = ($this->status ? "" : "Data could not be set\n");
     }
 
     public function message($msg, $error=false)
@@ -29,8 +27,8 @@ class Response
             $msg = var_export($msg, true);
         }
 
-        array_push($this->message, $msg);
-        if($error) $this->status = false;
+        $this->message .= "$msg\n";
+        if($error) $this->status = 'FAILED';
     }
 
     public function data($data)
@@ -41,21 +39,9 @@ class Response
         }
     }
     
-    public function send()
+    public function json()
     {
-        switch ($this->language) {
-            case 'php':
-                return $this;
-                break;
-            case 'javascript':
-                header('Content-type: application/json');
-                $this->status = ($this->status ? 'OK' : 'FAILED');
-                $this->message = implode("\n", $this->message);
-                return json_encode($this);
-                break;
-            default:
-                throw new InvalidArgumentException("$this->language is not a valid language.");
-                break;
-        }
+        header('Content-type: application/json');
+        return json_encode($this);
     }
 }
