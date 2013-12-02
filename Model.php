@@ -53,7 +53,7 @@ class Model
      *
      * @return void
      **/
-    public function __construct($options = [])
+    public function __construct($options = array())
     {
         // require_once 'autoloader.php';
 
