@@ -95,10 +95,10 @@ class Model
      **/
     private function validateConfig()
     {
-        $validTypes = [
+        $validTypes = array(
             'redis',
             'firebird'
-        ];
+        );
 
         if (in_array($this->config['type'], $validTypes)) {
             return true;
@@ -137,7 +137,7 @@ class Model
      * 
      * @return  boolean     Result of attempted connection
      **/
-    public function connect($options = [])
+    public function connect($options = array())
     {
         $this->config = array_merge($this->config, $options);
 
