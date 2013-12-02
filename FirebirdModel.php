@@ -8,12 +8,12 @@ class FirebirdModel extends Model
 
     public function __construct($options=array())
     {
-        if(empty($options) && is_file('firebird-model.json')) {
+        if(empty($options) && is_file('vendor/Devtools/firebird-model.json')) {
             $options = (array) json_decode(file_get_contents('firebird-model.json'));
         }
 
         var_dump(getcwd());
-        var_dump(is_file('firebird-model.json');
+        var_dump(is_file('vendor/Devtools/firebird-model.json'));
         exit(var_export($options, true));
 
         $defaults = array(
