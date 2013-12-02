@@ -12,6 +12,8 @@ class FirebirdModel extends Model
             $options = (array) json_decode(file_get_contents('firebird-model.json'));
         }
 
+        var_dump(getcwd());
+        var_dump(is_file('firebird-model.json');
         exit(var_export($options, true));
 
         $defaults = array(
