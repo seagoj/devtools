@@ -378,13 +378,13 @@ class Model
         if($debug) \Devtools\Log::consoleLog($this->connection);
         if($debug) \Devtools\Log::consoleLog($sql);
 
-        $q = ibase_query($this->connection, $query);
+        $q = ibase_query($this->connection, $sql);
         if($debug) \Devtools\Log::consoleLog($q);
 
         $result = array();
         while( $row = ibase_fetch_assoc($q)) {
             if($debug) \Devtools\Log::consoleLog($row);
-            array_push($result, $r);
+            array_push($result, $row);
         }
 
         ibase_free_result($q);

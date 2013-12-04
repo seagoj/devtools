@@ -8,13 +8,16 @@ class FirebirdModel extends Model
 
     public function __construct($options=array())
     {
-        if(empty($options) && is_file('vendor/Devtools/firebird-model.json')) {
-            $options = (array) json_decode(file_get_contents('firebird-model.json'));
+        if(empty($options) && is_file('../../../../vendor/Devtools/firebird-model.json')) {
+            $options = (array) json_decode(file_get_contents('../../../../vendor/Devtools/firebird-model.json'));
         }
 
-        var_dump(getcwd());
-        var_dump(is_file('vendor/Devtools/firebird-model.json'));
+//        echo '<script type="javascript">'.getcwd().'</script>';
+
+/*        var_dump(getcwd());
+        var_dump(is_file('../../../../vendor/Devtools/firebird-model.json'));
         exit(var_export($options, true));
+*/
 
         $defaults = array(
             'host'          => "HOST",
@@ -27,24 +30,7 @@ class FirebirdModel extends Model
         
         parent::__construct(array_merge($defaults, $options));
     }
-/*
-    public function query($query, $reduce=true, $debug=false)
-    {
-        if($debug) var_dump($query);
-        if($debug) var_dump($this->conn);
-        $q = ibase_query($this->conn, $query);
-        if($debug) var_dump($q);
-        $result = array();
-        while ($r = ibase_fetch_assoc($q)) {
-            if($debug) var_dump($r);
-            array_push($result, $r);
-        }
-
-        ibase_free_result($q);
-        if($debug) var_dump($result);
-        return ($reduce ? $this->reduceResult($result) : $result);
-    }
-*/
+    
     public function getLastPatients($limit=20)
     {
         return $this->query("select FIRST $limit * from PATIENT order by PATIENT_ID DESC");
@@ -63,13 +49,13 @@ class FirebirdModel extends Model
 
     public function getInsuranceList($insuranceName)
     {
-        $sql = "select NAME, INSURANCE_ID from INSURANCE where NAME like '%".strtoupper($insuranceName)."%' order by name";
+        $sql = "select NAME, INSURANCE_ID from INSURANCE where ACTIVATED='T' and NAME like '%".strtoupper($insuranceName)."%' order by name";
         return $this->query($sql, false);
     }
 
     public function getDoctorList($doctorName)
     {
-        $sql = "select LASTNAME, FIRSTNAME, DOCTOR_ID, FAX from DOCTOR where LASTNAME like '%".strtoupper($doctorName)."%'"; 
+        $sql = "select LASTNAME, FIRSTNAME, DOCTOR_ID, FAX from DOCTOR where ACTIVATED='T' and LASTNAME like '%".strtoupper($doctorName)."%'"; 
         return $this->query($sql, false);
     }
 
@@ -82,7 +68,21 @@ class FirebirdModel extends Model
     public function validateInsurance($insurance_name)
     {
         $sql = "select INSURANCE_ID from INSURANCE where NAME='".$insurance_name."'";
-        return $this->query($sql);
+        $return = $this->query($sql);
+        if (is_array($return)) {
+            $return = array_pop($return);
+            $return = $return['INSURANCE_ID'];
+        }
+        return $return;
+    }
+
+    public function validateDoctorName($doctor_name)
+    {
+        $lastName = substr($doctor_name, 0, $spacePos = strpos($doctor_name, ", "));
+        $firstName = substr($doctor_name, $spacePos+2);
+        $sql = "select DOCTOR_ID from DOCTOR where FIRSTNAME='".mysql_real_escape_string($firstName)."' and LASTNAME ='".mysql_real_escape_string($lastName)."'";
+        $return = $this->query($sql);
+        return $return;
     }
 
 
@@ -120,6 +120,36 @@ class FirebirdModel extends Model
         } else {
             return "";
         }
+    }
+
+    public function getDoctorNameByID($id, $debug=false)
+    {
+         if( $id = $this->formatID($id) ) {
+            $sql = "select LASTNAME, FIRSTNAME from DOCTOR where DOCTOR_ID=$id";
+            $result = $this->query($sql);
+            if( $result && $debug ) {
+                return ($result ? implode(', ', $result) : ibase_errmsg());
+            } else {
+                return implode(", ", $result);
+            }
+        } else {
+            return "";
+        }
+    }
+
+    public function getDoctorFaxByID($id, $debug=false)
+    {
+        if( $id = $this->formatID($id) ) {
+            $sql = "select FAX from DOCTOR where DOCTOR_ID=$id";
+            $result = $this->query($sql);
+            if( $result && $debug ) {
+                return ($result ? $result : ibase_errmsg());
+            } else {
+                return $result;
+            }
+        } else {
+            return "";
+        }       
     }
 
     private function reduceResult($result)
