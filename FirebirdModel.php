@@ -8,16 +8,11 @@ class FirebirdModel extends Model
 
     public function __construct($options=array())
     {
-        if(empty($options) && is_file('../../../../vendor/Devtools/firebird-model.json')) {
+        if(is_string($options) && is_file($options)) {
+            $options = (array) json_decode(file_get_contents($options));
+        } elseif(empty($options) && is_file('../../../../vendor/Devtools/firebird-model.json')) {
             $options = (array) json_decode(file_get_contents('../../../../vendor/Devtools/firebird-model.json'));
         }
-
-//        echo '<script type="javascript">'.getcwd().'</script>';
-
-/*        var_dump(getcwd());
-        var_dump(is_file('../../../../vendor/Devtools/firebird-model.json'));
-        exit(var_export($options, true));
-*/
 
         $defaults = array(
             'host'          => "HOST",
@@ -55,6 +50,7 @@ class FirebirdModel extends Model
 
     public function getDoctorList($doctorName)
     {
+        $doctorName = mysql_real_escape_string($doctorName);
         $sql = "select LASTNAME, FIRSTNAME, DOCTOR_ID, FAX from DOCTOR where ACTIVATED='T' and LASTNAME like '%".strtoupper($doctorName)."%'"; 
         return $this->query($sql, false);
     }
@@ -150,6 +146,23 @@ class FirebirdModel extends Model
         } else {
             return "";
         }       
+    }
+
+    public function getSalesRepByDoctorID($id, $debug=false)
+    {
+        if ($doctor_id = $this->formatID($id)) {
+            $sql = sprintf("select SALES_PERSON.LASTNAME, SALES_PERSON.FIRSTNAME from SALES_PERSON, DOCTOR where DOCTOR.SALES_PERSON_ID = SALES_PERSON.SALES_PERSON_ID and DOCTOR.DOCTOR_ID=%s",
+                mysql_real_escape_string($doctor_id)
+            );
+            $result = $this->query($sql);
+            if( $result && $debug ) {
+                return ($result ? $result : ibase_errmsg());
+            } else {
+                return $result;
+            }
+        } else {
+            return "";
+        }
     }
 
     private function reduceResult($result)
