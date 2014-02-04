@@ -22,14 +22,14 @@ class FirebirdModel extends Model
             'password'      => "PASSWORD",
             'type'          => 'firebird'
         );
-        
+
         parent::__construct(array_merge($defaults, $options));
     }
-    
+
     public function getLastPatients($limit=20)
     {
         return $this->query("select FIRST $limit * from PATIENT order by PATIENT_ID DESC");
-    }    
+    }
 
     public function getPatientInfoByTelephoneRxID($id)
     {
@@ -51,7 +51,7 @@ class FirebirdModel extends Model
     public function getDoctorList($doctorName)
     {
         $doctorName = mysql_real_escape_string($doctorName);
-        $sql = "select LASTNAME, FIRSTNAME, DOCTOR_ID, FAX from DOCTOR where ACTIVATED='T' and LASTNAME like '%".strtoupper($doctorName)."%'"; 
+        $sql = "select LASTNAME, FIRSTNAME, DOCTOR_ID, FAX, REGADDRESS1, NAT_PROV_PROV_ID, DEA from DOCTOR where ACTIVATED='T' and LASTNAME like '".strtoupper($doctorName)."%'";
         return $this->query($sql, false);
     }
 
@@ -121,7 +121,7 @@ class FirebirdModel extends Model
     public function getDoctorNameByID($id, $debug=false)
     {
          if( $id = $this->formatID($id) ) {
-            $sql = "select LASTNAME, FIRSTNAME from DOCTOR where DOCTOR_ID=$id";
+            $sql = "select LASTNAME, FIRSTNAME, REGADDRESS1 from DOCTOR where DOCTOR_ID=$id";
             $result = $this->query($sql);
             if( $result && $debug ) {
                 return ($result ? implode(', ', $result) : ibase_errmsg());
@@ -145,7 +145,7 @@ class FirebirdModel extends Model
             }
         } else {
             return "";
-        }       
+        }
     }
 
     public function getSalesRepByDoctorID($id, $debug=false)
