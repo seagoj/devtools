@@ -63,6 +63,9 @@ class Log
      **/
     public function __construct($options = array())
     {
+        set_exception_handler(array('Devtools\Log', 'exception_handler'));
+        set_error_handler(array('Devtools\Log','error_handler'));
+
         $defaults = array(
             'type' => 'stdout',
             'file' => 'Log.log',
@@ -111,6 +114,7 @@ class Log
                 throw new \InvalidArgumentException($this->config['type'].' is not a valid Log type');
                 break;
         }
+        return true;
     }
 
     /**
@@ -172,7 +176,7 @@ class Log
     private function stringify($content)
     {
         return (is_array($content) || is_object($content)) ?
-            var_export($content, true) :
+            serialize($content) :
             $content;
     }
 
@@ -229,5 +233,69 @@ class Log
     public static function consoleLog($var)
     {
         print '<script>console.log('.json_encode($var).');</script>';
+    }
+
+    public static function exception_handler($e)
+    {
+        \Devtools\Log::output($e->getMessage()."\n".\Devtools\Log::getExceptionTraceAsString($e));
+    }
+
+    public static function error_handler($errno, $errstr, $errfile, $errline)
+    {
+        throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
+    }
+
+    private static function getExceptionTraceAsString($exception)
+    {
+        $rtn = "";
+        $count = 0;
+        foreach ($exception->getTrace() as $frame) {
+            $args = "";
+            if (isset($frame['args'])) {
+                $args = array();
+                foreach ($frame['args'] as $arg) {
+                    if (is_string($arg)) {
+                        $args[] = "'" . $arg . "'";
+                    } elseif (is_array($arg)) {
+                        $args[] = serialize($arg);
+                    } elseif (is_null($arg)) {
+                        $args[] = 'NULL';
+                    } elseif (is_bool($arg)) {
+                        $args[] = ($arg) ? "true" : "false";
+                    } elseif (is_object($arg)) {
+                        $args[] = serialize($arg);
+                    } elseif (is_resource($arg)) {
+                        $args[] = get_resource_type($arg);
+                    } else {
+                        $args[] = $arg;
+                    }
+                }
+                $args = join(", ", $args);
+            }
+
+            foreach (array('file', 'line', 'function') as $type) {
+                $frame[$type] = isset($frame[$type]) ? $frame[$type] : '';
+            }
+
+            $rtn .= sprintf( "#%s %s(%s): %s(%s)\n",
+                $count,
+                $frame['file'],
+                $frame['line'],
+                $frame['function'],
+                $args );
+            $count++;
+        }
+        return $rtn;
+    }
+
+    private static function output($msg)
+    {
+        global $errorLog;
+
+        if (isset($errorLog) && get_class($errorLog)==='Devtools\Log') {
+            $errorLog->write($msg, false);
+        } else {
+            echo $msg;
+        }
     }
 }

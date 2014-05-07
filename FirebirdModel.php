@@ -161,7 +161,7 @@ class FirebirdModel extends Model
                 return $result;
             }
         } else {
-            return "";
+            return array();
         }
     }
 

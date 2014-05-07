@@ -15,6 +15,8 @@
 
 namespace Devtools;
 
+require_once 'autoloader.php';
+
 /**
  * Model class for personal MVC framework
  * Only class with knowledge of the database connections
@@ -128,13 +130,13 @@ class Model
 
     /**
      * Model::connect
-     * 
+     *
      * Connects model to datastore
      *
      * @param   array   $options    Options array for host, port and credentials
      *
      * @throws  Exception if datastore type is not supported
-     * 
+     *
      * @return  boolean     Result of attempted connection
      **/
     public function connect($options = array())
@@ -248,12 +250,7 @@ class Model
      **/
     public function set($key, $value, $hash = null)
     {
-        try {
             $this->checkConnection();
-        } catch (\Exception $E) {
-            throw $E;
-        }
-
         $func = 'set'.ucfirst($this->config['type']);
         return $this->$func($key, $value, $hash);
     }
@@ -267,7 +264,7 @@ class Model
      * @param   string  $hash   Hash to retrieve $key from; defaults to null
      *
      * @throws  Exception if datastore type is not supported
-     * 
+     *
      * @return  multiple    Data retrieved or false if retrieval fails
      **/
     public function get($key, $hash = null)
@@ -378,17 +375,22 @@ class Model
         if($debug) \Devtools\Log::consoleLog($this->connection);
         if($debug) \Devtools\Log::consoleLog($sql);
 
+        $sql = str_replace("\'", "''", $sql);
+
         $q = ibase_query($this->connection, $sql);
         if($debug) \Devtools\Log::consoleLog($q);
-
+        if (!(is_bool($q) || is_int($q))) {
         $result = array();
-        while( $row = ibase_fetch_assoc($q)) {
+            while( $row = ibase_fetch_assoc($q, IBASE_TEXT)) {
             if($debug) \Devtools\Log::consoleLog($row);
             array_push($result, $row);
         }
 
         ibase_free_result($q);
         if($debug) \Devtools\Log::consoleLog($result);
+        } else {
+            $result = $q;
+        }
 
         return ($reduce ? $this->reduceResult($result) : $result);
     }

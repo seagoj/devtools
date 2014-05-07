@@ -24,16 +24,29 @@ class Response
 
     public function message($msg, $error=false)
     {
+        global $errorLog;
+
         if (is_array($msg) || is_object($msg)) {
             $msg = var_export($msg, true);
         }
 
         $this->message .= "$msg\n";
-        if($error) $this->status = 'FAILED';
+        if($error) {
+            $this->status = 'FAILED';
+            trigger_error($msg);
+        }
+    }
+
+    public function fail($msg)
+    {
+        $this->message($msg, true);
     }
 
     public function data($data)
     {
+        if (empty($data)) {
+            trigger_error(var_export(debug_backtrace(), true));
+        }
         foreach($data as $key => $value)
         {
             $this->$key = $value;
