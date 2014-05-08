@@ -20,11 +20,10 @@ class FirebirdModelTest extends PHPUnit_Framework_TestCase
     /**
      * @covers Devtools\FirebirdModel::__construct
      **/
-/*    public function testOptions()
+    public function testOptions()
     {
-        $this->assertInstanceOf("Devtools\FirebirdModel", new \Devtools\FirebirdModel(array("location"=>"il")));
+        $this->assertInstanceOf("Devtools\FirebirdModel", new \Devtools\FirebirdModel(["location"=>"il"]));
     }
-*/
 
     /**
      * @covers Devtools\FirebirdModel::__construct
