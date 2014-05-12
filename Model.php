@@ -390,10 +390,9 @@ class Model
 
                 array_push($result, $row);
             }
-        }
 
-        ibase_free_result($q);
-        if($debug) \Devtools\Log::consoleLog($result);
+            ibase_free_result($q);
+            if($debug) \Devtools\Log::consoleLog($result);
         } else {
             $result = $q;
         }
