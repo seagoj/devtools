@@ -388,7 +388,10 @@ class Model
             while($row = ibase_fetch_assoc($q, IBASE_TEXT)) {
                 array_push($result, $row);
             }
-            ibase_free_result($q);
+        }
+
+        ibase_free_result($q);
+        if($debug) \Devtools\Log::consoleLog($result);
         } else {
             $result = $q;
         }
