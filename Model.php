@@ -387,7 +387,7 @@ class Model
             $this->debugLog->write('valid');
             $result = array();
             while($row = ibase_fetch_assoc($q, IBASE_TEXT)) {
-
+                $this->debugLog->write($row);
                 array_push($result, $row);
             }
 
