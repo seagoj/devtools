@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <phpunit
-    bootstrap="./tests/autoloader.php"
-    colors="true" 
+    bootstrap="./vendor/autoload.php"
+    colors="true"
     convertErrorsToExceptions="false"
     convertNoticesToExceptions="false"
     convertWarningsToExceptions="false">
