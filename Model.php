@@ -393,6 +393,8 @@ class Model
             $result = $q;
         }
 
+        $this->debugLog->write($result);
+
         return ($reduce ? $this->reduceResult($result) : $result);
     }
 
