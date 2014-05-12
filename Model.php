@@ -374,15 +374,11 @@ class Model
 
     private function queryFirebird($sql, $reduce, $debug)
     {
-        if($debug) \Devtools\Log::consoleLog($this->connection);
-        if($debug) \Devtools\Log::consoleLog($sql);
-
         $sql = str_replace("\'", "''", $sql);
 
         $this->debugLog->write($sql);
         $q = ibase_query($this->connection, $sql);
         $this->debugLog->write($q);
-        if($debug) \Devtools\Log::consoleLog($q);
         if (!(is_bool($q) || is_int($q))) {
             $this->debugLog->write('valid');
             $result = array();
@@ -392,7 +388,6 @@ class Model
             }
 
             ibase_free_result($q);
-            if($debug) \Devtools\Log::consoleLog($result);
         } else {
             $result = $q;
         }
