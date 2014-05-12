@@ -1,4 +1,4 @@
-## Devtools - master:[![Build Status](https://travis-ci.org/seagoj/devtools.png?branch=master)](https://travis-ci.org/seagoj/devtools)
+## Devtools - master:[![Build Status](https://travis-ci.org/seagoj/devtool://www.codeship.io/projects/e802aba0-bc45-0131-50bf-127f5dbe26ea/status,tn)
 Devtools is a collection of PHP libraries designed for rapid development and debugging.
 
 * **Autoload**:
@@ -26,7 +26,7 @@ Unit tester
 Clone the repo to /lib/Devtools in your project file
 
 Copy dep/autoloader.php to the Document Root and reference it in your project files as below:
-    
+
     require_once $_SERVER['DOCUMENT_ROOT'].'/autoloader.php';
 
 ##### Usage
