@@ -376,14 +376,10 @@ class Model
     {
         $sql = str_replace("\'", "''", $sql);
 
-        $this->debugLog->write($sql);
         $q = ibase_query($this->connection, $sql);
-        $this->debugLog->write($q);
         if (!(is_bool($q) || is_int($q))) {
-            $this->debugLog->write('valid');
             $result = array();
             while($row = ibase_fetch_assoc($q, IBASE_TEXT)) {
-                $this->debugLog->write($row);
                 array_push($result, $row);
             }
 
@@ -391,8 +387,6 @@ class Model
         } else {
             $result = $q;
         }
-
-        $this->debugLog->write($result);
 
         return ($reduce ? $this->reduceResult($result) : $result);
     }
