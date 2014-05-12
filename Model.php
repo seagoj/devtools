@@ -83,6 +83,8 @@ class Model
         }
 
         $this->connected = isset($this->connection);
+
+        $this->debugLog = \Devtools\Log::debugLog();
     }
 
     /**
@@ -377,7 +379,9 @@ class Model
 
         $sql = str_replace("\'", "''", $sql);
 
+        $this->debugLog->write($sql);
         $q = ibase_query($this->connection, $sql);
+        $this->debugLog->write($q);
         if($debug) \Devtools\Log::consoleLog($q);
         if (!(is_bool($q) || is_int($q))) {
         $result = array();
