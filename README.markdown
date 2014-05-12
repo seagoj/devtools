@@ -1,4 +1,4 @@
-## Devtools - master:![Build Status](https://travis-ci.org/seagoj/devtool://www.codeship.io/projects/e802aba0-bc45-0131-50bf-127f5dbe26ea/status,tn)
+## Devtools - master:![Build Status](https://www.codeship.io/projects/e802aba0-bc45-0131-50bf-127f5dbe26ea/status)
 Devtools is a collection of PHP libraries designed for rapid development and debugging.
 
 * **Autoload**:
