@@ -387,8 +387,8 @@ class Model
             $result = array();
             while( $row = ibase_fetch_assoc($q, IBASE_TEXT)) {
                 $this->debugLog->write($row);
-            if($debug) \Devtools\Log::consoleLog($row);
-            array_push($result, $row);
+                array_push($result, $row);
+            }
         }
 
         ibase_free_result($q);
