@@ -384,8 +384,9 @@ class Model
         $this->debugLog->write($q);
         if($debug) \Devtools\Log::consoleLog($q);
         if (!(is_bool($q) || is_int($q))) {
-        $result = array();
+            $result = array();
             while( $row = ibase_fetch_assoc($q, IBASE_TEXT)) {
+                $this->debugLog->write($row);
             if($debug) \Devtools\Log::consoleLog($row);
             array_push($result, $row);
         }
