@@ -298,4 +298,30 @@ class Log
             echo $msg;
         }
     }
+
+    public static function debugLog($path = '/home/www/Debug.log')
+    {
+        global $debugLog;
+        return isset($debugLog) ?
+           $debugLog :
+            new \Devtools\Log(
+            array(
+                'type'  => 'file',
+                'file'  => $path
+            )
+        );
+    }
+
+    public static function errorLog($path = '/home/www/Error.log')
+    {
+        global $errorLog;
+        return isset($errorLog) ?
+           $errorLog :
+            new \Devtools\Log(
+            array(
+                'type'  => 'file',
+                'file'  => $path
+            )
+        );
+    }
 }
