@@ -55,8 +55,8 @@ if ($cwd[1]!==$script_path[1]) {
     }
 
     foreach ($cwd as $dir) {
-        array_push($relPath, $dir)
-    };
+        array_push($relPath, $dir);
+    }
 
     var_dump($cwd);
     var_dump($script_path);
