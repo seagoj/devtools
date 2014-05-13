@@ -46,11 +46,21 @@ if ($cwd[1]!==$script_path[1]) {
     $libDir = array_pop($rootPathArray);
 } else {
     while ($cwd[0] === $script_path[0]) {
-            var_dump(array_shift($cwd));
             array_shift($script_path);
     }
+
+    $relPath = array();
+    for ($s=0; $s<count($script_path)-1; $s++) {
+        array_push($relPath, '..');
+    }
+
+    foreach ($cwd as $dir) {
+        array_push($relPath, $dir)
+    };
+
     var_dump($cwd);
     var_dump($script_path);
+    var_dump(implode('/', $relPath));
 
     /* $currentPathArray = explode( */
     /*  "/", */
