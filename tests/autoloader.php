@@ -101,3 +101,5 @@ if (!empty($relPath)) {
 $autoloadPath = $relPath.$libDir.str_replace('\\', '/', $autoloadClass).".php";
 require_once $autoloadPath;
 $autoloadClass::register();
+
+ var_dump(spl_autoload_functions());
