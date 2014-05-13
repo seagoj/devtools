@@ -62,6 +62,7 @@ if ($cwd[1]!==$script_path[1]) {
     var_dump($cwd);
     var_dump($script_path);
     var_dump(implode('/', $relPath));
+    $libDir = array_pop(findLibDir($cwd));
 
     /* $currentPathArray = explode( */
     /*  "/", */
