@@ -46,7 +46,7 @@ if ($cwd[1]!==$script_path[1]) {
     $libDir = array_pop($rootPathArray);
 } else {
     while ($cwd[0] === $script_path[0]) {
-            array_shift($cwd);
+            var_dump(array_shift($cwd));
             array_shift($script_path);
     }
     var_dump($cwd);
