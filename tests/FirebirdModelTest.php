@@ -14,6 +14,7 @@ class FirebirdModelTest extends PHPUnit_Framework_TestCase
      **/
     public function testFirebirdModel()
     {
+        var_dump(__METHOD__);
         $this->assertInstanceOf("Devtools\FirebirdModel", new \Devtools\FirebirdModel());
     }
 
