@@ -36,7 +36,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
         ];
 
         $custom = new \Devtools\Model($options);
-        
+
         $this->assertInstanceOf("Devtools\Model", $custom);
         $this->assertTrue($custom->connected);
     }
@@ -63,10 +63,18 @@ class ModelTest extends PHPUnit_Framework_TestCase
      **/
     public function testRedisSetGet()
     {
-        $model = new \Devtools\Model();
+        $stub = $this->getMock('Devtools\Model');
 
-        $this->assertTrue($model->set('Method', __METHOD__));
-        $this->assertEquals($model->get('Method'), __METHOD__);
+        $stub->expects($this->once())
+            ->method('set')
+            ->will($this->returnValue(true));
+
+        $stub->expects($this->once())
+            ->method('get')
+            ->will($this->returnValue(__METHOD__));
+
+        $this->assertTrue($stub->set('Method', __METHOD__));
+        $this->assertEquals($stub->get('Method'), __METHOD__);
     }
 
     /**
@@ -75,10 +83,26 @@ class ModelTest extends PHPUnit_Framework_TestCase
      **/
     public function testRedisHashSetGet()
     {
-        $model = new \Devtools\Model();
+        $stub = $this->getMockBuilder('Devtools\Model')
+            ->enableArgumentCloning()
+            ->getMock();
 
-        $this->assertTrue($model->set('Method', __METHOD__, __CLASS__));
-        $this->assertEquals(__METHOD__, $model->get('Method', __CLASS__));
+        $stub->expects($this->once())
+            ->method('set')
+            ->will($this->returnCallback(function($name, $value, $hash) {
+                return (!empty($name) && !empty($value) && !empty($hash));
+            }));
+
+        $stub->expects($this->once())
+            ->method('get')
+            ->will($this->returnCallback(function($name, $hash) {
+                return ($name==='Method' && $hash===__CLASS__) ?
+                    'ModelTest::testRedisHashSetGet' :
+                    false;
+        }));
+
+        $this->assertTrue($stub->set('Method', __METHOD__, __CLASS__));
+        $this->assertEquals(__METHOD__, $stub->get('Method', __CLASS__));
     }
 
     /**
@@ -98,7 +122,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
     public function testSanitize()
     {
         $model = new Devtools\Model();
-        
+
         $expected = [
             'html' => [
                 'input' => '<body>test</body>',
@@ -116,7 +140,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
 
         foreach($expected as $type => $options) {
             $this->assertEquals(
-                $options['output'], 
+                $options['output'],
                 $model->sanitize($options['input'], $type)
             );
         }
