@@ -1,14 +1,4 @@
 <?php
-$error = array(
-    'type'  => 'file',
-    'file'  => '/home/www/Error.log'
-);
-
-$debug = array(
-    'type'  => 'file',
-    'file'  => '/home/www/Debug.log'
-);
-
 if (!function_exists('findLibDir')) {
     function findLibDir($pathArray)
     {
@@ -111,8 +101,3 @@ if (!empty($relPath)) {
 $autoloadPath = $relPath.$libDir.str_replace('\\', '/', $autoloadClass).".php";
 require_once $autoloadPath;
 $autoloadClass::register();
-
-if (isset($_REQUEST['debug'])) var_dump(spl_autoload_functions());
-
-$errorLog = new \Devtools\Log($error);
-$debugLog = new \Devtools\Log($debug);
