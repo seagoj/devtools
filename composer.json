@@ -27,5 +27,8 @@
             "ln -s .. vendor/Devtools"
         ]
     },
-    "config": {}
+    "config": {},
+    "autoload": {
+        "psr-4": {"Devtools\\": "vendor/Devtools"}
+    }
 }
