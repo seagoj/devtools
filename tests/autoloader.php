@@ -45,7 +45,10 @@ if ($cwd[1]!==$script_path[1]) {
     $rootPathArray = findLibDir($cwd);
     $libDir = array_pop($rootPathArray);
 } else {
-    $currentPathArray = explode("/", dirname(getcwd()."/".$_SERVER['SCRIPT_FILENAME']));
+    $currentPathArray = explode(
+        "/",
+        dirname(getcwd()."/".$_SERVER['SCRIPT_FILENAME'])
+    );
 
     $currentPathDepth = count($currentPathArray);
     if ($currentPathArray[$currentPathDepth-1] === 'bin'
@@ -66,6 +69,8 @@ if ($cwd[1]!==$script_path[1]) {
         }
     }
 
+    var_dump($currentPathArray);
+    var_dump($rootPathArray);
     // Build the relative path from currentDir to libDir
     $relPath = array();
     for ($j = $i; $j<$currentPathDepth; $j++) {
