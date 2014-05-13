@@ -66,9 +66,9 @@ class API
         switch($options['type']) {
             case 'json':
                 header('Content-type: application/json');
-                $response = json_encode(
-                    new \Devtools\Response($result)
-                );
+                $resp = new \Devtools\Response;
+                $resp->data(array('data'=>$result));
+                $response = $resp->json();
                 break;
             case '':
             case 'string':
