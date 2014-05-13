@@ -9,24 +9,26 @@ $debug = array(
     'file'  => '/home/www/Debug.log'
 );
 
-function findLibDir($pathArray)
-{
-    $libDirArray = array('vendor', 'lib');
-    $found = false;
+if (!function_exists('findLibDir')) {
+    function findLibDir($pathArray)
+    {
+        $libDirArray = array('vendor', 'lib');
+        $found = false;
 
-    // Traverse path to find path to libDir
-    while (!$found) {
-        $path = implode("/", $pathArray);
-        foreach ($libDirArray as $dir) {
-            if ( is_dir("$path/$dir") ) {
-                array_push($pathArray, $dir);
-                $found = true;
-                break;
+        // Traverse path to find path to libDir
+        while (!$found) {
+            $path = implode("/", $pathArray);
+            foreach ($libDirArray as $dir) {
+                if ( is_dir("$path/$dir") ) {
+                    array_push($pathArray, $dir);
+                    $found = true;
+                    break;
+                }
             }
+            if (!$found) array_pop($pathArray);
         }
-        if (!$found) array_pop($pathArray);
+        return $pathArray;
     }
-    return $pathArray;
 }
 
 // Set initial values
