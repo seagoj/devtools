@@ -7,6 +7,7 @@ deprecated
 composer.lock
 tests/report
 tmp
+tests/logfile.tap
 
 ## libraries
 lib/Predis
