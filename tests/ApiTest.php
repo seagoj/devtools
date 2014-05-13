@@ -32,6 +32,9 @@ class APITest extends PHPUnit_Framework_TestCase
         $this->assertEquals($this->testResponseStr, $response);
     }
 
+    /**
+    * @runInSeparateProcess
+    **/
     public function testFormatResponseJSON()
     {
         $response = \Devtools\API::formatResponse(
