@@ -38,7 +38,7 @@ $cwd = explode('/', getcwd());
 $script_path = explode('/', $_SERVER['SCRIPT_FILENAME']);
 
 print "CWD: ".getcwd()."\n";
-print "Script Path: ".$_REQUEST['SCRIPT_FILENAME']."\n";
+print "Script Path: ".$_SERVER['SCRIPT_FILENAME']."\n";
 
 if ($cwd[1]!==$script_path[1]) {
     $relPath = $cwd;
