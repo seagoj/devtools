@@ -15,8 +15,6 @@
 
 namespace Devtools;
 
-require_once 'autoloader.php';
-
 /**
  * Model class for personal MVC framework
  * Only class with knowledge of the database connections
