@@ -205,6 +205,7 @@ class Log
         }
 
         if ($this->first) {
+            date_default_timezone_set(date_default_timezone_get());
             $content = date("m-d-Y H:i:s").PHP_EOL.$content;
             $this->first=false;
         }
