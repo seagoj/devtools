@@ -90,14 +90,9 @@ class FirebirdModel extends Model
 
     public function getInsuranceNameByID($id, $debug=false)
     {
-        if( $id = $this->formatID($id) ) {
+        if($id = $this->formatID($id) ) {
             $sql = "select NAME from INSURANCE where INSURANCE_ID=$id";
-            $result = $this->query($sql);
-            if( $result && $debug ) {
-                return ($result ? $result : ibase_errmsg());
-            } else {
-                return $result;
-            }
+            return $this->call($sql, $debug);
         } else {
             return "";
         }
@@ -107,12 +102,7 @@ class FirebirdModel extends Model
     {
         if( $id = $this->formatID($id) ) {
             $sql = "select NAME from FORMULA where FORMULA_ID=$id";
-            $result = $this->query($sql);
-            if( $result && $debug ) {
-                return ($result ? $result : ibase_errmsg());
-            } else {
-                return $result;
-            }
+            return $this->call($sql, $debug);
         } else {
             return "";
         }
@@ -122,12 +112,9 @@ class FirebirdModel extends Model
     {
          if( $id = $this->formatID($id) ) {
             $sql = "select LASTNAME, FIRSTNAME, REGADDRESS1 from DOCTOR where DOCTOR_ID=$id";
-            $result = $this->query($sql);
-            if( $result && $debug ) {
-                return ($result ? implode(', ', $result) : ibase_errmsg());
-            } else {
-                return implode(", ", $result);
-            }
+
+            return $this->call($sql, $debug);
+
         } else {
             return "";
         }
@@ -137,12 +124,9 @@ class FirebirdModel extends Model
     {
         if( $id = $this->formatID($id) ) {
             $sql = "select FAX from DOCTOR where DOCTOR_ID=$id";
-            $result = $this->query($sql);
-            if( $result && $debug ) {
-                return ($result ? $result : ibase_errmsg());
-            } else {
-                return $result;
-            }
+
+            return $this->call($sql, $debug);
+
         } else {
             return "";
         }
@@ -150,18 +134,23 @@ class FirebirdModel extends Model
 
     public function getSalesRepByDoctorID($id, $debug=false)
     {
-        if ($doctor_id = $this->formatID($id)) {
+        if ($id = $this->formatID($id)) {
             $sql = sprintf("select SALES_PERSON.LASTNAME, SALES_PERSON.FIRSTNAME from SALES_PERSON, DOCTOR where DOCTOR.SALES_PERSON_ID = SALES_PERSON.SALES_PERSON_ID and DOCTOR.DOCTOR_ID=%s",
-                mysql_real_escape_string($doctor_id)
+                mysql_real_escape_string($id)
             );
-            $result = $this->query($sql);
-            if( $result && $debug ) {
-                return ($result ? $result : ibase_errmsg());
-            } else {
-                return $result;
-            }
+            return $this->call($sql, $debug);
         } else {
             return array();
+        }
+    }
+
+    private function call($sql)
+    {
+        $result = $this->query($sql);
+        if( $result && $debug ) {
+            return ($result ? $result : ibase_errmsg());
+        } else {
+            return $result;
         }
     }
 
