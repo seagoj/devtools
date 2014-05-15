@@ -175,6 +175,9 @@ class FirebirdModel extends Model
         }
     }
 
+    /**
+     * @return string
+     */
     private function formatID($id)
     {
         switch(gettype($id))

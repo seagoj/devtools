@@ -124,7 +124,7 @@ class Log
      *
      * @param string $content String to be written to file
      *
-     * @return boolean Result of writing to file
+     * @return integer Result of writing to file
      **/
     private function file($content)
     {
@@ -139,7 +139,7 @@ class Log
      * @param string    $content    String to be formatted
      * @param boolean   $result     Result of the test
      *
-     * @return void
+     * @return string
      **/
     private function htmlify($content, $result)
     {
@@ -289,6 +289,9 @@ class Log
         return $rtn;
     }
 
+    /**
+     * @param string $msg
+     */
     private static function output($msg)
     {
         global $errorLog;
