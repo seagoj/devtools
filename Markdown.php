@@ -453,7 +453,7 @@ class Markdown
         $first = true;
         $triggered = false;
         foreach ($this->code as $line) {
-            if ($pivot = strpos($line, '. ')!==false) {
+            if (($pivot=strpos($line, '. '))!==false) {
                 if (is_numeric(trim($prefix = substr($line, 0, $pivot)))) {
                     $triggered = true;
                     if ($first) {

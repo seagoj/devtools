@@ -165,16 +165,6 @@ class FirebirdModel extends Model
         }
     }
 
-    private function reduceResult($result)
-    {
-        if(is_array($result) && (count($result) == 1)) {
-            reset($result);
-            return $this->reduceResult($result[key($result)]);
-        } else {
-            return $result;
-        }
-    }
-
     /**
      * @return string
      */

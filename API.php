@@ -87,7 +87,6 @@ class API
                 break;
             default:
                 throw new \InvalidArgumentException($options['type']." is not a valid return type.");
-                break;
         }
         return $response;
     }

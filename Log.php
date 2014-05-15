@@ -100,19 +100,16 @@ class Log
                 break;
             default:
                 throw new \InvalidArgumentException($this->config['format'].' is not a valid log format.');
-                break;
         }
 
         switch ($this->config['type']) {
             case 'file':
                 return $this->file($content);
-                break;
             case 'stdout':
                 $this->stdout($content);
                 break;
             default:
                 throw new \InvalidArgumentException($this->config['type'].' is not a valid Log type');
-                break;
         }
         return true;
     }

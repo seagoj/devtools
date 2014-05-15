@@ -8,7 +8,7 @@ class Query
     public $colNames;
     public $rowCount;
 
-    public function __construct($data=array(), $options=array())
+    public function __construct($data=array())
     {
         $this->colNames = array();
         $this->data = $data;
@@ -16,11 +16,11 @@ class Query
         $this->extractColumns();
     }
 
-    public function push($row, $debug)
+    public function push($row)
     {
-        
+
         $first = empty($this->data);
-       
+
         foreach($row as $key=>$value) {
             $this->data[$key] = $value;
             $this->rowCount++;

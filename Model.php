@@ -372,26 +372,30 @@ class Model
         return $this->$func($sql, $reduce, $debug);
     }
 
-    private function queryFirebird($sql, $reduce, $debug)
+    private function queryFirebird($sql, $reduce)
     {
         $sql = str_replace("\'", "''", $sql);
 
-        $q = ibase_query($this->connection, $sql);
-        if (!(is_bool($q) || is_int($q))) {
-            $result = array();
-            while($row = ibase_fetch_assoc($q, IBASE_TEXT)) {
-                array_push($result, $row);
+        if (gettype($this->connection) === 'resource') {
+            $q = ibase_query($this->connection, $sql);
+            if (!(is_bool($q) || is_int($q))) {
+                $result = array();
+                while ($row = ibase_fetch_assoc($q, IBASE_TEXT)) {
+                    array_push($result, $row);
+                }
+
+                ibase_free_result($q);
+            } else {
+                $result = $q;
             }
 
-            ibase_free_result($q);
+            return ($reduce ? $this->reduceResult($result) : $result);
         } else {
-            $result = $q;
+            throw new \InvalidArgumentException('Invalid connection type.');
         }
-
-        return ($reduce ? $this->reduceResult($result) : $result);
     }
 
-    private function reduceResult($result)
+    protected function reduceResult($result)
     {
         if(is_array($result) && (count($result) == 1)) {
             reset($result);
