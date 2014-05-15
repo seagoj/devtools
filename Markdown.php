@@ -155,7 +155,7 @@ class Markdown
 
     /**
      * Markdown::formatMetadata()
-     * 
+     *
      * Adds metadata tags from Multimarkdown compatible files
      *
      * @return void
@@ -177,7 +177,7 @@ class Markdown
         if ($this->config['flavor'] === 'multimarkdown') {
             foreach ($this->code as $index => $line) {
                 $md = '';
-                
+
                 if ($ended !== true && $line !== '' &&
                     !in_array($line[0], $syntax) &&
                     ($pivot = strpos($line, ':', 1)) !==false &&
@@ -200,7 +200,6 @@ class Markdown
                             break;
                         default:
                             throw new \InvalidArgumentException("$label is not a valid metadata tag");
-                            break;
                     }
                 } else {
                     if ($first===false && $ended===false) {
@@ -212,7 +211,7 @@ class Markdown
                 }
 
                 array_push($result, $md);
-                
+
             }
             $this->code = $result;
         }
@@ -228,8 +227,6 @@ class Markdown
      **/
     private function formatParagraph()
     {
-        $headers = array();
-
         $rootElements = array('h1', 'h2', 'h3', 'h4', 'h5', 'h6',
             'ul', '/ul',
             'ol', '/ol',
@@ -306,14 +303,22 @@ class Markdown
                 $line = str_replace("$startTag ", "</$tag> ", $line);
             }
 
-            // Check for leading tag
-            if (substr($line, 0, strlen($startTag))==$startTag) {
-                $line = "<$tag>".substr($line, strlen($startTag));
-            }
+            $tagLength = strlen($startTag);
+            /* // Check for leading tag */
+            /* if (substr($line, 0, $tagLength)==$startTag) { */
+            /*  $line = "<$tag>".substr($line, $tagLength); */
+            /* } */
 
-            // Check for ending tag
-            if (substr($line, -strlen($startTag))==$startTag) {
-                $line = substr($line, 0, strlen($line)-strlen($startTag))."</$tag>";
+            /* // Check for ending tag */
+            /* if (substr($line, -$tagLength)==$startTag) { */
+            /*  $line = substr($line, 0, strlen($line)-$tagLength)."</$tag>"; */
+            /* } */
+
+
+            if (substr($line, 0, $tagLength)==$startTag
+                /* && substr($line, -$tagLength)==$startTag */
+            ) {
+                $line = "<$tag>".substr($line, $tagLength);//, strlen($line)-$tagLength)."</$tag>";
             }
         }
 
