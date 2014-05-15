@@ -304,21 +304,14 @@ class Markdown
             }
 
             $tagLength = strlen($startTag);
-            /* // Check for leading tag */
-            /* if (substr($line, 0, $tagLength)==$startTag) { */
-            /*  $line = "<$tag>".substr($line, $tagLength); */
-            /* } */
+            // Check for leading tag */
+            if (substr($line, 0, $tagLength)==$startTag) {
+                $line = "<$tag>".substr($line, $tagLength);
+            }
 
-            /* // Check for ending tag */
-            /* if (substr($line, -$tagLength)==$startTag) { */
-            /*  $line = substr($line, 0, strlen($line)-$tagLength)."</$tag>"; */
-            /* } */
-
-
-            if (substr($line, 0, $tagLength)==$startTag
-                /* && substr($line, -$tagLength)==$startTag */
-            ) {
-                $line = "<$tag>".substr($line, $tagLength);//, strlen($line)-$tagLength)."</$tag>";
+            // Check for ending tag */
+            if (substr($line, -$tagLength)==$startTag) {
+                $line = substr($line, 0, strlen($line)-$tagLength)."</$tag>";
             }
         }
 
