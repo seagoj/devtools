@@ -22,6 +22,9 @@ class Response
         $this->message = ($this->status ? "" : "Data could not be set\n");
     }
 
+    /**
+     * @param string $msg
+     */
     public function message($msg, $error=false)
     {
         global $errorLog;
