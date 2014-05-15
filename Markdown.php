@@ -80,7 +80,7 @@ class Markdown
      *
      * Validates Configuration
      *
-     * @return void
+     * @return boolean
      **/
     private function validateConfig()
     {
