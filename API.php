@@ -59,7 +59,7 @@ class API
      **/
     public static function formatResponse($result, $options=array())
     {
-        $options = (!isset($this) || get_class($this)!== __CLASS__) ?
+        $options = (!isset($this) || get_class($this) !== __CLASS__) ?
             API::loadOptions($options) :
             $this->options;
 

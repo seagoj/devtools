@@ -64,6 +64,6 @@ class FirebirdModelTest extends PHPUnit_Framework_TestCase
     {
         $fb = new \Devtools\FirebirdModel();
         $validID = $fb->query("select first 1 TELEPHONERX_ID from TELEPHONERX");
-        $patientInfo = $fb->getPatientInfoByTelephoneRxID($validID);
+        $fb->getPatientInfoByTelephoneRxID($validID);
     }
 }

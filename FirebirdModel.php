@@ -184,6 +184,7 @@ class FirebirdModel extends Model
                 break;
             case 'NULL':
                 $ret = false;
+                break;
             default:
                 $ret = $id;
         }

@@ -416,10 +416,9 @@ class Markdown
     {
         $result = array();
         $first = true;
-        $loc = null;
         $triggered = false;
         foreach ($this->code as $line) {
-            if ($loc=strpos($line, "* ")!==false || strpos($line, "- ")!==false || strpos($line, "+ ")!==false) {
+            if (strpos($line, "* ")!==false || strpos($line, "- ")!==false || strpos($line, "+ ")!==false) {
                 $triggered = true;
                 $li = substr($line, strpos($line, ' ')+1);
                 if ($first === true) {
@@ -598,36 +597,41 @@ class Markdown
      **/
     private function getTextPath($line, $type)
     {
+        $configured = false;
         switch ($type) {
-            case 'link':
-                $textDelimStart = '[';
-                $textDelimEnd =  ']';
-                $pathDelimStart = '(';
-                $pathDelimEnd = ')';
-                $template = "{{prefix}}<a href='{{path}}' >{{text}}</a>{{postfix}}";
-                break;
-            case 'image':
-                $textDelimStart = '![';
-                $textDelimEnd =  ']';
-                $pathDelimStart = '(';
-                $pathDelimEnd = ')';
-                $template = "{{prefix}}<img src='{{path}}' alt='{{text}}' />{{postfix}}";
-                break;
+        case 'link':
+            $configured = true;
+            $textDelimStart = '[';
+            $textDelimEnd =  ']';
+            $pathDelimStart = '(';
+            $pathDelimEnd = ')';
+            $template = "{{prefix}}<a href='{{path}}' >{{text}}</a>{{postfix}}";
+            break;
+        case 'image':
+            $configured = true;
+            $textDelimStart = '![';
+            $textDelimEnd =  ']';
+            $pathDelimStart = '(';
+            $pathDelimEnd = ')';
+            $template = "{{prefix}}<img src='{{path}}' alt='{{text}}' />{{postfix}}";
+            break;
         }
 
-        while (($squareOpen = strpos($line, $textDelimStart))!==false &&
-            ($squareClose = strpos($line, $textDelimEnd, ($textBegin = $squareOpen+strlen($textDelimStart))))!==false &&
-            ($parensOpen = strpos($line, $pathDelimStart, $squareClose))!==false &&
-            ($parensClose = strpos($line, $pathDelimEnd, ($pathBegin=$parensOpen+strlen($pathDelimStart))))!==false
-        ) {
-            $vars = [
-                'text' => substr($line, $textBegin, $squareClose-$textBegin),
-                'path' => substr($line, $pathBegin, $parensClose-$pathBegin),
-                'prefix' => substr($line, 0, $squareOpen),
-                'postfix' => substr($line, $parensClose+1)
-            ];
+        if ($configured) {
+            while (($squareOpen = strpos($line, $textDelimStart))!==false &&
+                ($squareClose = strpos($line, $textDelimEnd, ($textBegin = $squareOpen+strlen($textDelimStart))))!==false &&
+                ($parensOpen = strpos($line, $pathDelimStart, $squareClose))!==false &&
+                ($parensClose = strpos($line, $pathDelimEnd, ($pathBegin=$parensOpen+strlen($pathDelimStart))))!==false
+            ) {
+                $vars = [
+                    'text' => substr($line, $textBegin, $squareClose-$textBegin),
+                    'path' => substr($line, $pathBegin, $parensClose-$pathBegin),
+                    'prefix' => substr($line, 0, $squareOpen),
+                    'postfix' => substr($line, $parensClose+1)
+                ];
 
-            $line = \Devtools\Template::autofill($template, $vars);
+                $line = \Devtools\Template::autofill($template, $vars);
+            }
         }
 
         return $line;

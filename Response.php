@@ -12,7 +12,7 @@ class Response
     public $status;
     public $request;
     public $message;
-    private $suppres_header;
+    private $suppress_header;
 
     public function __construct($options=array())
     {
@@ -65,6 +65,7 @@ class Response
     {
         if (!empty($url)) {
             $reset = false;
+            $temp = array();
             if (!empty($request)) {
                 $reset = true;
                 $temp = $_REQUEST;
