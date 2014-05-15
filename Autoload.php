@@ -90,7 +90,6 @@ class Autoload
      *
      * Registers the function to use as the autoloader
      *
-     * @param bool $prepend Prepend value to pass on to spl_autoload_register
      *
      * @return void
      */

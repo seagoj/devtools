@@ -2,6 +2,9 @@
 
 class Sanitize
 {
+    /**
+     * @param string $dirty
+     */
     public static function str($dirty) {
         return strip_tags(
             htmlentities(

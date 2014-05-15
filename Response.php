@@ -37,6 +37,9 @@ class Response
         }
     }
 
+    /**
+     * @param string $msg
+     */
     public function fail($msg)
     {
         $this->message($msg, true);
