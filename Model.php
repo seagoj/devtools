@@ -37,6 +37,14 @@ class Model
      **/
     private $connection;
 
+
+    /**
+     * Log
+     *
+     * Debug Log object
+     **/
+    private $debugLog;
+
     /**
      * Status of connection
      *
@@ -142,12 +150,6 @@ class Model
     public function connect($options = array())
     {
         $this->config = array_merge($this->config, $options);
-
-        $clientOptions = array(
-            'scheme' => $this->config['scheme'],
-            'host' => $this->config['host'],
-            'port' => $this->config['port']
-        );
 
         $this->validateConfig();
 
