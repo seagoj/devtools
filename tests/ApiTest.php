@@ -15,7 +15,7 @@ class APITest extends PHPUnit_Framework_TestCase
             )
         );
         $this->testResponseStr = "val1|val2\n";
-        $this->testResponseObj = '{"status":"OK","request":[],"message":"","suppress_header":false,"data":[{"col1":"val1","col2":"val2"}]}';
+        $this->testResponseObj = '{"status":"OK","request":[],"message":"","data":[{"col1":"val1","col2":"val2"}]}';
     }
 
     public function testAPI()
