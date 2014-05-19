@@ -147,7 +147,7 @@ class FirebirdModel extends Model
     private function call($sql)
     {
         $result = $this->query($sql);
-        if( $result && $debug ) {
+        if( $result) {
             return ($result ? $result : ibase_errmsg());
         } else {
             return $result;
