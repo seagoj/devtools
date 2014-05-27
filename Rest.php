@@ -40,7 +40,7 @@ class Rest
     private function setRequest()
     {
         $requestURI = explode('?', $_SERVER['REQUEST_URI']);
-        $this->request = explode('/', substr($requestURI[0], strlen($this->getRoot())));
+        $this->request = explode('/', substr($requestURI[0], strlen($this::getRoot())));
     }
 
     private function setParameters()
@@ -104,7 +104,7 @@ class Rest
         }
     }
 
-    private function getRoot()
+    private static function getRoot()
     {
         $first_dir = explode('/', $_SERVER['REQUEST_URI']);
         $first_dir = $first_dir[1];
@@ -201,5 +201,11 @@ class Rest
             curl_close($curl);
             trigger_error($info);
         }
+    }
+
+    public static function getRequest()
+    {
+        $requestURI = explode('?', $_SERVER['REQUEST_URI']);
+        return explode('/', substr($requestURI[0], strlen($this::getRoot())));
     }
 }
