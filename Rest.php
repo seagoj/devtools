@@ -40,7 +40,7 @@ class Rest
     private function setRequest()
     {
         $requestURI = explode('?', $_SERVER['REQUEST_URI']);
-        $this->request = explode('/', substr($requestURI[0], strlen($this::getRoot())));
+        $this->request = explode('/', substr($requestURI[0], strlen(\Devtools\Rest::getRoot())));
     }
 
     private function setParameters()
@@ -206,6 +206,6 @@ class Rest
     public static function getRequest()
     {
         $requestURI = explode('?', $_SERVER['REQUEST_URI']);
-        return explode('/', substr($requestURI[0], strlen($this::getRoot())));
+        return explode('/', substr($requestURI[0], strlen(\Devtools\Rest::getRoot())));
     }
 }
