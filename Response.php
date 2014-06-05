@@ -148,4 +148,14 @@ class Response
     public static function getSuppressHeader() {
         return array('suppress_header'=>(isset($_REQUEST['suppress_header']) ? $_REQUEST['suppress_header'] : false));
     }
+
+    public static function getRequest($validParams = array()) {
+        $request = empty($validParams) ? (array)$_REQUEST : array();
+        foreach ($validParams as $param) {
+            $request[$param] = isset($_REQUEST[$param])
+                ? $_REQUEST[$param]
+                : null;
+        }
+        return $request;
+    }
 }
