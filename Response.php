@@ -149,12 +149,27 @@ class Response
         return array('suppress_header'=>(isset($_REQUEST['suppress_header']) ? $_REQUEST['suppress_header'] : false));
     }
 
-    public static function getRequest($validParams = array()) {
+    /**
+     * getRequest
+     *
+     * Returns array based on _REQUEST
+     *
+     * @param array $validParams Array of valid parameters and their defaults
+     *
+     * @return array Values from request or fallback defaults
+     * @author Jeremy Seago <seagoj@gmail.com>
+     **/
+    public static function getRequest($validParams = array())
+    {
         $request = empty($validParams) ? (array)$_REQUEST : array();
-        foreach ($validParams as $param) {
+        foreach ($validParams as $param=>$default) {
+            if (is_numeric($param)) {
+                $param = $default;
+                $default = null;
+            }
             $request[$param] = isset($_REQUEST[$param])
                 ? $_REQUEST[$param]
-                : null;
+                : $default;
         }
         return $request;
     }
