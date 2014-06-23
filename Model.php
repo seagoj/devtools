@@ -388,6 +388,7 @@ class Model
             } else {
                 $result = $q;
             }
+            var_dump($result);
 
             return ($reduce ? $this->reduceResult($result) : $result);
         } else {
