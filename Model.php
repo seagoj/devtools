@@ -382,6 +382,7 @@ class Model
             if (!(is_bool($q) || is_int($q))) {
                 $result = array();
                 while ($row = ibase_fetch_assoc($q, IBASE_TEXT)) {
+                    var_dump($row);
                     array_push($result, $row);
                 }
 
