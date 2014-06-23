@@ -103,7 +103,18 @@ class Response
         }
     }
 
-    public function load($sql) {
+    /**
+     * load
+     *
+     * Loads result of SQL call into response object
+     *
+     * @param string $sql SQL query to return result
+     *
+     * @return array Array of results from SQL call
+     * @author Jeremy Seago <seagoj@gmail.com>
+     **/
+    public function load($sql)
+    {
         $data = array();
         if ($q=mysql_query($sql)) {
             if (!is_bool($q)) {
@@ -133,7 +144,6 @@ class Response
         } else {
             $this->message('ID not found.', true);
         }
-
         if (isset($data) && !empty($data)) {
             $this->data($data);
         } elseif (isset($row) && !empty($row)) {
@@ -141,12 +151,26 @@ class Response
         } else {
             $data = false;
         }
-
         return $data;
     }
 
-    public static function getSuppressHeader() {
-        return array('suppress_header'=>(isset($_REQUEST['suppress_header']) ? $_REQUEST['suppress_header'] : false));
+    /**
+     * getSuppressHeader
+     *
+     * Checks request for suppress_header parameter
+     *
+     * @return bool Existence of suppress_header parameter
+     * @author Jeremy Seago <seagoj@gmail.com>
+     **/
+    public static function getSuppressHeader()
+    {
+        return array(
+            'suppress_header' => (
+                isset($_REQUEST['suppress_header'])
+                    ? $_REQUEST['suppress_header']
+                    : false
+            )
+        );
     }
 
     /**
