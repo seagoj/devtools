@@ -376,6 +376,8 @@ class Model
     {
         $sql = str_replace("\'", "''", $sql);
 
+        var_dump($sql);
+
         if (gettype($this->connection) === 'resource') {
             $q = ibase_query($this->connection, $sql);
             var_dump($q);
