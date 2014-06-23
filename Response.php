@@ -171,7 +171,6 @@ class Response
                 ? $_REQUEST[$param]
                 : $default;
         }
-        var_dump($request);
         return $request;
     }
 }
