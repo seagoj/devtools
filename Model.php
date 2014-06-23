@@ -378,6 +378,7 @@ class Model
 
         if (gettype($this->connection) === 'resource') {
             $q = ibase_query($this->connection, $sql);
+            var_dump($q);
             if (!(is_bool($q) || is_int($q))) {
                 $result = array();
                 while ($row = ibase_fetch_assoc($q, IBASE_TEXT)) {
