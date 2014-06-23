@@ -167,12 +167,11 @@ class Response
                 $param = $default;
                 $default = null;
             }
-            var_dump($param);
-            var_dump($default);
             $request[$param] = isset($_REQUEST[$param])
                 ? $_REQUEST[$param]
                 : $default;
         }
+        var_dump($request);
         return $request;
     }
 }
