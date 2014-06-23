@@ -161,13 +161,14 @@ class Response
      **/
     public static function getRequest($validParams = array())
     {
-        var_dump($_REQUEST);
         $request = empty($validParams) ? (array)$_REQUEST : array();
         foreach ($validParams as $param=>$default) {
             if (is_numeric($param)) {
                 $param = $default;
                 $default = null;
             }
+            var_dump($param);
+            var_dump($default);
             $request[$param] = isset($_REQUEST[$param])
                 ? $_REQUEST[$param]
                 : $default;
