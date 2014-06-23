@@ -376,6 +376,7 @@ class Model
     {
         $sql = str_replace("\'", "''", $sql);
 
+        var_dump($this);
         var_dump($sql);
 
         if (gettype($this->connection) === 'resource') {
