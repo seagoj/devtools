@@ -374,18 +374,19 @@ class Model
 
     private function queryFirebird($sql, $reduce)
     {
+        require 'autoloader.php';
         $sql = str_replace("\'", "''", $sql);
 
-        var_dump($this);
-        var_dump($sql);
+        $debugLog->write($this);
+        $debugLog->write($sql);
 
         if (gettype($this->connection) === 'resource') {
             $q = ibase_query($this->connection, $sql);
-            var_dump($q);
+            $debugLog->write($q);
             if (!(is_bool($q) || is_int($q))) {
                 $result = array();
                 while ($row = ibase_fetch_assoc($q, IBASE_TEXT)) {
-                    var_dump($row);
+                    $debugLog->write($row);
                     array_push($result, $row);
                 }
 
@@ -393,7 +394,7 @@ class Model
             } else {
                 $result = $q;
             }
-            var_dump($result);
+            $debugLog->write($result);
 
             return ($reduce ? $this->reduceResult($result) : $result);
         } else {
