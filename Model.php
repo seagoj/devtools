@@ -374,27 +374,19 @@ class Model
 
     private function queryFirebird($sql, $reduce)
     {
-        global $debugLog;
         $sql = str_replace("\'", "''", $sql);
-
-        $debugLog->write($this);
-        $debugLog->write($sql);
 
         if (gettype($this->connection) === 'resource') {
             $q = ibase_query($this->connection, $sql);
-            $debugLog->write($q);
             if (!(is_bool($q) || is_int($q))) {
                 $result = array();
                 while ($row = ibase_fetch_assoc($q, IBASE_TEXT)) {
-                    $debugLog->write($row);
                     array_push($result, $row);
                 }
-
                 ibase_free_result($q);
             } else {
                 $result = $q;
             }
-            $debugLog->write($result);
 
             return ($reduce ? $this->reduceResult($result) : $result);
         } else {
