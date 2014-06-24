@@ -374,7 +374,7 @@ class Model
 
     private function queryFirebird($sql, $reduce)
     {
-        require 'autoloader.php';
+        global $debugLog;
         $sql = str_replace("\'", "''", $sql);
 
         $debugLog->write($this);
