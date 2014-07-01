@@ -77,7 +77,7 @@ class Response
                 $reset = true;
                 $temp = $_REQUEST;
                 $_REQUEST = array();
-                foreach($request as $key => $value) {
+                foreach ($request as $key => $value) {
                     $_REQUEST[$key] = $value;
                 }
             }
@@ -87,7 +87,7 @@ class Response
             ob_start();
             require $_SERVER['DOCUMENT_ROOT'].$url;
             $data = ob_get_clean();
-            /* var_dump($data); */
+            var_dump($data);
             $data = json_decode($data, true);
 
             if ($dataOnly && ($data['status']==='OK' || $data['status']===200)) {
