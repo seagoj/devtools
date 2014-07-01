@@ -82,6 +82,7 @@ class Response
             }
 
             $_REQUEST['suppress_header'] = true;
+            $debugLog->write($_REQUEST);
             ob_start();
             require $_SERVER['DOCUMENT_ROOT'].$url;
             $data = ob_get_clean();
