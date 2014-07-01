@@ -58,9 +58,7 @@ class Response
 
     public function json()
     {
-        global $debugLog;
         if (!$this->suppress_header && !headers_sent()) {
-            $debugLog->write(debug_print_backtrace());
             header('Content-type: application/json');
         }
         return json_encode($this);
