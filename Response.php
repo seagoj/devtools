@@ -61,6 +61,7 @@ class Response
         global $debugLog;
         if (!$this->suppress_header && !headers_sent()) {
             $debugLog->write('called!');
+            $debugLog->write($this->data);
             header('Content-type: application/json');
         } else {
             $debugLog->write('not  called');
