@@ -1,7 +1,4 @@
 <?php
-
-namespace Devtools;
-
 /**
  * Defines response object for AJAX and API returns
  **/
@@ -68,12 +65,12 @@ class Response
         } else {
             $debugLog->write('not  called');
         }
+        $debugLog->write(headers_list());
         return json_encode($this);
     }
 
     public static function ajax($url='', $request=array(), $dataOnly=true)
     {
-        global $debugLog;
         if (!empty($url)) {
             $reset = false;
             $temp = array();
@@ -87,7 +84,6 @@ class Response
             }
 
             $_REQUEST['suppress_header'] = true;
-            $debugLog->write($_REQUEST);
             ob_start();
             include $_SERVER['DOCUMENT_ROOT'].$url;
             $data = ob_get_clean();
