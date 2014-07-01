@@ -62,6 +62,7 @@ class Response
     public function json()
     {
         if (!$this->suppress_header && !headers_sent()) {
+            $debugLog->write('called!');
             header('Content-type: application/json');
         }
         return json_encode($this);
