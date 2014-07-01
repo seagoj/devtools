@@ -69,6 +69,7 @@ class Response
 
     public static function ajax($url='', $request=array(), $dataOnly=true)
     {
+        global $debugLog;
         if (!empty($url)) {
             $reset = false;
             $temp = array();
