@@ -61,7 +61,6 @@ class Response
         global $debugLog;
         if (!$this->suppress_header && !headers_sent()) {
             $debugLog->write('called!');
-            $debugLog->write($this->data);
             $debugLog->write(debug_print_backtrace());
             var_dump(debug_print_backtrace());
             exit();
