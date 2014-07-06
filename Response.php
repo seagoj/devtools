@@ -181,6 +181,7 @@ class Response
      **/
     public static function getRequest($validParams = array())
     {
+        var_dump($validParams);
         $request = empty($validParams) ? (array)$_REQUEST : array();
         foreach ($validParams as $param=>$default) {
             if (is_numeric($param)) {
