@@ -13,7 +13,9 @@ class Response
 
     public function __construct($options=array())
     {
-        $this->suppress_header = (isset($options['suppress_header']) ? $options['suppress_header'] : false);
+        $this->suppress_header = isset($options['suppress_header'])
+            ? $options['suppress_header']
+            : false;
         $this->status = 'OK';
         $this->request = $_REQUEST;
         $this->message = ($this->status ? "" : "Data could not be set\n");
