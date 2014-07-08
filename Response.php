@@ -183,7 +183,6 @@ class Response
      **/
     public static function getRequest($validParams = array())
     {
-        $debugLog->write($validParams);
         $request = empty($validParams) ? (array)$_REQUEST : array();
         foreach ($validParams as $param=>$default) {
             if (is_numeric($param)) {
