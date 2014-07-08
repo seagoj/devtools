@@ -9,7 +9,7 @@ class Response
     public $status;
     public $request;
     public $message;
-    private $suppress_header;
+    /* private $suppress_header; */
 
     public function __construct($options=array())
     {
