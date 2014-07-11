@@ -6,6 +6,9 @@ class FirebirdModel extends Model
 {
     private $conn;
 
+    const RET_VAL_STR = 'STRING';
+    const RET_VAL_ARR = 'ARRAY';
+
     public function __construct($options=array())
     {
         if(is_string($options) && is_file($options)) {
@@ -13,9 +16,6 @@ class FirebirdModel extends Model
         } elseif(empty($options) && is_file('../../../../vendor/Devtools/firebird-model.json')) {
             $options = (array) json_decode(file_get_contents('../../../../vendor/Devtools/firebird-model.json'));
         }
-
-        const RET_VAL_STR = 'STRING';
-        const RET_VAL_ARR = 'ARRAY';
 
         $defaults = array(
             'host'          => "HOST",
