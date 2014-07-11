@@ -128,10 +128,8 @@ class FirebirdModel extends Model
             switch($nullIDRetValue) {
             case 'STRING':
                 return '';
-                break;
             case 'ARRAY':
                 return array();
-                break;
             }
         }
 
