@@ -22,7 +22,7 @@ namespace Devtools;
  * @method string get(string $key);
  * @method string hget();
  * @method Predis\Client::set(string $key, string $value);
- * @method Predic\Client hset(string $key, string $value, string $set);
+ * @method Predis\Client hset(string $key, string $value, string $set);
  * @method string hgetall();
  * @method string expire();
  */
