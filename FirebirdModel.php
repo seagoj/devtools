@@ -112,23 +112,17 @@ class FirebirdModel extends Model
         return $this->call($sql, $id);
     }
 
-    public function getSalesRepByDoctorID($id, $debug=false)
+    public function getSalesRepByDoctorID($id)
     {
-        if ($id = $this->formatID($id)) {
-            $sql = sprintf("select SALES_PERSON.LASTNAME, SALES_PERSON.FIRSTNAME from SALES_PERSON, DOCTOR where DOCTOR.SALES_PERSON_ID = SALES_PERSON.SALES_PERSON_ID and DOCTOR.DOCTOR_ID=%s",
-                mysql_real_escape_string($id)
-            );
-            return $this->call($sql);
-        } else {
-            return array();
-        }
+        $sql = "select SALES_PERSON.LASTNAME, SALES_PERSON.FIRSTNAME from SALES_PERSON, DOCTOR where DOCTOR.SALES_PERSON_ID = SALES_PERSON.SALES_PERSON_ID and DOCTOR.DOCTOR_ID=%s";
+        return $this->call($sql, $id,  array());
     }
 
-    private function call($sql, $id)
+    private function call($sql, $id, $nullIDRetValue="")
     {
         $sql = $this->formatID($id) ? sprintf($sql, mysql_real_escape_string($id)) :  "";
         if  (empty($sql)) {
-            return "";
+            return $nullIDRetValue;
         }
 
         $result = $this->query($sql);
