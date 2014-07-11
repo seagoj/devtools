@@ -19,7 +19,7 @@ namespace Devtools;
  * Only class with knowledge of the database connections
  *
  * @author jds
- * @method string get();
+ * @method string get(string $key);
  * @method string hget();
  * @method Predis\Client::set(string $key, string $value);
  * @method Predic\Client hset(string $key, string $value, string $set);
