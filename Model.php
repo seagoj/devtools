@@ -21,9 +21,15 @@ namespace Devtools;
  * @author jds
  */
 /**
- * @method string $this->connection->get();
+ * @method string get();
  * @method string get($key);
  * @method string get(string $key);
+ * @method string Predis\Client::get();
+ * @method string Predis\Client::get($key);
+ * @method string Predis\Client::get(string $key);
+ * @method string \Predis\Client::get();
+ * @method string \Predis\Client::get($key);
+ * @method string \Predis\Client::get(string $key);
  * @method string hget();
  * @method bool Predis\Client::set(string $key, string $value);
  * @method Predis\Client hset(string $key, string $value, string $set);
