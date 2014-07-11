@@ -125,7 +125,14 @@ class FirebirdModel extends Model
     {
         $sql = $this->formatID($id) ? sprintf($sql, mysql_real_escape_string($id)) :  "";
         if  (empty($sql)) {
-            return $nullIDRetValue;
+            switch($nullIDRetValue) {
+            case 'STRING':
+                return '';
+                break;
+            case 'ARRAY':
+                return array();
+                break;
+            }
         }
 
         $result = $this->query($sql);
