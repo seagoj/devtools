@@ -20,6 +20,11 @@ namespace Devtools;
  *
  * @author jds
  * @method string get();
+ * @method string hget();
+ * @method string set();
+ * @method string hset();
+ * @method string hgetall();
+ * @method string expire();
  */
 class Model
 {
