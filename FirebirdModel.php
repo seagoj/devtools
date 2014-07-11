@@ -118,7 +118,7 @@ class FirebirdModel extends Model
     public function getSalesRepByDoctorID($id)
     {
         $sql = "select SALES_PERSON.LASTNAME, SALES_PERSON.FIRSTNAME from SALES_PERSON, DOCTOR where DOCTOR.SALES_PERSON_ID = SALES_PERSON.SALES_PERSON_ID and DOCTOR.DOCTOR_ID=%s";
-        return $this->call($sql, $id, self::RET_VAL_ARR;
+        return $this->call($sql, $id, self::RET_VAL_ARR);
     }
 
     private function call($sql, $id, $nullIDRetValue=self::RET_VAL_STR)
