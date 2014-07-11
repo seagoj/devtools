@@ -10,7 +10,6 @@
  * @license   http://opensource.org/licenses/mit-license.php, MIT
  * @version   1.0
  * @link      https://github.com/seagoj/devtools
- *
  */
 
 namespace Devtools;
@@ -20,6 +19,7 @@ namespace Devtools;
  * Only class with knowledge of the database connections
  *
  * @author jds
+ * @method string get();
  */
 class Model
 {
@@ -252,7 +252,7 @@ class Model
      **/
     public function set($key, $value, $hash = null)
     {
-            $this->checkConnection();
+        $this->checkConnection();
         $func = 'set'.ucfirst($this->config['type']);
         return $this->$func($key, $value, $hash);
     }
