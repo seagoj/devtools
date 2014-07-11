@@ -131,7 +131,7 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
      **/
     public function testGetPath()
     {
-        $this->reflectionEquals(
+        $this->reflectEquals(
             'getPath',
             '/home/travis/build/seagoj',
             '/home/travis/build/seagoj/testFile.php'
