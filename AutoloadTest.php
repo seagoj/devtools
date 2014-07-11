@@ -52,13 +52,7 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
         $log = new \Devtools\Log();
         $this->assertInstanceOf("\Devtools\Log", $log);
 
-        $method = new ReflectionMethod('Devtools\Autoload', 'autoload');
-        $method->setAccessible(true);
-
-        $this->assertEquals(
-            $method->invoke(new \Devtools\Autoload(), 'Devtools\RandData'),
-            1
-        );
+        $this->reflectEquals('autoload', 1, 'Devtools\RandData');
     }
 
     /**
@@ -144,7 +138,7 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    private function  reflectEquals($method, $expected, $param)
+    private function reflectEquals($method, $expected, $param)
     {
         $method = new ReflectionMethod('Devtools\Autoload', $method);
         $method->setAccessible(true);
