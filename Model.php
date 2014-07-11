@@ -21,7 +21,7 @@ namespace Devtools;
  * @author jds
  * @method string get();
  * @method string hget();
- * @method string set(string $key, string $value);
+ * @method string Predis\Client set(string $key, string $value);
  * @method string hset();
  * @method string hgetall();
  * @method string expire();
