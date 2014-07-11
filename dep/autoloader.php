@@ -20,7 +20,7 @@ function findLibDir($pathArray)
         $path = implode("/", $pathArray);
         foreach ($libDirArray as $dir) {
             if( is_dir("$path/$dir") ) {
-                array_push($pathArray, $dir); 
+                array_push($pathArray, $dir);
                 $found = true;
                 break;
             }
@@ -56,8 +56,6 @@ for ($i; $i<$rootPathDepth; $i++) {
 // Include file and register proper autoload function
 include_once implode("/", $relPath)."/$libDir".str_replace('\\', '/', $autoloadClass).".php";
 $autoloadClass::register();
-
-if (isset($_REQUEST['debug'])) var_dump(spl_autoload_functions());
 
 $errorLog = new \Devtools\Log($error);
 $debugLog = new \Devtools\Log($debug);

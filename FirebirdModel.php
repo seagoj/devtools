@@ -88,48 +88,28 @@ class FirebirdModel extends Model
         return $this->query($sql);
     }
 
-    public function getInsuranceNameByID($id, $debug=false)
+    public function getInsuranceNameByID($id)
     {
-        if($id = $this->formatID($id) ) {
-            $sql = "select NAME from INSURANCE where INSURANCE_ID=$id";
-            return $this->call($sql, $debug);
-        } else {
-            return "";
-        }
+        $sql = "select NAME from INSURANCE where INSURANCE_ID=$%s";
+        return $this->call($sql, $id);
     }
 
-    public function getDrugNameByID($id, $debug=false)
+    public function getDrugNameByID($id)
     {
-        if( $id = $this->formatID($id) ) {
-            $sql = "select NAME from FORMULA where FORMULA_ID=$id";
-            return $this->call($sql, $debug);
-        } else {
-            return "";
-        }
+        $sql = "select NAME from FORMULA where FORMULA_ID=$%s";
+        return $this->call($sql, $id);
     }
 
-    public function getDoctorNameByID($id, $debug=false)
+    public function getDoctorNameByID($id)
     {
-         if( $id = $this->formatID($id) ) {
-            $sql = "select LASTNAME, FIRSTNAME, REGADDRESS1 from DOCTOR where DOCTOR_ID=$id";
-
-            return $this->call($sql, $debug);
-
-        } else {
-            return "";
-        }
+        $sql = "select LASTNAME, FIRSTNAME, REGADDRESS1 from DOCTOR where DOCTOR_ID=%s";
+        return $this->call($sql, $id);
     }
 
-    public function getDoctorFaxByID($id, $debug=false)
+    public function getDoctorFaxByID($id)
     {
-        if( $id = $this->formatID($id) ) {
-            $sql = "select FAX from DOCTOR where DOCTOR_ID=$id";
-
-            return $this->call($sql, $debug);
-
-        } else {
-            return "";
-        }
+        $sql = "select FAX from DOCTOR where DOCTOR_ID=%s";
+        return $this->call($sql, $id);
     }
 
     public function getSalesRepByDoctorID($id, $debug=false)
@@ -138,16 +118,21 @@ class FirebirdModel extends Model
             $sql = sprintf("select SALES_PERSON.LASTNAME, SALES_PERSON.FIRSTNAME from SALES_PERSON, DOCTOR where DOCTOR.SALES_PERSON_ID = SALES_PERSON.SALES_PERSON_ID and DOCTOR.DOCTOR_ID=%s",
                 mysql_real_escape_string($id)
             );
-            return $this->call($sql, $debug);
+            return $this->call($sql);
         } else {
             return array();
         }
     }
 
-    private function call($sql)
+    private function call($sql, $id)
     {
+        $sql = $this->formatID($id) ? sprintf($sql, mysql_real_escape_string($id)) :  "";
+        if  (empty($sql)) {
+            return "";
+        }
+
         $result = $this->query($sql);
-        if( $result) {
+        if($result) {
             return ($result ? $result : ibase_errmsg());
         } else {
             return $result;
