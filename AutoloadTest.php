@@ -90,35 +90,35 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
         $_runPath = '/home/travis/build/seagoj';
         $_libPath = $_runPath.'/lib/lib';
         $this->assertEquals(
-            'lib/lib/', 
+            'lib/lib/',
             $method->invoke(new \Devtools\Autoload(), $_runPath, $_libPath)
         );
 
         $_runPath = '/home/travis/build/seagoj';
         $_libPath = $_runPath.'/lib';
         $this->assertEquals(
-            'lib/', 
+            'lib/',
             $method->invoke(new \Devtools\Autoload(), $_runPath, $_libPath)
         );
 
         $_runPath = '/home/travis/build/seagoj/tests';
         $_libPath = '/home/travis/build/seagoj/lib';
         $this->assertEquals(
-            '../lib/', 
+            '../lib/',
             $method->invoke(new \Devtools\Autoload(), $_runPath, $_libPath)
         );
 
         $_runPath = '/home/travis/build/seagoj';
         $_libPath = $_runPath;
         $this->assertEquals(
-            '', 
+            '',
             $method->invoke(new \Devtools\Autoload(), $_runPath, $_libPath)
         );
 
         $_runPath = '/home/travis/build/seagoj/tests/src';
         $_libPath = '/home/travis/build/seagoj/lib';
         $this->assertEquals(
-            '../../lib/', 
+            '../../lib/',
             $method->invoke(new \Devtools\Autoload(), $_runPath, $_libPath)
         );
 
@@ -137,13 +137,21 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
      **/
     public function testGetPath()
     {
-        $method = new ReflectionMethod('Devtools\Autoload', 'getPath');
+        $this->reflectionEquals(
+            'getPath',
+            '/home/travis/build/seagoj',
+            '/home/travis/build/seagoj/testFile.php'
+        );
+    }
+
+    private function  reflectEquals($method, $expected, $param)
+    {
+        $method = new ReflectionMethod('Devtools\Autoload', $method);
         $method->setAccessible(true);
 
-        $file = '/home/travis/build/seagoj/testFile.php';
         $this->assertEquals(
-            '/home/travis/build/seagoj', 
-            $method->invoke(new \Devtools\Autoload(), $file)
+            $expected,
+            $method->invoke(new \Devtools\Autoload(), $param)
         );
     }
 }
