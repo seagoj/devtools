@@ -21,7 +21,7 @@ namespace Devtools;
  * @author jds
  */
 /**
- * @method string get();
+ * @method string $this->connection->get();
  * @method string get($key);
  * @method string get(string $key);
  * @method string hget();
