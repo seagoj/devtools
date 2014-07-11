@@ -14,6 +14,9 @@ class FirebirdModel extends Model
             $options = (array) json_decode(file_get_contents('../../../../vendor/Devtools/firebird-model.json'));
         }
 
+        const RET_VAL_STR = 'STRING';
+        const RET_VAL_ARR = 'ARRAY';
+
         $defaults = array(
             'host'          => "HOST",
             'location'      => "NJ",
@@ -115,10 +118,10 @@ class FirebirdModel extends Model
     public function getSalesRepByDoctorID($id)
     {
         $sql = "select SALES_PERSON.LASTNAME, SALES_PERSON.FIRSTNAME from SALES_PERSON, DOCTOR where DOCTOR.SALES_PERSON_ID = SALES_PERSON.SALES_PERSON_ID and DOCTOR.DOCTOR_ID=%s";
-        return $this->call($sql, $id,  array());
+        return $this->call($sql, $id, self::RET_VAL_ARR;
     }
 
-    private function call($sql, $id, $nullIDRetValue="")
+    private function call($sql, $id, $nullIDRetValue=self::RET_VAL_STR)
     {
         $sql = $this->formatID($id) ? sprintf($sql, mysql_real_escape_string($id)) :  "";
         if  (empty($sql)) {
