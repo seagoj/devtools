@@ -327,4 +327,16 @@ class Log
             )
         );
     }
+
+    public function assert($term) {
+        assert_options(ASSERT_ACTIVE, true);
+        assert_options(ASSERT_WARNING, true);
+        assert_options(ASSERT_BAIL, false);
+        assert_options(ASSERT_QUIET_EVAL, false);
+        assert_options(ASSERT_CALLBACK, function($script, $line, $message) {
+            $this->write("$script:$line $message");
+        });
+
+        assert($term);
+    }
 }
