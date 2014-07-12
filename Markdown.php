@@ -428,12 +428,11 @@ class Markdown
                     array_push($result, "<li>$li</li>");
                 }
             } else {
-                extract(
-                    $this->endTag(
-                        'ul',
-                        compact($triggered, $result, $line)
-                    )
+                $state = $this->endTag(
+                    'ul',
+                    compact($triggered, $result, $line)
                 );
+                extract($state);
             }
         }
         $this->code = $result;
@@ -464,19 +463,18 @@ class Markdown
                     array_push($result, $line);
                 }
             } else {
-                extract(
-                    $this->endTag(
+                $state = $this->endTag(
                         'ol',
                         compact($triggered, $result, $line)
-                    )
                 );
+                extract($state);
                 $first = true;
             }
         }
         $this->code = $result;
     }
 
-    private function endTag($tag, array $state)
+    private function endTag(string $tag, array $state)
     {
         if ($state['triggered']) {
             array_push($state['result'], "</$tag>");
