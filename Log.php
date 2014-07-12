@@ -324,7 +324,9 @@ class Log
 
     private static function newLog($log)
     {
-        extract($log);
+        $name = $log['name'];
+        $path = $log['path'];
+
          global $$name;
          return isset($$name) ?
             $$name :
