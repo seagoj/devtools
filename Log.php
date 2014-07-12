@@ -304,31 +304,40 @@ class Log
 
     public static function debugLog($path = '/home/www/Debug.log')
     {
-        global $debugLog;
-        return isset($debugLog) ?
-           $debugLog :
-            new \Devtools\Log(
+        return \Devtools\Log::newLog(
             array(
-                'type'  => 'file',
-                'file'  => $path
+                'name' => 'debugLog',
+                'path' => $path
             )
         );
     }
 
     public static function errorLog($path = '/home/www/Error.log')
     {
-        global $errorLog;
-        return isset($errorLog) ?
-           $errorLog :
-            new \Devtools\Log(
+        return \Devtools\Log::newLog(
             array(
-                'type'  => 'file',
-                'file'  => $path
+                'name' => 'errorLog',
+                'path' => $path
             )
         );
     }
 
-    public function assert($term) {
+    private static function newLog($log)
+    {
+        extract($log);
+         global $$name;
+         return isset($$name) ?
+            $$name :
+             new \Devtools\Log(
+             array(
+                 'type'  => 'file',
+                 'file'  => $path
+             )
+         );
+    }
+
+    public function assert($term)
+    {
         assert_options(ASSERT_ACTIVE, true);
         assert_options(ASSERT_WARNING, true);
         assert_options(ASSERT_BAIL, false);
@@ -336,7 +345,6 @@ class Log
         assert_options(ASSERT_CALLBACK, function($script, $line, $message) {
             $this->write("$script:$line $message");
         });
-
         assert($term);
     }
 }
