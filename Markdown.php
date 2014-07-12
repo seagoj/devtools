@@ -428,13 +428,12 @@ class Markdown
                     array_push($result, "<li>$li</li>");
                 }
             } else {
-                if ($triggered) {
-                    array_push($result, "</ul>");
-                    $triggered = false;
-                }
-                if ($line!= PHP_EOL) {
-                    array_push($result, $line);
-                }
+                extract(
+                    $this->endTag(
+                        'ul',
+                        compact($triggered, $result, $line)
+                    )
+                );
             }
         }
         $this->code = $result;
@@ -465,17 +464,28 @@ class Markdown
                     array_push($result, $line);
                 }
             } else {
-                if ($triggered) {
-                    array_push($result, "</ol>");
-                    $triggered = false;
-                }
-                if ($line != PHP_EOL) {
-                    array_push($result, $line);
-                }
+                extract(
+                    $this->endTag(
+                        'ol',
+                        compact($triggered, $result, $line)
+                    )
+                );
                 $first = true;
             }
         }
         $this->code = $result;
+    }
+
+    private function endTag($tag, $state)
+    {
+        if ($state['triggered']) {
+            array_push($state['result'], "</$tag>");
+            $state['triggered'] = false;
+        }
+        if ($state['line'] != PHP_EOL) {
+            array_push($state['result'], $state['line']);
+        }
+        return $state;
     }
 
     /**
