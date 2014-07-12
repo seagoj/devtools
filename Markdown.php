@@ -476,7 +476,7 @@ class Markdown
         $this->code = $result;
     }
 
-    private function endTag($tag, $state)
+    private function endTag($tag, array $state)
     {
         if ($state['triggered']) {
             array_push($state['result'], "</$tag>");
