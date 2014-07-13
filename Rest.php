@@ -39,8 +39,7 @@ class Rest
 
     private function setRequest()
     {
-        $requestURI = explode('?', $_SERVER['REQUEST_URI']);
-        $this->request = explode('/', substr($requestURI[0], strlen(\Devtools\Rest::getRoot())));
+        $this->request = $this->getRequest();
     }
 
     private function setParameters()
