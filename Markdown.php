@@ -477,7 +477,7 @@ class Markdown
     private function endTag($tag, $state)
     {
         if ($state['triggered']) {
-            array_push($state['result'], "</$tag>");
+            array_push($state['result'], "</".$tag.">");
             $state['triggered'] = false;
         }
         if ($state['line'] != PHP_EOL) {
