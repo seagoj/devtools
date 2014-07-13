@@ -495,28 +495,7 @@ class Markdown
      **/
     private function formatCode()
     {
-        $first = true;
-        $result = array();
-        $triggered = false;
-
-        foreach ($this->code as $line) {
-            $string = substr($line, 4);
-            if (substr($line, 0, 4)==='    ') {
-                $triggered = true;
-                if ($first) {
-                    array_push($result, "<code>");
-                    $first = false;
-                }
-                array_push($result, "\t".$string);
-            } else {
-                if ($triggered) {
-                    array_push($result, "</code>");
-                }
-                array_push($result, $line);
-                $first = true;
-            }
-        }
-        return $this->code = $result;
+        return $this->formatBlock('    ', 'code');
     }
 
     /**
@@ -528,26 +507,7 @@ class Markdown
      **/
     private function formatBlockquote()
     {
-        $first = true;
-        $result = array();
-        $triggered = false;
-        foreach ($this->code as $line) {
-            $string = substr($line, 2);
-            if (substr($line, 0, 2)==='> ') {
-                if ($first) {
-                    array_push($result, "<blockquote>");
-                    $first = false;
-                }
-                array_push($result, "\t".$string);
-                $triggered = true;
-            } else {
-                if ($triggered) {
-                    array_push($result, "</blockquote>");
-                }
-                array_push($result, $line);
-            }
-        }
-        return $this->code = $result;
+        return $this->formatBlock('> ', 'blockquote');
     }
 
     private function formatBlock($symbol, $tag)
