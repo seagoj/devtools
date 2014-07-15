@@ -418,4 +418,13 @@ class Model
             return $result;
         }
     }
+
+    public static function mysql_fetch_all($resource)
+    {
+        $result = array();
+        while ($row = mysql_fetch_array($resource)) {
+            array_push($result, $row);
+        }
+        return $result;
+    }
 }
