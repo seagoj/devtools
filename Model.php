@@ -268,7 +268,7 @@ class Model
     public function set($key, $value, $hash = null)
     {
         $this->checkConnection();
-        return $this->call('set', func_get_args());
+        return $this->run('set', func_get_args());
     }
 
     private function run($method, $params)
