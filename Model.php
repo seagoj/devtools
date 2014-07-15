@@ -271,7 +271,7 @@ class Model
         return $this->call('set', func_get_args());
     }
 
-    private function call($method, $params)
+    private function run($method, $params)
     {
         return call_user_func_array(
             array(
@@ -297,7 +297,7 @@ class Model
     public function get($key, $hash = null)
     {
         $this->checkConnection();
-        return $this->call('get', func_get_args());
+        return $this->run('get', func_get_args());
     }
 
     /**
@@ -312,7 +312,7 @@ class Model
     public function getAll($hash)
     {
         $this->checkConnection();
-        return $this->call('getAll', func_get_args());
+        return $this->run('getAll', func_get_args());
     }
 
     /**
