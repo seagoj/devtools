@@ -268,8 +268,18 @@ class Model
     public function set($key, $value, $hash = null)
     {
         $this->checkConnection();
-        $func = 'set'.ucfirst($this->config['type']);
-        return $this->$func($key, $value, $hash);
+        return $this->call('set', func_get_args());
+    }
+
+    private function call($method, $params)
+    {
+        return call_user_func_array(
+            array(
+                $this,
+                $method.ucfirst($this->config['type'])
+            ),
+            $params
+        );
     }
 
     /**
@@ -287,9 +297,7 @@ class Model
     public function get($key, $hash = null)
     {
         $this->checkConnection();
-
-        $func = 'get'.ucfirst($this->config['type']);
-        return $this->$func($key, $hash);
+        return $this->call('get', func_get_args());
     }
 
     /**
@@ -304,9 +312,7 @@ class Model
     public function getAll($hash)
     {
         $this->checkConnection();
-
-        $func = 'getAll'.ucfirst($this->config['type']);
-        return $this->$func($hash);
+        return $this->call('getAll', func_get_args());
     }
 
     /**
