@@ -73,11 +73,7 @@ class Rest
                     $sql = $this->buildSQL($table);
 
                     if ($q=mysql_query($sql)) {
-                        $data = array();
-                        while ($row = mysql_fetch_assoc($q)) {
-                            array_push($data, $row);
-                        }
-                        $this->response->data($data);
+                        $this->response->data(\Devtools\Model::mysql_fetch_all($q));
                     } else {
                         $this->response->fail('Data not found.');
                     }
@@ -192,7 +188,6 @@ class Rest
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         if ($response=curl_exec($curl)) {
-            var_dump($response);
             curl_close($curl);
             return json_decode($response);
         } else {
