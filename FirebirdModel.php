@@ -121,6 +121,9 @@ class FirebirdModel extends Model
         return $this->call($sql, $id, self::RET_VAL_ARR);
     }
 
+    /**
+     * @param string $sql
+     */
     private function call($sql, $id, $nullIDRetValue=self::RET_VAL_STR)
     {
         $sql = $this->formatID($id) ? sprintf($sql, mysql_real_escape_string($id)) :  "";

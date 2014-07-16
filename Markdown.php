@@ -474,6 +474,9 @@ class Markdown
         $this->code = $result;
     }
 
+    /**
+     * @param string $tag
+     */
     private function endTag($tag, $state)
     {
         if ($state['triggered']) {
@@ -510,6 +513,10 @@ class Markdown
         return $this->formatBlock('> ', 'blockquote');
     }
 
+    /**
+     * @param string $symbol
+     * @param string $tag
+     */
     private function formatBlock($symbol, $tag)
     {
         $first = true;
