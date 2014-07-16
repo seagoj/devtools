@@ -264,6 +264,9 @@ class Model
         return $this->run('set', func_get_args());
     }
 
+    /**
+     * @param string $method
+     */
     private function run($method, $params)
     {
         return call_user_func_array(
