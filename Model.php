@@ -1,6 +1,10 @@
 <?php
 /**
- * Model: Model library for PHP
+ * Model
+ *
+ * Model library for PHP
+ *
+ * PHP version 5.3
  *
  * @name      Model
  * @category  Seagoj
@@ -8,8 +12,8 @@
  * @author    Jeremy Seago <seagoj@gmail.com>
  * @copyright 2012 Jeremy Seago
  * @license   http://opensource.org/licenses/mit-license.php, MIT
- * @version   1.0
- * @link      https://github.com/seagoj/devtools
+ * @version   GIT: 1.0
+ * @link      https://github.com/seagoj/Devtools
  */
 
 namespace Devtools;
@@ -18,23 +22,26 @@ namespace Devtools;
  * Model class for personal MVC framework
  * Only class with knowledge of the database connections
  *
- * @author jds
- */
-/**
- * @method string get();
- * @method string get($key);
- * @method string get(string $key);
- * @method string Predis\Client::get();
- * @method string Predis\Client::get($key);
- * @method string Predis\Client::get(string $key);
- * @method string \Predis\Client::get();
- * @method string \Predis\Client::get($key);
- * @method string \Predis\Client::get(string $key);
- * @method string hget();
- * @method bool Predis\Client::set(string $key, string $value);
- * @method Predis\Client hset(string $key, string $value, string $set);
- * @method string hgetall();
- * @method string expire();
+ * @category  Seago
+ * @package   Devtools
+ * @author    Jeremy Seago <seagoj@gmail.com>
+ * @copyright 2012 Jeremy Seago
+ * @license   http://opensource.org/licenses/mit-license.php, MIT
+ * @link      https://github.com/seagoj/Devtools
+ * @method    string get();
+ * @method    string get($key);
+ * @method    string get(string $key);
+ * @method    string Predis\Client::get();
+ * @method    string Predis\Client::get($key);
+ * @method    string Predis\Client::get(string $key);
+ * @method    string \Predis\Client::get();
+ * @method    string \Predis\Client::get($key);
+ * @method    string \Predis\Client::get(string $key);
+ * @method    string hget();
+ * @method    bool Predis\Client::set(string $key, string $value);
+ * @method    Predis\Client hset(string $key, string $value, string $set);
+ * @method    string hgetall();
+ * @method    string expire();
  */
 class Model
 {
@@ -72,7 +79,7 @@ class Model
      *
      * Sets configuration and establishes connection
      *
-     * @param   array   $options    Sets options for Model class
+     * @param array $options Sets options for Model class
      *
      * @return void
      **/
@@ -80,7 +87,7 @@ class Model
     {
         // require_once 'autoloader.php';
 
-        if(is_object($options)) {
+        if (is_object($options)) {
             $options = (array) $options;
         }
 
@@ -92,10 +99,6 @@ class Model
             'port' => 6379
         );
 
-/*        if(empty($options) && is_file('model.json')) {
-            $options = json_decode(file_get_contents('model.json'));
-        }
-*/
         $this->config = array_merge($defaults, $options);
         $this->validateConfig();
 
@@ -124,7 +127,6 @@ class Model
             'redis',
             'firebird'
         );
-
         if (in_array($this->config['type'], $validTypes)) {
             return true;
         } else {
@@ -156,18 +158,15 @@ class Model
      *
      * Connects model to datastore
      *
-     * @param   array   $options    Options array for host, port and credentials
+     * @param array $options Options array for host, port and credentials
      *
-     * @throws  Exception if datastore type is not supported
-     *
-     * @return  boolean     Result of attempted connection
+     * @throws Exception If datastore type is not supported
+     * @return Boolean   Result of attempted connection
      **/
     public function connect($options = array())
     {
         $this->config = array_merge($this->config, $options);
-
         $this->validateConfig();
-
         $func = 'connect'.ucfirst($this->config['type']);
         return $this->$func();
     }
@@ -186,7 +185,6 @@ class Model
             'host' => $this->config['host'],
             'port' => $this->config['port']
         );
-
         $this->connection = new \Predis\Client($clientOptions);
         return $this->connected = isset($this->connection);
     }
@@ -194,11 +192,15 @@ class Model
     private function connectFirebird()
     {
         $this->connection = \ibase_pconnect(
-            $this->config['host'].':C:\\'.$this->config['environment'].'\\'.$this->config['location'].'\\CMPDWIN.PKF',
+            $this->config['host'].':C:\\'
+            .$this->config['environment'].'\\'
+            .$this->config['location'].'\\CMPDWIN.PKF',
             $this->config['dba'],
             $this->config['password']
         );
-        if(!$this->connection) throw new \Exception('connection to host could not be established');
+        if (!$this->connection) {
+            throw new \Exception('connection to host could not be established');
+        }
         return $this->connected = isset($this->connection);
     }
 
@@ -207,9 +209,9 @@ class Model
      *
      * Performs the set operation on redis datastores
      *
-     * @param   string  $key    Name given to data value
-     * @param   string  $value  Value of data to be stored
-     * @param   string  $hash   Hash to be used in key/value store
+     * @param string $key   Name given to data value
+     * @param string $value Value of data to be stored
+     * @param string $hash  Hash to be used in key/value store
      *
      * @return  boolean Result of insertion
      **/
@@ -225,8 +227,8 @@ class Model
      *
      * Performs the get operation on redis datastores
      *
-     * @param   string  $key    Name of data to be retrieved
-     * @param   string  $hash   Hash modifier for name
+     * @param string $key  Name of data to be retrieved
+     * @param string $hash Hash modifier for name
      *
      * @return  multi   Value of data retrieved
      **/
@@ -242,8 +244,8 @@ class Model
      *
      * Performs the expiration operation on redis datastores
      *
-     * @param   string  $key    Name of data to be modified
-     * @param   integer $expiry Expiration to be applied
+     * @param string  $key    Name of data to be modified
+     * @param integer $expiry Expiration to be applied
      *
      * @return  boolean Status of setting the expiration
      **/
@@ -257,12 +259,11 @@ class Model
      *
      * Inserts data into the datastore
      *
-     * @param   string  $key    Name given to data value
-     * @param   string  $value  Value of data to be stored
-     * @param   string  $hash   Hash to be used in key/value store
+     * @param string $key   Name given to data value
+     * @param string $value Value of data to be stored
+     * @param string $hash  Hash to be used in key/value store
      *
      * @throws  Exception if datastore type is not supported
-     *
      * @return  boolean     Result of insertion
      **/
     public function set($key, $value, $hash = null)
@@ -287,11 +288,10 @@ class Model
      *
      * Returns data stored under $key
      *
-     * @param   string  $key    Name of data to be retrieved
-     * @param   string  $hash   Hash to retrieve $key from; defaults to null
+     * @param string $key  Name of data to be retrieved
+     * @param string $hash Hash to retrieve $key from; defaults to null
      *
      * @throws  Exception if datastore type is not supported
-     *
      * @return  multiple    Data retrieved or false if retrieval fails
      **/
     public function get($key, $hash = null)
@@ -334,17 +334,15 @@ class Model
      *
      * Sets expiration period for a particular data entry
      *
-     * @param   string  $key    Key to set the expiration for
-     * @param   string  $expiry Expiration
+     * @param string $key    Key to set the expiration for
+     * @param string $expiry Expiration
      *
      * @throws  Exception if datastore type is not supported
-     *
      * @return  boolean Result of setting the expiration
      **/
     public function expire($key, $expiry)
     {
         $this->checkConnection();
-
         $func = 'expire'.ucfirst($this->config['type']);
         return $this->$func($key, $expiry);
     }
@@ -354,41 +352,38 @@ class Model
      *
      * Sanitizes data for manipulation in PHP
      *
-     * @param   string  $data   Data to be sanitized
-     * @param   string  $type   Type of system to sanitize for
+     * @param string $data Data to be sanitized
+     * @param string $type Type of system to sanitize for
      *
      * @throws  Exception if data cannot be sanitized
-     *
      * @return  string  Sanitized data
      **/
     public function sanitize($data, $type = 'html')
     {
         switch($type) {
-            case 'html':
-                $data = htmlspecialchars($data);
-                break;
-            /*
-            case 'mysql':
-                $data = mysql_real_escape_string($data);
-                break;
-            */
-            case 'shellcmd':
-                $data = escapeshellcmd($data);
-                break;
-            case 'shellarg':
-                $data = escapeshellarg($data);
-                break;
+        case 'html':
+            $data = htmlspecialchars($data);
+            break;
+        /*
+        case 'mysql':
+            $data = mysql_real_escape_string($data);
+            break;
+        */
+        case 'shellcmd':
+            $data = escapeshellcmd($data);
+            break;
+        case 'shellarg':
+            $data = escapeshellarg($data);
+            break;
         }
-
         return $data;
     }
 
     public function query($sql, $reduce=true, $debug=false)
     {
-        if(!is_array($this->config)) {
+        if (!is_array($this->config)) {
             throw new \Exception("Options array is not an array.");
         }
-
         $func = 'query'.ucfirst($this->config['type']);
         return $this->$func($sql, $reduce, $debug);
     }
@@ -396,7 +391,6 @@ class Model
     private function queryFirebird($sql, $reduce)
     {
         $sql = str_replace("\'", "''", $sql);
-
         if (gettype($this->connection) === 'resource') {
             $q = ibase_query($this->connection, $sql);
             if (!(is_bool($q) || is_int($q))) {
@@ -408,7 +402,6 @@ class Model
             } else {
                 $result = $q;
             }
-
             return ($reduce ? $this->reduceResult($result) : $result);
         } else {
             throw new \InvalidArgumentException('Invalid connection type.');
@@ -417,7 +410,7 @@ class Model
 
     protected function reduceResult($result)
     {
-        if(is_array($result) && (count($result) == 1)) {
+        if (is_array($result) && (count($result) == 1)) {
             reset($result);
             return $this->reduceResult($result[key($result)]);
         } else {
