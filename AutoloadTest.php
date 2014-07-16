@@ -138,6 +138,10 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @param string $method
+     * @param string $param
+     */
     private function reflectEquals($method, $expected, $param)
     {
         $method = new ReflectionMethod('Devtools\Autoload', $method);
