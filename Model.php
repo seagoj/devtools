@@ -28,20 +28,12 @@ namespace Devtools;
  * @copyright 2012 Jeremy Seago
  * @license   http://opensource.org/licenses/mit-license.php, MIT
  * @link      https://github.com/seagoj/Devtools
- * @method    string get();
- * @method    string get($key);
+ *
+ * @method    string set(string $key, mixed $value);
  * @method    string get(string $key);
- * @method    string Predis\Client::get();
- * @method    string Predis\Client::get($key);
- * @method    string Predis\Client::get(string $key);
- * @method    string \Predis\Client::get();
- * @method    string \Predis\Client::get($key);
- * @method    string \Predis\Client::get(string $key);
- * @method    string hget();
- * @method    bool Predis\Client::set(string $key, string $value);
- * @method    Predis\Client hset(string $key, string $value, string $set);
- * @method    string hgetall();
- * @method    string expire();
+ * @method    string hget(string $key, string $hash);
+ * @method    string hgetall(string $hash);
+ * @method    string expire(string $key, string $hash);
  */
 class Model
 {
