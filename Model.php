@@ -31,7 +31,8 @@ namespace Devtools;
  *
  * @method    string set(string $key, mixed $value);
  * @method    string get(string $key);
- * @method    string hget(string $key, string $hash);
+ * @method    string hset(string $hash, string $key, mixed $value);
+ * @method    string hget(string $hash, string $key);
  * @method    string hgetall(string $hash);
  * @method    string expire(string $key, string $hash);
  */
