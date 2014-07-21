@@ -420,9 +420,6 @@ class Model
         while ($row = mysql_fetch_array($resource, $result_type)) {
             array_push($result, $row);
         }
-        while ($row = mysql_fetch_array($resource, $result_type)) {
-            array_push($result, $row);
-        }
         return $result;
     }
 }
