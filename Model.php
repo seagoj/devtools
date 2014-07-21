@@ -414,9 +414,12 @@ class Model
         }
     }
 
-    public static function mysql_fetch_all($resource, $result_type=MYSQL_BOTH)
+    public static function mysql_fetch_all($resource, $result_type=MYSQL_BOTH, $flatten=false)
     {
         $result = array();
+        while ($row = mysql_fetch_array($resource, $result_type)) {
+            array_push($result, $row);
+        }
         while ($row = mysql_fetch_array($resource, $result_type)) {
             array_push($result, $row);
         }
