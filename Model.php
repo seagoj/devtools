@@ -36,7 +36,7 @@ namespace Devtools;
  * @method    string hgetall(string $hash);
  * @method    string expire(string $key, string $hash);
  */
-class Model
+class Model implements IModel
 {
     /**
      * Class configuration
@@ -51,7 +51,6 @@ class Model
      * Connection object for model
      **/
     private $connection;
-
 
     /**
      * Log
@@ -79,11 +78,9 @@ class Model
     public function __construct($options = array())
     {
         // require_once 'autoloader.php';
-
         if (is_object($options)) {
             $options = (array) $options;
         }
-
         $defaults = array(
             'connect' => true,
             'type' => 'redis',
@@ -91,16 +88,12 @@ class Model
             'host' => '127.0.0.1',
             'port' => 6379
         );
-
         $this->config = array_merge($defaults, $options);
         $this->validateConfig();
-
         if ($this->config['connect']) {
             $this->connect();
         }
-
         $this->connected = isset($this->connection);
-
         $this->debugLog = \Devtools\Log::debugLog();
     }
 
@@ -480,5 +473,18 @@ class Model
             array_push($result, $row);
         }
         return $result;
+    }
+
+    /**
+     * build
+     *
+     * Description
+     *
+     * @return void
+     * @author Jeremy Seago <seagoj@gmail.com>
+     **/
+    public function build($type, $connection)
+    {
+
     }
 }

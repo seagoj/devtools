@@ -1,11 +1,16 @@
 <?php
 /**
- * Markdown translator
+ * Markdown
  *
- * @category Seagoj
- * @package  Devtools
+ * Translates markdown into HTML
+ *
+ * PHP version 5.3
+ *
+ * @category Seago
+ * @package  DEVTOOLS
  * @author   Jeremy Seago <seagoj@gmail.com>
- * @license  http://github.com/seagoj/Devtools/LICENSE MIT
+ * @license  http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @version  GIT:
  * @link     http://github.com/seagoj/Devtools
  **/
 
@@ -53,8 +58,8 @@ class Markdown
      * Constructor for Markdown class
      *
      * @param array $options Array of options for class
+     *
      * @option  string  flavor      Type of Markdown to be used in the
-     *                              conversion
      * @option  string  logType     Type of log to write
      *
      * @return void
@@ -66,11 +71,8 @@ class Markdown
             'logType' => 'stdout',
             'htmlTag' => true
         ];
-
         $this->config = array_merge($defaults, $options);
-
         $this->validateConfig();
-
         $logOptions = array('type'=>$this->config['logType']);
         $this->log = new \Devtools\Log($logOptions);
     }
@@ -102,7 +104,7 @@ class Markdown
         foreach ($this->config as $var => $value) {
             if (!array_key_exists($var, $valid)) {
                 throw new \InvalidArgumentException("$var is not a valid option.");
-            } elseif (!in_array($value, $valid[$var])) {
+            } else if (!in_array($value, $valid[$var])) {
                 throw new \InvalidArgumentException("$value is not a valid value for $var.");
             }
         }
@@ -189,17 +191,17 @@ class Markdown
                     $first = false;
 
                     switch ($label) {
-                        case 'title':
-                            $md .= "<title>".trim($value)."</title>";
-                            break;
-                        case 'author':
-                        case 'description':
-                        case 'keywords':
-                        case 'date':
-                            $md .= "<meta name='".$label."' content='".trim($value)."'>";
-                            break;
-                        default:
-                            throw new \InvalidArgumentException("$label is not a valid metadata tag");
+                    case 'title':
+                        $md .= "<title>".trim($value)."</title>";
+                        break;
+                    case 'author':
+                    case 'description':
+                    case 'keywords':
+                    case 'date':
+                        $md .= "<meta name='".$label."' content='".trim($value)."'>";
+                        break;
+                    default:
+                        throw new \InvalidArgumentException("$label is not a valid metadata tag");
                     }
                 } else {
                     if ($first===false && $ended===false) {
