@@ -182,6 +182,14 @@ class Model
         return $this->connected = isset($this->connection);
     }
 
+    /**
+     * connectFirebird
+     *
+     * Connect to a firebird database
+     *
+     * @return boolean True if connected
+     * @author Jeremy Seago <seagoj@gmail.com>
+     **/
     private function connectFirebird()
     {
         $this->connection = \ibase_pconnect(
@@ -266,7 +274,14 @@ class Model
     }
 
     /**
-     * @param string $method
+     * run
+     *
+     * Runs method and params
+     *
+     * @param string $method Method to run
+     * @param string $params Parameters for method
+     *
+     * @return mixed Return of method
      */
     private function run($method, $params)
     {
@@ -375,6 +390,18 @@ class Model
         return $data;
     }
 
+    /**
+     * query
+     *
+     * Run query against the model
+     *
+     * @param string  $sql    Query string
+     * @param boolean $reduce Reduce result if true
+     * @param boolean $debug  Debug
+     *
+     * @return mixed Return from method
+     * @author Jeremy Seago <seagoj@gmail.com>
+     **/
     public function query($sql, $reduce=true, $debug=false)
     {
         if (!is_array($this->config)) {
@@ -384,6 +411,17 @@ class Model
         return $this->$func($sql, $reduce, $debug);
     }
 
+    /**
+     * queryFirebird
+     *
+     * Query firebird model
+     *
+     * @param string  $sql    Query string
+     * @param boolean $reduce Reduce result if true
+     *
+     * @return mixed Result of query
+     * @author Jeremy Seago <seagoj@gmail.com>
+     **/
     private function queryFirebird($sql, $reduce)
     {
         $sql = str_replace("\'", "''", $sql);
@@ -404,6 +442,16 @@ class Model
         }
     }
 
+    /**
+     * reduceResult
+     *
+     * Reduce result
+     *
+     * @param array $result Array to reduce
+     *
+     * @return mixed Reduced result
+     * @author Jeremy Seago <seagoj@gmail.com>
+     **/
     protected function reduceResult($result)
     {
         if (is_array($result) && (count($result) == 1)) {
@@ -414,7 +462,18 @@ class Model
         }
     }
 
-    public static function mysql_fetch_all($resource, $result_type=MYSQL_BOTH)
+    /**
+     * mysql_fetch_all
+     *
+     * Compiles results of query into multidimensional hash
+     *
+     * @param resource $resource    Model resource
+     * @param int      $result_type MYSQL_BOTH, MYSQL_NUM, MYSQL_ASSOC
+     *
+     * @return array Hash of query results
+     * @author Jeremy Seago <seagoj@gmail.com>
+     **/
+    public static function mysqlFetchAll($resource, $result_type=MYSQL_BOTH)
     {
         $result = array();
         while ($row = mysql_fetch_array($resource, $result_type)) {
