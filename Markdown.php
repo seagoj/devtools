@@ -428,6 +428,9 @@ class Markdown
                     array_push($result, "<li>$li</li>");
                 }
             } else {
+                var_dump(
+                    compact('triggered', 'result', 'line')
+                );
                 $state = $this->endTag(
                     'ul',
                     compact('triggered', 'result', 'line')
