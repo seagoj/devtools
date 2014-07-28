@@ -62,28 +62,25 @@ class API
         $options = (!isset($this) || get_class($this) !== __CLASS__) ?
             API::loadOptions($options) :
             $this->options;
-
         switch($options['type']) {
             case 'json':
-                header('Content-type: application/json');
+                /* header('Content-type: application/json'); */
                 $resp = new \Devtools\Response;
-                $resp->data(array('data'=>$result));
+                $resp->data($result);
                 $response = $resp->json();
                 break;
             case '':
             case 'string':
                 $response = '';
-
-                foreach($result as $row) {
+                foreach ($result as $row) {
                     $rowStr = '';
-                    foreach($row as $value) {
+                    foreach ($row as $value) {
                         $rowStr .= $rowStr==='' ?
                             $value :
                             ($options['colDelim'].$value);
                     }
                     $response .= ($rowStr.$options['rowDelim']);
                 }
-
                 break;
             default:
                 throw new \InvalidArgumentException($options['type']." is not a valid return type.");

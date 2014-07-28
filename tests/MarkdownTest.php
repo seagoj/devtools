@@ -29,7 +29,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         ];
 
         $this->assertInstanceOf(
-            'Devtools\Markdown', 
+            'Devtools\Markdown',
             new \Devtools\Markdown($valid)
         );
     }
@@ -46,7 +46,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
         $invalidVar = [
             'color' => 'purple'
         ];
-   
+
         new \Devtools\Markdown($invalidVar);
     }
 
@@ -273,7 +273,7 @@ class MarkdownTest extends PHPUnit_Framework_TestCase
     public function testFormatCode()
     {
         $mdStr = "    code1\n    code2\n";
-        $resultStr = "<html>\n<code>\n\tcode1\n\tcode2\n</code>\n</html>\n";
+        $resultStr = "<html>\n<code>\n    code1\n    code2\n</code>\n</html>\n";
 
         $md = new \Devtools\Markdown();
         $this->assertEquals($resultStr, $md->convert($mdStr));

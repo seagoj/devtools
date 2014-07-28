@@ -100,7 +100,6 @@ class Markdown
                 false
             ]
         ];
-
         foreach ($this->config as $var => $value) {
             if (!array_key_exists($var, $valid)) {
                 throw new \InvalidArgumentException("$var is not a valid option.");
@@ -108,7 +107,6 @@ class Markdown
                 throw new \InvalidArgumentException("$value is not a valid value for $var.");
             }
         }
-
         return true;
     }
 
@@ -532,7 +530,8 @@ class Markdown
                     array_push($result, "<".$tag.">");
                     $first = false;
                 }
-                array_push($result, "\t".$string);
+                /* array_push($result, "\t".$string); */
+                array_push($result, "    ".$string);
                 $triggered = true;
             } else {
                 if ($triggered) {

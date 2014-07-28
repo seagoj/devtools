@@ -9,6 +9,7 @@ class Response
     public $status;
     public $request;
     public $message;
+    private $data;
     private $suppress_header;
 
     public function __construct($options=array())
@@ -52,7 +53,7 @@ class Response
         if (empty($data)) {
             trigger_error(var_export(debug_backtrace(), true));
         }
-        foreach($data as $key => $value)
+        foreach ($data as $key => $value)
         {
             $this->$key = $value;
         }

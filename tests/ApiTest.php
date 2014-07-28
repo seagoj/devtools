@@ -8,14 +8,15 @@ class APITest extends PHPUnit_Framework_TestCase
 
     public function setup()
     {
-        $this->testArray = array(
-            array(
-                'col1' => 'val1',
-                'col2' => 'val2'
-            )
+        $this->testArrayJson = array(
+            'col1' => 'val1',
+            'col2' => 'val2'
+        );
+        $this->testArrayStr = array(
+            $this->testArrayJson
         );
         $this->testResponseStr = "val1|val2\n";
-        $this->testResponseObj = '{"status":"OK","request":[],"message":"","data":[{"col1":"val1","col2":"val2"}]}';
+        $this->testResponseObj = '{"status":"OK","request":[],"message":"","col1":"val1","col2":"val2"}';
     }
 
     public function testAPI()
@@ -26,22 +27,17 @@ class APITest extends PHPUnit_Framework_TestCase
     public function testFormatResponseStringDefault()
     {
         $response = \Devtools\API::formatResponse(
-            $this->testArray
+            $this->testArrayStr
         );
-
         $this->assertEquals($this->testResponseStr, $response);
     }
 
-    /**
-    * @runInSeparateProcess
-    **/
     public function testFormatResponseJSON()
     {
         $response = \Devtools\API::formatResponse(
-            $this->testArray,
-            array( 'type' => 'json' )
+            $this->testArrayJson,
+            array('type' => 'json')
         );
-
         $this->assertEquals($this->testResponseObj, $response);
     }
 
@@ -51,8 +47,8 @@ class APITest extends PHPUnit_Framework_TestCase
     public function testFormatResponseException()
     {
         $response = \Devtools\API::formatResponse(
-            $this->testArray,
-            array( 'type' => 'pizza' )
+            $this->testArrayStr,
+            array('type' => 'pizza')
         );
     }
 }
