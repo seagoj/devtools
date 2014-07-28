@@ -102,7 +102,7 @@ class Response
         }
     }
 
-    public static function ajax($url='', $request=array())
+    public static function post($url='', $request=array())
     {
         global $debugLog;
         if (!empty($url)) {
