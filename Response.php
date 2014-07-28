@@ -102,23 +102,6 @@ class Response
         }
     }
 
-    public static function post($url='', $request=array())
-    {
-        global $debugLog;
-        if (!empty($url)) {
-            $options = array(
-                'http' => array(
-                    'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-                    'method'  => 'POST',
-                    'content' => http_build_query($request),
-                ),
-            );
-            $context  = stream_context_create($options);
-            $result = file_get_contents($_SERVER['DOCUMENT_ROOT'].$url, false, $context);
-            $debugLog->write($result);
-        }
-    }
-
     /**
      * load
      *
