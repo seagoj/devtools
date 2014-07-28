@@ -1,4 +1,4 @@
-## Devtools - master:![Build Status](https://www.codeship.io/projects/e802aba0-bc45-0131-50bf-127f5dbe26ea/status)
+## Devtools - master:![Build Status](https://www.codeship.io/projects/e802aba0-bc45-0131-50bf-127f5dbe26ea/status)[![Code Quality](https://scrutinizer-ci.com/g/seagoj/Devtools/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/seagoj/Devtools/?branch=master)[![Code Coverage](https://scrutinizer-ci.com/g/seagoj/Devtools/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/seagoj/Devtools/?branch=master)
 Devtools is a collection of PHP libraries designed for rapid development and debugging.
 
 * **Autoload**:
