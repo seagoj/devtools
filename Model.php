@@ -474,17 +474,4 @@ class Model implements IModel
         }
         return $result;
     }
-
-    /**
-     * build
-     *
-     * Description
-     *
-     * @return void
-     * @author Jeremy Seago <seagoj@gmail.com>
-     **/
-    public function build($type, $connection)
-    {
-
-    }
 }

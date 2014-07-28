@@ -32,37 +32,39 @@ interface IModel
      *
      * Returns value of passed parameter
      *
-     * @param string $key name of parameter to retrieve value in model
+     * @param string $key        Name of parameter to retrieve value in model
+     * @param string $collection Optional collection name
      *
      * @return mixed Value of $key in model
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function get(string $key);
+    public function get(string $key, string $collection);
 
     /**
      * getAll
      *
      * Return all values in collection
      *
-     * @param string $collectionName Collection to return all values
+     * @param string $collection Collection to return all values
      *
      * @return array Array of values in collection
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function getAll(string $collectionName);
+    public function getAll(string $collection);
 
     /**
      * set
      *
      * Updates or inserts value of $key to $value in model
      *
-     * @param string $key   Parameter to update in model
-     * @param mixed  $value Value to store in $key in model
+     * @param string $key        Parameter to update in model
+     * @param mixed  $value      Value to store in $key in model
+     * @param string $collection Optional collection name
      *
      * @return boolean
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function set(string $key, $value);
+    public function set(string $key, $value, string $collection);
 
     /**
      * query
