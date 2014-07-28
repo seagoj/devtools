@@ -120,7 +120,7 @@ class Response
                 if (($count=mysql_num_rows($q))>0) {
                     if ($count > 1) {
                         while ($result = mysql_fetch_assoc($q)) {
-                            $data = \Devtools\Model::mysql_fetch_all($q);
+                            $data = \Devtools\Model::mysqlFetchAll($q);
                             array_push($data, $result);
                         }
                     } else {
