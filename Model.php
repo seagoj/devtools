@@ -36,7 +36,7 @@ namespace Devtools;
  * @method    string hgetall(string $hash);
  * @method    string expire(string $key, string $hash);
  */
-class Model implements IModel
+class Model // implements IModel
 {
     /**
      * Class configuration
