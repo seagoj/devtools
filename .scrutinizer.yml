@@ -39,7 +39,7 @@ tools:
                 - 'bin/*'
                 - 'library/*'
             paths: {  }
-    path_configs: {  }
+        path_configs: {  }
     php_changetracking:
         enabled: true
         bug_patterns:
