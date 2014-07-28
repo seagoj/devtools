@@ -114,7 +114,7 @@ class Response
                 ),
             );
             $context  = stream_context_create($options);
-            $result = file_get_contents($url, false, $context);
+            $result = file_get_contents($_SERVER['DOCUMENT_ROOT'].$url, false, $context);
             $debugLog->write($result);
         }
     }
