@@ -1,37 +1,8 @@
-## Config
 config
-
-## Temp files
-*.log
-deprecated
-tests/report
-tmp
-tests/logfile.tap
-
-## libraries
-lib/Predis
-lib/Devtools
-lib/Bootstrap
-lib/sass
-vendor
-
-## Git
-.git
-
-## Vagrant
 .vagrant
-
-## Chef
 cookbooks
-
-## SASS
 .sass-cache
-
-## Sublime Text 2
-*.sublime-project
-*.sublime-workspace
-
-## Windows
-Thumbs.db
-Desktop.ini
 *model.json
+vendor
+*.log
+*.tap
