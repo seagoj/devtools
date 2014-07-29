@@ -53,7 +53,7 @@ class RedisModel implements IModel
      *
      * Returns value from collection or global store
      *
-     * @param String $key        Name of parameter to retrieve
+     * @param String $key        Name of parameter to return value
      * @param String $collection Collection to search for $key
      *
      * @return Mixed Value of $key
@@ -61,6 +61,23 @@ class RedisModel implements IModel
      **/
     public function get(\String $key, \String $collection = null)
     {
+        return is_null($collection) ?
+            $this->connection->get($key)  :
+            $this->connection->hget($collection, $key);
+    }
 
+    /**
+     * set
+     *
+     * Set value of $key or $collection/$key
+     *
+     * @return boolean Status of value set
+     * @author Jeremy Seago <seagoj@gmail.com>
+     **/
+    public function set(\String $key, $value, \String $collection)
+    {
+        return is_null($collection) ?
+            $this->connection->set($key, $value) :
+            $this->connection->hset($key, $value, $collection);
     }
 }
