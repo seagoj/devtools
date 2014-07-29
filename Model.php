@@ -421,6 +421,8 @@ class Model implements \Devtools\IModel
             $q = ibase_query($this->connection, $sql);
             $debugLog->write('q');
             $debugLog->write($q);
+            $debugLog->write(is_bool($q));
+            $debugLog->write(is_int($q));
             if (!(is_bool($q) || is_int($q))) {
                 $result = array();
                 while ($row = ibase_fetch_assoc($q, IBASE_TEXT)) {
