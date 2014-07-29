@@ -417,6 +417,7 @@ class Model implements \Devtools\IModel
     {
         global $debugLog;
         $sql = str_replace("\'", "''", $sql);
+        $debugLog->write($sql);
         if (gettype($this->connection) === 'resource') {
             $q = ibase_query($this->connection, $sql);
             $debugLog->write('q');
