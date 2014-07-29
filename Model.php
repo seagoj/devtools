@@ -31,12 +31,12 @@ namespace Devtools;
  *
  * @method    string set(string $key, mixed $value);
  * @method    string get(string $key);
- * @method    string hset(string $hash, string $key, mixed $value);
- * @method    string hget(string $hash, string $key);
- * @method    string hgetall(string $hash);
- * @method    string expire(string $key, string $hash);
+ * @method    string hset(string $collection, string $key, mixed $value);
+ * @method    string hget(string $collection, string $key);
+ * @method    string hgetall(string $collection);
+ * @method    string expire(string $key, string $collection);
  */
-class Model implements IModel
+class Model implements \Devtools\IModel
 {
     /**
      * Class configuration
@@ -77,7 +77,6 @@ class Model implements IModel
      **/
     public function __construct($options = array())
     {
-        // require_once 'autoloader.php';
         if (is_object($options)) {
             $options = (array) $options;
         }
@@ -144,7 +143,7 @@ class Model implements IModel
      *
      * Connects model to datastore
      *
-     * @param array $options Options array for host, port and credentials
+     * @param Array $options Options array for host, port and credentials
      *
      * @throws Exception If datastore type is not supported
      * @return Boolean   Result of attempted connection
@@ -203,17 +202,17 @@ class Model implements IModel
      *
      * Performs the set operation on redis datastores
      *
-     * @param string $key   Name given to data value
-     * @param string $value Value of data to be stored
-     * @param string $hash  Hash to be used in key/value store
+     * @param String $key        Name given to data value
+     * @param String $value      Value of data to be stored
+     * @param String $collection Hash to be used in key/value store
      *
      * @return  boolean Result of insertion
      **/
-    private function setRedis($key, $value, $hash)
+    private function setRedis($key, $value, $collection)
     {
-        return is_null($hash) ?
+        return is_null($collection) ?
             $this->connection->set($key, $value) :
-            is_bool($this->connection->hset($hash, $key, $value));
+            is_bool($this->connection->hset($collection, $key, $value));
     }
 
     /**
@@ -221,16 +220,16 @@ class Model implements IModel
      *
      * Performs the get operation on redis datastores
      *
-     * @param string $key  Name of data to be retrieved
-     * @param string $hash Hash modifier for name
+     * @param String $key        Name of data to be retrieved
+     * @param String $collection Hash modifier for name
      *
      * @return  multi   Value of data retrieved
      **/
-    private function getRedis($key, $hash)
+    private function getRedis($key, $collection)
     {
-        return is_null($hash) ?
+        return is_null($collection) ?
             $this->connection->get($key) :
-            $this->connection->hget($hash, $key);
+            $this->connection->hget($collection, $key);
     }
 
     /**
@@ -238,8 +237,8 @@ class Model implements IModel
      *
      * Performs the expiration operation on redis datastores
      *
-     * @param string  $key    Name of data to be modified
-     * @param integer $expiry Expiration to be applied
+     * @param String  $key    Name of data to be modified
+     * @param Integer $expiry Expiration to be applied
      *
      * @return  boolean Status of setting the expiration
      **/
@@ -253,14 +252,14 @@ class Model implements IModel
      *
      * Inserts data into the datastore
      *
-     * @param string $key   Name given to data value
-     * @param string $value Value of data to be stored
-     * @param string $hash  Hash to be used in key/value store
+     * @param string $key        Name given to data value
+     * @param mixed  $value      Value of data to be stored
+     * @param string $collection Collection to search for $key
      *
      * @throws  Exception if datastore type is not supported
      * @return  boolean     Result of insertion
      **/
-    public function set($key, $value, $hash = null)
+    public function set(\String $key, $value, \String $collection=null)
     {
         $this->checkConnection();
         return $this->run('set', func_get_args());
@@ -271,8 +270,8 @@ class Model implements IModel
      *
      * Runs method and params
      *
-     * @param string $method Method to run
-     * @param string $params Parameters for method
+     * @param String $method Method to run
+     * @param String $params Parameters for method
      *
      * @return mixed Return of method
      */
@@ -292,13 +291,13 @@ class Model implements IModel
      *
      * Returns data stored under $key
      *
-     * @param string $key  Name of data to be retrieved
-     * @param string $hash Hash to retrieve $key from; defaults to null
+     * @param String $key        Name of data to be retrieved
+     * @param String $collection Hash to retrieve $key from; defaults to null
      *
      * @throws  Exception if datastore type is not supported
      * @return  multiple    Data retrieved or false if retrieval fails
      **/
-    public function get($key, $hash = null)
+    public function get(\String $key, \String $collection = null)
     {
         $this->checkConnection();
         return $this->run('get', func_get_args());
@@ -307,13 +306,13 @@ class Model implements IModel
     /**
      * Model::getAll
      *
-     * Returns all keys related to $hash
+     * Returns all keys related to $collection
      *
-     * @param string $hash Hash used to lookup keys
+     * @param String $collection Hash used to lookup keys
      *
      * @return array Array of keys and values
      **/
-    public function getAll($hash)
+    public function getAll(\String $collection)
     {
         $this->checkConnection();
         return $this->run('getAll', func_get_args());
@@ -322,15 +321,15 @@ class Model implements IModel
     /**
      * Model::getAllRedis
      *
-     * Returns all keys related to $hash from a redis datastore
+     * Returns all keys related to $collection from a redis datastore
      *
-     * @param string $hash Hash used to lookup keys
+     * @param String $collection Hash used to lookup keys
      *
      * @return array Array of keys and values
      **/
-    private function getAllRedis($hash)
+    private function getAllRedis($collection)
     {
-        return $this->connection->hgetall($hash);
+        return $this->connection->hgetall($collection);
     }
 
     /**
@@ -338,8 +337,8 @@ class Model implements IModel
      *
      * Sets expiration period for a particular data entry
      *
-     * @param string $key    Key to set the expiration for
-     * @param string $expiry Expiration
+     * @param String $key    Key to set the expiration for
+     * @param String $expiry Expiration
      *
      * @throws  Exception if datastore type is not supported
      * @return  boolean Result of setting the expiration
@@ -356,13 +355,13 @@ class Model implements IModel
      *
      * Sanitizes data for manipulation in PHP
      *
-     * @param string $data Data to be sanitized
-     * @param string $type Type of system to sanitize for
+     * @param String $data Data to be sanitized
+     * @param String $type Type of system to sanitize for
      *
      * @throws  Exception if data cannot be sanitized
      * @return  string  Sanitized data
      **/
-    public function sanitize($data, $type = 'html')
+    public function sanitize(\String $data, $type = 'html')
     {
         switch($type) {
         case 'html':
@@ -388,20 +387,19 @@ class Model implements IModel
      *
      * Run query against the model
      *
-     * @param string  $sql    Query string
-     * @param boolean $reduce Reduce result if true
-     * @param boolean $debug  Debug
+     * @param String  $sql    Query string
+     * @param Boolean $reduce Reduce result if true
      *
      * @return mixed Return from method
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function query($sql, $reduce=true, $debug=false)
+    public function query(\String $sql, $reduce=true)
     {
         if (!is_array($this->config)) {
             throw new \Exception("Options array is not an array.");
         }
         $func = 'query'.ucfirst($this->config['type']);
-        return $this->$func($sql, $reduce, $debug);
+        return $this->$func($sql, $reduce);
     }
 
     /**
@@ -409,8 +407,8 @@ class Model implements IModel
      *
      * Query firebird model
      *
-     * @param string  $sql    Query string
-     * @param boolean $reduce Reduce result if true
+     * @param String  $sql    Query string
+     * @param Boolean $reduce Reduce result if true
      *
      * @return mixed Result of query
      * @author Jeremy Seago <seagoj@gmail.com>
@@ -440,7 +438,7 @@ class Model implements IModel
      *
      * Reduce result
      *
-     * @param array $result Array to reduce
+     * @param Array $result Array to reduce
      *
      * @return mixed Reduced result
      * @author Jeremy Seago <seagoj@gmail.com>
@@ -460,8 +458,8 @@ class Model implements IModel
      *
      * Compiles results of query into multidimensional hash
      *
-     * @param resource $resource    Model resource
-     * @param int      $result_type MYSQL_BOTH, MYSQL_NUM, MYSQL_ASSOC
+     * @param Resource $resource    Model resource
+     * @param Integer  $result_type MYSQL_BOTH, MYSQL_NUM, MYSQL_ASSOC
      *
      * @return array Hash of query results
      * @author Jeremy Seago <seagoj@gmail.com>
