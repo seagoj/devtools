@@ -88,5 +88,5 @@ interface IModel
      * @return String Sanitized version of the queryString
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    function sanitize(\String $queryString);
+    public static function sanitize(\String $queryString);
 }

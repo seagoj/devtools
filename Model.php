@@ -361,7 +361,7 @@ class Model implements \Devtools\IModel
      * @throws  Exception if data cannot be sanitized
      * @return  string  Sanitized data
      **/
-    public function sanitize(\String $data, $type = 'html')
+    public static function sanitize(\String $data, $type = 'html')
     {
         switch($type) {
         case 'html':
