@@ -59,7 +59,7 @@ class RedisModel implements IModel
      * @return Mixed Value of $key
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function get(\String $key, \String $collection = null)
+    public function get($key, $collection = null)
     {
         return is_null($collection) ?
             $this->connection->get($key)  :
@@ -76,7 +76,7 @@ class RedisModel implements IModel
      * @return array Array of key/value pairs
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function getAll(\String $collection)
+    public function getAll($collection)
     {
         return $this->connection->hgetall($collection);
     }
@@ -93,7 +93,7 @@ class RedisModel implements IModel
      * @return boolean Status of value set
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function set(\String $key, $value, \String $collection)
+    public function set($key, $value, $collection)
     {
         return is_null($collection) ?
             $this->connection->set($key, $value) :
@@ -111,7 +111,7 @@ class RedisModel implements IModel
      * @return Mixed Value of $key or $collection/$key
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function query(\String $key, \String $collection=null)
+    public function query($key, $collection=null)
     {
         return $this->get($key, $collection);
     }
