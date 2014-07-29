@@ -67,9 +67,28 @@ class RedisModel implements IModel
     }
 
     /**
+     * getAll
+     *
+     * Returns all key/value pairs from a collection
+     *
+     * @param String $collection Collection to retrieve values
+     *
+     * @return array Array of key/value pairs
+     * @author Jeremy Seago <seagoj@gmail.com>
+     **/
+    public function getAll(\String $collection)
+    {
+        return $this->connection->hgetall($collection);
+    }
+
+    /**
      * set
      *
      * Set value of $key or $collection/$key
+     *
+     * @param String $key        Key to set value of
+     * @param Mixed  $value      Value of key
+     * @param String $collection Collection in which $key exists
      *
      * @return boolean Status of value set
      * @author Jeremy Seago <seagoj@gmail.com>
@@ -79,5 +98,21 @@ class RedisModel implements IModel
         return is_null($collection) ?
             $this->connection->set($key, $value) :
             $this->connection->hset($key, $value, $collection);
+    }
+
+    /**
+     * query
+     *
+     * Query store for $key or $collection/$key
+     *
+     * @param String $key        Name of parameter to return
+     * @param String $collection Name of collection to search for $key
+     *
+     * @return Mixed Value of $key or $collection/$key
+     * @author Jeremy Seago <seagoj@gmail.com>
+     **/
+    public function query(\String $key, \String $collection=null)
+    {
+        return $this->get($key, $collection);
     }
 }
