@@ -13,7 +13,7 @@
  * @version  GIT: 1.0
  * @link     http://github.com/seagoj/Devtools/RedisModel.php
  **/
-
+namespace Devtools;
 /**
  * Class RedisModel
  *
@@ -25,6 +25,7 @@
  **/
 class RedisModel implements IModel
 {
+    private $connection;
     /**
      * __construct
      *
@@ -35,17 +36,18 @@ class RedisModel implements IModel
      * @return RedisModel Model object to provide a connection to a redis store
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function __construct($options = array())
+    public function __construct(\Predis\Client $connection = null)
     {
-        $options = array_merge(
-            array(
-                'scheme' => 'tcp',
-                'host'   => '127.0.0.1',
-                'port'   => 6379
-            ),
-            $options
-        );
-        $this->connection = new \Predis\Client($options);
+        if (is_null($connection)) {
+            $connection = new \Predis\Client(
+                array(
+                    'scheme' => 'tcp',
+                    'host'   => '127.0.0.1',
+                    'port'   => 6379
+                )
+            );
+        }
+        $this->connection = $connection;
     }
 
     /**
@@ -93,7 +95,7 @@ class RedisModel implements IModel
      * @return boolean Status of value set
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function set($key, $value, $collection)
+    public function set($key, $value, $collection=null)
     {
         return is_null($collection) ?
             $this->connection->set($key, $value) :
@@ -114,5 +116,21 @@ class RedisModel implements IModel
     public function query($key, $collection=null)
     {
         return $this->get($key, $collection);
+    }
+
+    /**
+     * sanitize
+     *
+     * Returns safe version of the $queryString
+     *
+     * @param string $queryString Query to sanitize
+     *
+     * @return string Sanitized queryString
+     * @author Jeremy Seago <seagoj@gmail.com>
+     **/
+    public static function sanitize($queryString)
+    {
+        /* No sanitization required for Redis */
+        return  $queryString;
     }
 }
