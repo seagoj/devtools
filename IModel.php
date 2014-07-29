@@ -38,7 +38,7 @@ interface IModel
      * @return Mixed Value of $key in model
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function get(\String $key, \String $collection);
+    public function get($key, $collection);
 
     /**
      * getAll
@@ -50,7 +50,7 @@ interface IModel
      * @return Array Array of values in collection
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function getAll(\String $collection);
+    public function getAll($collection);
 
     /**
      * set
@@ -64,7 +64,7 @@ interface IModel
      * @return Boolean
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function set(\String $key, $value, \String $collection);
+    public function set($key, $value, $collection);
 
     /**
      * query
@@ -76,7 +76,7 @@ interface IModel
      * @return Mixed Result of query against model
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function query(\String $queryString);
+    public function query($queryString);
 
     /**
      * sanitize
@@ -88,5 +88,5 @@ interface IModel
      * @return String Sanitized version of the queryString
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public static function sanitize(\String $queryString);
+    public static function sanitize($queryString);
 }

@@ -259,7 +259,7 @@ class Model implements \Devtools\IModel
      * @throws  Exception if datastore type is not supported
      * @return  boolean     Result of insertion
      **/
-    public function set(\String $key, $value, \String $collection=null)
+    public function set($key, $value, $collection=null)
     {
         $this->checkConnection();
         return $this->run('set', func_get_args());
@@ -297,7 +297,7 @@ class Model implements \Devtools\IModel
      * @throws  Exception if datastore type is not supported
      * @return  multiple    Data retrieved or false if retrieval fails
      **/
-    public function get(\String $key, \String $collection = null)
+    public function get($key, $collection = null)
     {
         $this->checkConnection();
         return $this->run('get', func_get_args());
@@ -312,7 +312,7 @@ class Model implements \Devtools\IModel
      *
      * @return array Array of keys and values
      **/
-    public function getAll(\String $collection)
+    public function getAll($collection)
     {
         $this->checkConnection();
         return $this->run('getAll', func_get_args());
@@ -361,7 +361,7 @@ class Model implements \Devtools\IModel
      * @throws  Exception if data cannot be sanitized
      * @return  string  Sanitized data
      **/
-    public static function sanitize(\String $data, $type = 'html')
+    public static function sanitize($data, $type = 'html')
     {
         switch($type) {
         case 'html':
@@ -393,7 +393,7 @@ class Model implements \Devtools\IModel
      * @return mixed Return from method
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function query(\String $sql, $reduce=true)
+    public function query($sql, $reduce=true)
     {
         if (!is_array($this->config)) {
             throw new \Exception("Options array is not an array.");
