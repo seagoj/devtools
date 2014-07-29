@@ -415,9 +415,11 @@ class Model implements \Devtools\IModel
      **/
     private function queryFirebird($sql, $reduce)
     {
+        global $debugLog;
         $sql = str_replace("\'", "''", $sql);
         if (gettype($this->connection) === 'resource') {
             $q = ibase_query($this->connection, $sql);
+            $debugLog->write($q);
             if (!(is_bool($q) || is_int($q))) {
                 $result = array();
                 while ($row = ibase_fetch_assoc($q, IBASE_TEXT)) {
@@ -427,6 +429,7 @@ class Model implements \Devtools\IModel
             } else {
                 $result = $q;
             }
+            $debugLog->write($result);
             return ($reduce ? $this->reduceResult($result) : $result);
         } else {
             throw new \InvalidArgumentException('Invalid connection type.');
