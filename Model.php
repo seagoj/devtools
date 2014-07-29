@@ -419,6 +419,7 @@ class Model implements \Devtools\IModel
         $sql = str_replace("\'", "''", $sql);
         if (gettype($this->connection) === 'resource') {
             $q = ibase_query($this->connection, $sql);
+            $debugLog->write('q');
             $debugLog->write($q);
             if (!(is_bool($q) || is_int($q))) {
                 $result = array();
