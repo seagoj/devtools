@@ -82,7 +82,7 @@ class Model implements \Devtools\IModel
         }
         $defaults = array(
             'connect' => true,
-            'type' => 'redis',
+            'type' => 'firebird',
             'scheme' => 'tcp',
             'host' => '127.0.0.1',
             'port' => 6379
@@ -109,7 +109,6 @@ class Model implements \Devtools\IModel
     private function validateConfig()
     {
         $validTypes = array(
-            'redis',
             'firebird'
         );
         if (in_array($this->config['type'], $validTypes)) {
@@ -157,24 +156,6 @@ class Model implements \Devtools\IModel
     }
 
     /**
-     * Model::connectRedis
-     *
-     * Connects model to redis datastore
-     *
-     * @return  boolean     Status of connection
-     **/
-    private function connectRedis()
-    {
-        $clientOptions = array(
-            'scheme' => $this->config['scheme'],
-            'host' => $this->config['host'],
-            'port' => $this->config['port']
-        );
-        $this->connection = new \Predis\Client($clientOptions);
-        return $this->connected = isset($this->connection);
-    }
-
-    /**
      * connectFirebird
      *
      * Connect to a firebird database
@@ -195,56 +176,6 @@ class Model implements \Devtools\IModel
             throw new \Exception('connection to host could not be established');
         }
         return $this->connected = isset($this->connection);
-    }
-
-    /**
-     * Model::setRedis
-     *
-     * Performs the set operation on redis datastores
-     *
-     * @param String $key        Name given to data value
-     * @param String $value      Value of data to be stored
-     * @param String $collection Hash to be used in key/value store
-     *
-     * @return  boolean Result of insertion
-     **/
-    private function setRedis($key, $value, $collection)
-    {
-        return is_null($collection) ?
-            $this->connection->set($key, $value) :
-            is_bool($this->connection->hset($collection, $key, $value));
-    }
-
-    /**
-     * Model::getRedis
-     *
-     * Performs the get operation on redis datastores
-     *
-     * @param String $key        Name of data to be retrieved
-     * @param String $collection Hash modifier for name
-     *
-     * @return  multi   Value of data retrieved
-     **/
-    private function getRedis($key, $collection)
-    {
-        return is_null($collection) ?
-            $this->connection->get($key) :
-            $this->connection->hget($collection, $key);
-    }
-
-    /**
-     * Model::expireRedis
-     *
-     * Performs the expiration operation on redis datastores
-     *
-     * @param String  $key    Name of data to be modified
-     * @param Integer $expiry Expiration to be applied
-     *
-     * @return  boolean Status of setting the expiration
-     **/
-    private function expireRedis($key, $expiry)
-    {
-        return $this->connection->expire($key, $expiry);
     }
 
     /**
@@ -319,20 +250,6 @@ class Model implements \Devtools\IModel
     }
 
     /**
-     * Model::getAllRedis
-     *
-     * Returns all keys related to $collection from a redis datastore
-     *
-     * @param String $collection Hash used to lookup keys
-     *
-     * @return array Array of keys and values
-     **/
-    private function getAllRedis($collection)
-    {
-        return $this->connection->hgetall($collection);
-    }
-
-    /**
      * Model::expire
      *
      * Sets expiration period for a particular data entry
@@ -350,37 +267,6 @@ class Model implements \Devtools\IModel
         return $this->$func($key, $expiry);
     }
 
-    /**
-     * Model::sanitize
-     *
-     * Sanitizes data for manipulation in PHP
-     *
-     * @param String $data Data to be sanitized
-     * @param String $type Type of system to sanitize for
-     *
-     * @throws  Exception if data cannot be sanitized
-     * @return  string  Sanitized data
-     **/
-    public static function sanitize($data, $type = 'html')
-    {
-        switch($type) {
-        case 'html':
-            $data = htmlspecialchars($data);
-            break;
-        /*
-        case 'mysql':
-            $data = mysql_real_escape_string($data);
-            break;
-        */
-        case 'shellcmd':
-            $data = escapeshellcmd($data);
-            break;
-        case 'shellarg':
-            $data = escapeshellarg($data);
-            break;
-        }
-        return $data;
-    }
 
     /**
      * query

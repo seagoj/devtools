@@ -31,7 +31,7 @@ class RedisModel implements IModel
      *
      * RedisModel constructor
      *
-     * @param Array $options Options array
+     * @param Predis\Client $connection Predis object to use as model
      *
      * @return RedisModel Model object to provide a connection to a redis store
      * @author Jeremy Seago <seagoj@gmail.com>
@@ -132,5 +132,20 @@ class RedisModel implements IModel
     {
         /* No sanitization required for Redis */
         return  $queryString;
+    }
+
+    /**
+    * Model::expireRedis
+    *
+    * Performs the expiration operation on redis datastores
+    *
+    * @param String  $key    Name of data to be modified
+    * @param Integer $expiry Expiration to be applied
+    *
+    * @return  boolean Status of setting the expiration
+    **/
+    public function expireRedis($key, $expiry)
+    {
+       return $this->connection->expire($key, $expiry);
     }
 }
