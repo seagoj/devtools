@@ -1,32 +1,122 @@
 <?php
+/**
+ * FirebirdModel
+ *
+ * Class for interacting with a Firebird database
+ *
+ * PHP version 5.3
+ *
+ * @category Seago
+ * @package  DEVTOOLS
+ * @author   Jeremy Seago <seagoj@gmail.com>
+ * @license  http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @version  GIT: 1.0
+ * @link     http://github.com/seagoj/Devtools/FirebirdModel.php
+ **/
 
 namespace Devtools;
 
-class FirebirdModel extends Model
+/**
+ * Class FirebirdModel
+ *
+ * @category Seago
+ * @package  DEVTOOLS
+ * @author   Jeremy Seago <seagoj@gmail.com>
+ * @license  http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @link     http://github.com/seagoj/Devtools/FirebirdModel.php
+ */
+class FirebirdModel implements IModel
 {
-    private $conn;
-
     const RET_VAL_STR = 'STRING';
     const RET_VAL_ARR = 'ARRAY';
 
-    public function __construct($options=array())
+    /**
+     * __construct
+     *
+     * Constructor for FirebirdModel
+     *
+     * @param Mixed $connection Firebird resource or path to options json
+     *
+     * @return FirebirdModel Model object for Firebird
+     * @author Jeremy Seago <seagoj@gmail.com>
+     **/
+    public function __construct($connection = null)
     {
-        if(is_string($options) && is_file($options)) {
-            $options = (array) json_decode(file_get_contents($options));
-        } elseif(empty($options) && is_file('../../../../vendor/Devtools/firebird-model.json')) {
-            $options = (array) json_decode(file_get_contents('../../../../vendor/Devtools/firebird-model.json'));
+        if (gettype($connection) === 'resource') {
+            $this->connection = $connection;
+        } else {
+            if (is_string($connection) && is_file($connection)) {
+                $connection = (array) json_decode(file_get_contents($connection));
+            }
+            $defaults = array(
+                'host'          => "HOST",
+                'location'      => "NJ",
+                'environment'   => "TOMORROW",
+                'dba'           => "DBA",
+                'password'      => "PASSWORD",
+                'type'          => 'firebird'
+            );
+            $options = array_merge($defaults, $connection);
+            $this->connection = \ibase_pconnect(
+                sprintf(
+                    '%s:C:\\%s\\%s\\CMPDWIN.PKF',
+                    $options['host'],
+                    $options['environment'],
+                    $options['location']
+                ),
+                $options['dba'],
+                $options['password']
+            );
         }
+        if (!$this->connection) {
+            throw new \Exception('connection to host could not be established');
+        }
+    }
 
-        $defaults = array(
-            'host'          => "HOST",
-            'location'      => "NJ",
-            'environment'   => "TOMORROW",
-            'dba'           => "DBA",
-            'password'      => "PASSWORD",
-            'type'          => 'firebird'
-        );
+    /**
+     * query
+     *
+     * Query firebird model
+     *
+     * @param String  $sql    Query string
+     * @param Boolean $reduce Reduce result if true
+     *
+     * @return mixed Result of query
+     * @author Jeremy Seago <seagoj@gmail.com>
+     **/
+    public function query($sql, $reduce=false)
+    {
+        $sql = \Devtools\FirebirdModel::sanitize($sql);
+        if (gettype($this->connection) === 'resource') {
+            $q = ibase_query($this->connection, $sql);
+            if (!(is_bool($q) || is_int($q))) {
+                $result = array();
+                while ($row = ibase_fetch_assoc($q, IBASE_TEXT)) {
+                    array_push($result, $row);
+                }
+                ibase_free_result($q);
+            } else {
+                $result = $q;
+            }
+            return $reduce ? $this->reduceResult($result) : $result;
+        } else {
+            throw new \InvalidArgumentException('Invalid connection type.');
+        }
+    }
 
-        parent::__construct(array_merge($defaults, $options));
+    /**
+     * sanitize
+     *
+     * Sanitizes queryString for Firebird
+     *
+     * @param string $queryString String to be sanitized
+     *
+     * @return string Sanitized queryString
+     * @author Jeremy Seago <seagoj@gmail.com>
+     **/
+    public static function sanitize($queryString)
+    {
+        return str_replace("\'", "''", $queryString);
     }
 
     public function getLastPatients($limit=20)
@@ -84,7 +174,6 @@ class FirebirdModel extends Model
         return $return;
     }
 
-
     public function validateDrug($drugName)
     {
         $sql = "select FORMULA_ID from FORMULA where NAME='".$drugName."'";
@@ -127,7 +216,7 @@ class FirebirdModel extends Model
     private function call($sql, $id, $nullIDRetValue=self::RET_VAL_STR)
     {
         $sql = $this->formatID($id) ? sprintf($sql, mysql_real_escape_string($id)) :  "";
-        if  (empty($sql)) {
+        if (empty($sql)) {
             switch($nullIDRetValue) {
             case 'STRING':
                 return '';
@@ -135,9 +224,8 @@ class FirebirdModel extends Model
                 return array();
             }
         }
-
         $result = $this->query($sql);
-        if($result) {
+        if ($result) {
             return ($result ? $result : ibase_errmsg());
         } else {
             return $result;
@@ -160,7 +248,6 @@ class FirebirdModel extends Model
             default:
                 $ret = $id;
         }
-
         return $ret;
     }
 }
