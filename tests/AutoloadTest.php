@@ -31,14 +31,14 @@ class AutoloadTest extends PHPUnit_Framework_TestCase
     /**
      * @covers Devtools\Autoload::register
      **/
-    public function testRegisterPrepend()
-    {
-        \Devtools\Autoload::register(array('prepend'=>true));
-        $autoloadStack = spl_autoload_functions();
+    /* public function testRegisterPrepend() */
+    /* { */
+    /*     \Devtools\Autoload::register(array('prepend'=>true)); */
+    /*     $autoloadStack = spl_autoload_functions(); */
 
-        $this->assertEquals($this->validClass, get_class($autoloadStack[0][0]));
-        $this->assertEquals($this->validMethod, $autoloadStack[0][1]);
-    }
+    /*     $this->assertEquals($this->validClass, get_class($autoloadStack[0][0])); */
+    /*     $this->assertEquals($this->validMethod, $autoloadStack[0][1]); */
+    /* } */
 
     /**
      * @covers Devtools\Autoload::__construct

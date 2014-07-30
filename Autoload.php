@@ -81,7 +81,7 @@ class Autoload
     public function checkEnv()
     {
         $path = explode('/', $_SERVER['SCRIPT_FILENAME']);
-        
+
         return in_array('phpunit', $path) ? 'PHPUNIT' : '';
     }
 
@@ -188,7 +188,7 @@ class Autoload
                         array_push(${"poppedFrom".ucfirst($shortArray)}, array_pop(${$shortArray."PathArray"}));
                     }
                     array_push(${"poppedFrom".ucfirst($longArray)}, array_pop(${$longArray."PathArray"}));
-                }             
+                }
             }
 
             foreach ($poppedFromRun as $pop) {

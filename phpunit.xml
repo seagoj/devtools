@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <phpunit
-    bootstrap="./vendor/autoload.php"
+    bootstrap="vendor/autoload.php"
     colors="true"
     convertErrorsToExceptions="false"
     convertNoticesToExceptions="false"
@@ -26,5 +26,4 @@
         <log type="coverage-html" target="tests/report"/>
         <log type="tap" target="tests/logfile.tap"/>
     </logging>
-
 </phpunit>

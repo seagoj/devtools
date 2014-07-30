@@ -29,6 +29,8 @@ class FirebirdModelTest extends PHPUnit_Framework_TestCase
     }
 }
 
+define('IBASE_TEXT', 'IBASE_TEXT');
+
 function ibase_pconnect($connectionString, $user, $pass)
 {
     if ($connectionString === 'HOST:C:\TOMORROW\NJ\CMPDWIN.PKF'
