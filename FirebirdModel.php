@@ -87,7 +87,7 @@ class FirebirdModel implements IModel
     public function query($sql, $reduce=false)
     {
         $sql = \Devtools\FirebirdModel::sanitize($sql);
-        if (gettype($this->connection) === 'resource') {
+        /* if (gettype($this->connection) === 'resource') { */
             $q = ibase_query($this->connection, $sql);
             if (!(is_bool($q) || is_int($q))) {
                 $result = array();
@@ -99,9 +99,58 @@ class FirebirdModel implements IModel
                 $result = $q;
             }
             return $reduce ? $this->reduceResult($result) : $result;
-        } else {
-            throw new \InvalidArgumentException('Invalid connection type.');
-        }
+        /* } else { */
+        /*     throw new \InvalidArgumentException('Invalid connection type.'); */
+        /* } */
+    }
+
+
+    /**
+     * get
+     *
+     * Return value based on $key
+     *
+     * @param String $key        Parameter whose value is returned
+     * @param String $collection Collection to search for $key
+     *
+     * @return Mixed Value of $key
+     * @author Jeremy Seago <seagoj@gmail.com>
+     **/
+    public function get($key, $collection)
+    {
+        /* pending */
+    }
+
+    /**
+     * getAll
+     *
+     * Return all values in $collection
+     *
+     * @param String $collection Collection whose values are returned
+     *
+     * @return Array Values in collection
+     * @author Jeremy Seago <seagoj@gmail.com>
+     **/
+    public function getAll($collection)
+    {
+        /* pending */
+    }
+
+    /**
+     * set
+     *
+     * Set value of $key or $collection/$key
+     *
+     * @param String $key        Name of parameter whose value is being set
+     * @param Mixed  $value      Value of parameter
+     * @param String $collection Collection in which $key will be set to $value
+     *
+     * @return Boolean Status of assignment
+     * @author Jeremy Seago <seagoj@gmail.com>
+     **/
+    public function set($key, $value, $collection)
+    {
+        /* pending */
     }
 
     /**
@@ -249,5 +298,25 @@ class FirebirdModel implements IModel
                 $ret = $id;
         }
         return $ret;
+    }
+
+    /**
+    * reduceResult
+    *
+    * Reduce result
+    *
+    * @param Array $result Array to reduce
+    *
+    * @return mixed Reduced result
+    * @author Jeremy Seago <seagoj@gmail.com>
+    **/
+    protected function reduceResult($result)
+    {
+       if (is_array($result) && (count($result) == 1)) {
+           reset($result);
+           return $this->reduceResult($result[key($result)]);
+       } else {
+           return $result;
+       }
     }
 }

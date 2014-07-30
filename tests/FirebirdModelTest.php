@@ -1,68 +1,86 @@
 <?php
 class FirebirdModelTest extends PHPUnit_Framework_TestCase
 {
-    public function setup()
+    public function testConnection()
     {
+        $firebird = new \Devtools\FirebirdModel(array());
+        $this->assertInstanceOf('Devtools\FirebirdModel', $firebird);
     }
 
-    public function teardown()
-    {
-    }
-
-    /**
-     * @covers Devtools\FirebirdModel::__construct
-     **/
-    public function testFirebirdModel()
-    {
-        $this->assertInstanceOf("Devtools\FirebirdModel", new \Devtools\FirebirdModel());
-    }
-
-    /**
-     * @covers Devtools\FirebirdModel::__construct
-     **/
-    public function testOptions()
-    {
-        $this->assertInstanceOf("Devtools\FirebirdModel", new \Devtools\FirebirdModel(["location"=>"il"]));
-    }
-
-    /**
-     * @covers Devtools\FirebirdModel::__construct
-     * @expectedException Exception
-     **/
-    public function testConnectionFailure()
-    {
-        new \Devtools\FirebirdModel(["host"=>"NotARealServer"]);
-    }
-
-    /**
-     * @covers Devtools\FirebirdModel::query
-     **/
     public function testQuery()
     {
-        $limit = 20;
-        $fb = new \Devtools\FirebirdModel();
-        $results = $fb->query("select FIRST $limit * from PATIENT order by PATIENT_ID DESC");
-        $this->assertFalse($results === null);
+        $firebird = new \Devtools\FirebirdModel(array());
+        $this->assertEquals(
+            array(
+                "IMAGE_ID" => 1,
+                "IMAGE_NAME" => "FirstImage.jpg"
+            ),
+            $firebird->query("select * from IMAGE where IMAGE_ID=1", true)
+        );
+        $this->assertEquals(
+            array(
+                array(
+                    "IMAGE_ID" => 1,
+                    "IMAGE_NAME" => "FirstImage.jpg"
+                )
+            ),
+            $firebird->query("select * from IMAGE where IMAGE_ID=1")
+        );
     }
+}
 
-    /**
-     * @covers Devtools\FirebirdModel::getLastPatients
-     **/
-    public function testGetLastPatients()
-    {
-        $limit = 20;
-        $fb = new \Devtools\FirebirdModel();
-        $results = $fb->getLastPatients($limit);
-        $this->assertFalse($results === null);
+function ibase_pconnect($connectionString, $user, $pass)
+{
+    if ($connectionString === 'HOST:C:\TOMORROW\NJ\CMPDWIN.PKF'
+        && $user === 'DBA'
+        && $pass === 'PASSWORD'
+    ) {
+        return new stdClass();
+    } else {
+        return false;
     }
+}
 
-    /**
-     * @covers Devtools\FirebirdModel::getPatientInfoByTelephoneRxID
-     **/
-    public function testGetPatientInfoByTelephoneRxID()
-    {
-        $fb = new \Devtools\FirebirdModel();
-        $validID = $fb->query("select first 1 TELEPHONERX_ID from TELEPHONERX");
-        $fb->getPatientInfoByTelephoneRxID($validID);
+function ibase_query($connection, $sql)
+{
+    $result = array();
+    switch($sql) {
+    case "select * from IMAGE where IMAGE_ID=1":
+        $result = array(
+            array(
+                "IMAGE_ID" => 1,
+                "IMAGE_NAME" => "FirstImage.jpg"
+            )
+        );
+        break;
+    default:
+        var_dump($sql);
+        break;
     }
+    return $result;
+}
+
+function ibase_fetch_assoc($qry, $type)
+{
+    static $count;
+
+    if (empty($count)) {
+        $count = 0;
+    }
+    if (count($qry)>$count && isset($qry[$count])) {
+        return $qry[$count++];
+    } else {
+        $count =0;
+        return false;
+    }
+}
+
+function ibase_free_result(&$qry)
+{
+    unset($qry);
+}
+
+function ibase_errmsg()
+{
+    return "error";
 }
