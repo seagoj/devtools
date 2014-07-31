@@ -5,7 +5,8 @@
     colors="true"
     convertErrorsToExceptions="false"
     convertNoticesToExceptions="false"
-    convertWarningsToExceptions="false">
+    convertWarningsToExceptions="false"
+>
 
     <testsuites>
         <testsuite name="Devtools Test Suite">
@@ -23,7 +24,8 @@
 
     <logging>
         <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
-        <log type="coverage-html" target="tests/report"/>
-        <log type="tap" target="tests/logfile.tap"/>
+        <!--//<log type="coverage-html" target="tests/report"/>//-->
+        <!--//<log type="tap" target="tests/logfile.tap"/>//-->
+        <log type="coverage-clover" target="tests/coverage.xml"/>
     </logging>
 </phpunit>
