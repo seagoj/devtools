@@ -4,6 +4,9 @@
  **/
 namespace Devtools;
 
+/**
+ * @covers Devtools\Response
+ **/
 class Response
 {
     public $status;
@@ -18,8 +21,8 @@ class Response
             ? $options['suppress_header']
             : false;
         $this->status = 'OK';
-        $this->request = $_REQUEST;
-        $this->message = ($this->status ? "" : "Data could not be set\n");
+        $this->request = isset($_REQUEST) ? $_REQUEST : array();
+        $this->message = $this->status ? "" : "Data could not be set\n";
     }
 
     /**
