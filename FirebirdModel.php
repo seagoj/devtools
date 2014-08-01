@@ -145,7 +145,7 @@ class FirebirdModel implements IModel
      * @param Mixed  $value      Value of parameter
      * @param String $collection Collection in which $key will be set to $value
      *
-     * @return Boolean Status of assignment
+     * @return boolean|null Status of assignment
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
     public function set($key, $value, $collection)

@@ -31,7 +31,7 @@ class RedisModel implements IModel
      *
      * RedisModel constructor
      *
-     * @param Predis\Client $connection Predis object to use as model
+     * @param \Predis\Client $connection Predis object to use as model
      *
      * @return RedisModel Model object to provide a connection to a redis store
      * @author Jeremy Seago <seagoj@gmail.com>
