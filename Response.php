@@ -31,13 +31,11 @@ class Response
     public function message($msg, $error=false)
     {
         global $errorLog;
-
         if (is_array($msg) || is_object($msg)) {
             $msg = var_export($msg, true);
         }
-
         $this->message .= "$msg\n";
-        if($error) {
+        if ($error) {
             $this->status = 'FAILED';
             trigger_error($msg);
         }
@@ -56,8 +54,7 @@ class Response
         if (empty($data)) {
             trigger_error(var_export(debug_backtrace(), true));
         }
-        foreach ($data as $key => $value)
-        {
+        foreach ($data as $key => $value) {
             $this->$key = $value;
         }
     }
@@ -77,7 +74,7 @@ class Response
             $temp = array();
             if (!empty($request)) {
                 $reset = true;
-                $temp = $_REQUEST;
+                $temp = isset($_REQUEST) ? $_REQUEST : array();
                 $_REQUEST = array();
                 foreach ($request as $key => $value) {
                     $_REQUEST[$key] = $value;
@@ -188,8 +185,6 @@ class Response
      **/
     public static function getRequest($validParams = array())
     {
-        global $debugLog;
-        $debugLog->write($validParams);
         $request = empty($validParams) ? (array)$_REQUEST : array();
         foreach ($validParams as $param=>$default) {
             if (is_numeric($param)) {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <phpunit
-    bootstrap="vendor/autoload.php"
+    bootstrap="tests/autoload.php"
     colors="true"
     convertErrorsToExceptions="false"
     convertNoticesToExceptions="false"
@@ -25,7 +25,5 @@
     <logging>
         <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
         <log type="coverage-html" target="tests/report"/>
-        <!--//<log type="tap" target="tests/logfile.tap"/>//-->
-        <!--//<log type="coverage-clover" target="tests/coverage.xml"/>//-->
     </logging>
 </phpunit>
