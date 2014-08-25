@@ -98,8 +98,6 @@ class FirebirdModel implements IModel
             } else {
                 $result = $q;
             }
-            global $debugLog;
-            $debugLog->write('reduce: '.$reduce);
             return $reduce ? $this->reduceResult($result) : $result;
         /* } else { */
         /*     throw new \InvalidArgumentException('Invalid connection type.'); */
