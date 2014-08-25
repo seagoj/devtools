@@ -36,8 +36,7 @@ namespace Devtools;
  * @method    string hgetall(string $collection);
  * @method    string expire(string $key, string $collection);
  */
-class Model implements \Devtools\IModel
-{
+class Model {
     /**
      * Class configuration
      *
