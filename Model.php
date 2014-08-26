@@ -36,10 +36,12 @@ namespace Devtools;
  * @method    string hgetall(string $collection);
  * @method    string expire(string $key, string $collection);
  */
-abstract class Model implements IModel
-{
-    public $connected;
-
+class Model {
+    /**
+     * Class configuration
+     *
+     * Stores type of datastore to make the connection to
+     **/
     private $config;
     private $connection;
 
