@@ -25,10 +25,12 @@ namespace Devtools;
  * @license  http://www.opensource.org/licenses/mit-license.html  MIT License
  * @link     http://github.com/seagoj/Devtools/FirebirdModel.php
  */
-class FirebirdModel implements IModel
+class FirebirdModel extends Model
 {
     const RET_VAL_STR = 'STRING';
     const RET_VAL_ARR = 'ARRAY';
+
+    private $options;
 
     /**
      * __construct
@@ -42,11 +44,13 @@ class FirebirdModel implements IModel
      **/
     public function __construct($connection = null)
     {
-        if (gettype($connection) === 'resource') {
+        if (is_resource($connection) || $connection==='TestResource') {
             $this->connection = $connection;
         } else {
             if (is_string($connection) && is_file($connection)) {
                 $connection = (array) json_decode(file_get_contents($connection));
+            } else {
+                $connection = array();
             }
             $defaults = array(
                 'host'          => "HOST",
@@ -56,22 +60,31 @@ class FirebirdModel implements IModel
                 'password'      => "PASSWORD",
                 'type'          => 'firebird'
             );
-            $options = array_merge($defaults, $connection);
-            $this->connection = \ibase_pconnect(
-                sprintf(
-                    '%s:C:\\%s\\%s\\CMPDWIN.PKF',
-                    $options['host'],
-                    $options['environment'],
-                    $options['location']
-                ),
-                $options['dba'],
-                $options['password']
-            );
+            $this->options = array_merge($defaults, $connection);
+            $this->connect();
         }
         if (!$this->connection) {
             throw new \Exception('connection to host could not be established');
         }
     }
+
+    public function connect()
+    {
+        if (!$this->connection = \ibase_pconnect(
+            sprintf(
+                '%s:C:\\%s\\%s\\CMPDWIN.PKF',
+                $this->options['host'],
+                $this->options['environment'],
+                $this->options['location']
+            ),
+            $this->options['dba'],
+            $this->options['password']
+        )) {
+            throw new \Exception('connection to host could not be established');
+        }
+        return $this->connected = isset($this->connection);
+    }
+
 
     /**
      * query
@@ -104,7 +117,6 @@ class FirebirdModel implements IModel
         /* } */
     }
 
-
     /**
      * get
      *
@@ -112,13 +124,24 @@ class FirebirdModel implements IModel
      *
      * @param String $key        Parameter whose value is returned
      * @param String $collection Collection to search for $key
+     * @param Array  $where      Array of where clause elements
      *
      * @return Mixed Value of $key
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function get($key, $collection)
+    public function get($key, $collection, $where = null)
     {
-        /* pending */
+        $sql = sprintf(
+            "select %s
+            from %s",
+            $this->sanitize($this->stringify($key, true, '`')),
+            $this->sanitize($collection)
+        );
+        if (!is_null($where)) {
+            foreach ($where as $key => $value) {
+                $sql .= " WHERE ".$this->stringify($key, true, '`')."=".$this->stringfy($value);
+            }
+        }
     }
 
     /**
@@ -134,6 +157,7 @@ class FirebirdModel implements IModel
     public function getAll($collection)
     {
         /* pending */
+        return true;
     }
 
     /**
@@ -151,6 +175,7 @@ class FirebirdModel implements IModel
     public function set($key, $value, $collection)
     {
         /* pending */
+        return true;
     }
 
     /**
@@ -298,25 +323,5 @@ class FirebirdModel implements IModel
                 $ret = $id;
         }
         return $ret;
-    }
-
-    /**
-    * reduceResult
-    *
-    * Reduce result
-    *
-    * @param Array $result Array to reduce
-    *
-    * @return mixed Reduced result
-    * @author Jeremy Seago <seagoj@gmail.com>
-    **/
-    protected function reduceResult($result)
-    {
-       if (is_array($result) && (count($result) == 1)) {
-           reset($result);
-           return $this->reduceResult($result[key($result)]);
-       } else {
-           return $result;
-       }
     }
 }

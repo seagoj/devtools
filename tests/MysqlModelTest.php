@@ -38,28 +38,40 @@ class MysqlModelTest extends PHPUnit_Framework_TestCase
         $dataStore = array($collection=>array($collectionKey, $collectionValue), $key=>$value);
         $stubPDO = $this->getMockBuilder('PDOMock')
             ->getMock();
-        $stubPDO->expects($this->any())
-        ->method('get')
-        ->will(
-            $this->returnCallback(
-                function ($key, $collection) use (&$dataStore) {
-                    if (!empty($collection)) {
-                        return $dataStore[$collection][$key];
-                    } else {
-                       return $dataStore[$key];
-                    }
-                }
-            )
-        );
+        $this->assertEquals(array(array('key'=>'value')), $stubPDO->fetch(2));
         $mysql = new \Devtools\MysqlModel($stubPDO);
-        $this->assertEquals(
-            array($collectionKey=>$collectionValue),
-            $this->$mysql->get($key, $collection)
-        );
+        /* $this->assertEquals( */
+        /*     array($collectionKey=>$collectionValue), */
+        /*     $mysql->get($key, $collection) */
+        /* ); */
     }
 }
 
 class PDOMock extends \PDO
 {
+    private $queryString;
+
     public function __construct() {}
+    public function prepare($string)
+    {
+        return $string === 'SELECT :key FROM :collection';
+    }
+    public function execute($params)
+    {
+        return $params === array(
+            'key'=>'key',
+            'collection'=>'collection'
+        );
+    }
+    public function fetch($type)
+    {
+        var_dump('called');
+        var_dump($type);
+        /* switch($type) { */
+        /*     case 2: */
+                return array(array('key'=>'value'));
+            /* default: */
+            /*     throw new \Exception('Invalid fetch type.'); */
+        /* } */
+    }
 }

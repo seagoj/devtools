@@ -36,65 +36,20 @@ namespace Devtools;
  * @method    string hgetall(string $collection);
  * @method    string expire(string $key, string $collection);
  */
-class Model implements \Devtools\IModel
+abstract class Model implements IModel
 {
-    /**
-     * Class configuration
-     *
-     * Stores type of datastore to make the connection to
-     **/
-    private $config;
-
-    /**
-     * Model connection
-     *
-     * Connection object for model
-     **/
-    private $connection;
-
-    /**
-     * Log
-     *
-     * Debug Log object
-     **/
-    private $debugLog;
-
-    /**
-     * Status of connection
-     *
-     * True if connected; false if not
-     **/
     public $connected;
 
-    /**
-     * Model::__construct
-     *
-     * Sets configuration and establishes connection
-     *
-     * @param array $options Sets options for Model class
-     *
-     * @return void
-     **/
-    public function __construct($options = array())
-    {
-        if (is_object($options)) {
-            $options = (array) $options;
-        }
-        $defaults = array(
-            'connect' => true,
-            'type' => 'firebird',
-            'scheme' => 'tcp',
-            'host' => '127.0.0.1',
-            'port' => 6379
-        );
-        $this->config = array_merge($defaults, $options);
-        $this->validateConfig();
-        if ($this->config['connect']) {
-            $this->connect();
-        }
-        $this->connected = isset($this->connection);
-        $this->debugLog = \Devtools\Log::debugLog();
-    }
+    private $config;
+    private $connection;
+
+    public abstract function get($key, $collection);
+    public abstract function getAll($collection);
+    public abstract function set($key, $value, $collection);
+    public abstract function query($queryString);
+    public static abstract function sanitize($queryString);
+
+    abstract function connect();
 
     /**
      * connectFirebird
@@ -171,7 +126,7 @@ class Model implements \Devtools\IModel
     }
 
     /**
-     * mysql_fetch_all
+     * mysqlFetchAll
      *
      * Compiles results of query into multidimensional hash
      *

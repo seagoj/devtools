@@ -16,13 +16,16 @@
         "phpunit/php-invoker": "1.1.*",
         "phpunit/dbunit": "1.2.*",
         "phpunit/phpunit-selenium": "1.3.*",
-        "phpunit/phpunit-story": "1.0.*"
+        "phpunit/phpunit-story": "1.0.*",
+        "phpspec/phpspec": "~2.0"
     },
     "scripts": {
         "pre-install-cmd": [
         ],
         "post-install-cmd": [
-        "mv vendor/predis vendor/predis-lib",
+            "rm -rf vendor/predis-lib",
+            "rm -f vendor/Devtools",
+            "mv vendor/predis vendor/predis-lib",
             "ln -s predis-lib/predis/lib/Predis vendor/Predis",
             "ln -s .. vendor/Devtools"
         ]
