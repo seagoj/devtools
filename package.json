@@ -1,0 +1,30 @@
+{
+  "name": "Devtools",
+  "version": "0.0.0",
+  "description": "Devtools is a collection of PHP libraries designed for rapid development and debugging.",
+  "main": "Gulpfile.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "gulp": "^3.8.7",
+    "gulp-notify": "^1.5.0",
+    "gulp-phpspec": "^0.2.6",
+    "gulp-run": "^1.6.4"
+  },
+  "scripts": {
+    "test": "phpspec run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/seagoj/Devtools.git"
+  },
+  "author": "Jeremy Seago",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/seagoj/Devtools/issues"
+  },
+  "homepage": "https://github.com/seagoj/Devtools"
+}
