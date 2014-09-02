@@ -1,4 +1,4 @@
-<?php
+<?php namespace Devtools;
 /**
  * FirebirdModel
  *
@@ -13,8 +13,6 @@
  * @version  GIT: 1.0
  * @link     http://github.com/seagoj/Devtools/FirebirdModel.php
  **/
-
-namespace Devtools;
 
 /**
  * Class FirebirdModel
