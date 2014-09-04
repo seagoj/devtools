@@ -29,7 +29,6 @@ class FirebirdModel extends Model
     const RET_VAL_ARR = 'ARRAY';
 
     private $options;
-
     /**
      * __construct
      *
@@ -40,28 +39,9 @@ class FirebirdModel extends Model
      * @return FirebirdModel Model object for Firebird
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function __construct($connection = null)
+    public function __construct(\PDO $connection = null)
     {
-        if (is_resource($connection) || $connection==='TestResource') {
-            $this->connection = $connection;
-        } else {
-            if (is_string($connection) && is_file($connection)) {
-                $connection = (array) json_decode(file_get_contents($connection));
-            } else {
-                $connection = array();
-            }
-            $defaults = array(
-                'host'          => "HOST",
-                'location'      => "NJ",
-                'environment'   => "TOMORROW",
-                'dba'           => "DBA",
-                'password'      => "PASSWORD",
-                'type'          => 'firebird'
-            );
-            $this->options = array_merge($defaults, $connection);
-            $this->connect();
-        }
-        if (!$this->connection) {
+        if (!(is_null($connection) || $this->connection = $connection)) {
             throw new \Exception('connection to host could not be established');
         }
     }
@@ -74,21 +54,57 @@ class FirebirdModel extends Model
      * @return boolean Status of connection
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function connect()
+    public function connect($connection)
     {
-        if (!$this->connection = \ibase_pconnect(
-            sprintf(
-                '%s:C:\\%s\\%s\\CMPDWIN.PKF',
-                $this->options['host'],
-                $this->options['environment'],
-                $this->options['location']
-            ),
-            $this->options['dba'],
-            $this->options['password']
-        )) {
+        switch(gettype($connection)) {
+            case 'string':
+                $options = is_file($connection)
+                    ? (array) json_decode(file_get_contents($connection))
+                    : array();
+                break;
+            case 'array':
+                $options = $connection;
+                break;
+            case 'object':
+                $options = (array)$connection;
+                break;
+            default:
+                var_dump(gettype($connection));
+                $options = array();
+                break;
+        }
+
+        $defaults = array(
+            'host'          => "HOST",
+            'location'      => "NJ",
+            'environment'   => "TOMORROW",
+            'dba'           => "DBA",
+            'password'      => "PASSWORD",
+            'type'          => 'firebird'
+        );
+
+        $this->options = array_merge($defaults, $options);
+
+        if (!$this->connection = new \PDO(
+                sprintf(
+                    'firebird:dbname=%s:C:\%s\%\CMPDWIN.PKF',
+                    $this->options['host'],
+                    $this->options['environment'],
+                    $this->options['location']
+                ),
+                "SYSDBA",
+                "masterkey"
+            )
+        ) {
             throw new \Exception('connection to host could not be established');
         }
-        return $this->connected = isset($this->connection);
+
+        return $this->isConnected();
+    }
+
+    public function isConnected()
+    {
+        return  isset($this->connection) && !empty($this->connection);
     }
 
     /**
@@ -102,20 +118,37 @@ class FirebirdModel extends Model
      * @return mixed Result of query
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function query($sql, $reduce=false)
+    public function query($sql, $params = null, $reduce=false, $fetchType = \PDO::FETCH_ASSOC)
     {
-        $sql = \Devtools\FirebirdModel::sanitize($sql);
-            $q = \ibase_query($this->connection, $sql);
-            if (!(is_bool($q) || is_int($q))) {
-                $result = array();
-                while ($row = \ibase_fetch_assoc($q, IBASE_TEXT)) {
-                    array_push($result, $row);
-                }
-                ibase_free_result($q);
+        $sql = $this->stripWhitespace($sql);
+
+        try {
+            $stmt = $this->connection->prepare($sql);
+            if (is_null($params)) {
+                $stmt->execute();
             } else {
-                $result = $q;
+                $stmt->execute($params);
             }
-            return $reduce ? $this->reduceResult($result) : $result;
+            return $reduce
+                ? $this->reduceResult($stmt->fetchAll($fetchType))
+                : $stmt->fetchAll($fetchType);
+        } catch(\Exception $e) {
+            var_dump($e->getMessage());
+            throw $e;
+        }
+
+        /* $sql = \Devtools\FirebirdModel::sanitize($sql); */
+        /* $q = \ibase_query($this->connection, $sql); */
+        /* if (!(is_bool($q) || is_int($q))) { */
+        /*     $result = array(); */
+        /*     while ($row = \ibase_fetch_assoc($q, IBASE_TEXT)) { */
+        /*         array_push($result, $row); */
+        /*     } */
+        /*     ibase_free_result($q); */
+        /* } else { */
+        /*     $result = $q; */
+        /* } */
+        /* return $reduce ? $this->reduceResult($result) : $result; */
     }
 
     /**
@@ -130,15 +163,16 @@ class FirebirdModel extends Model
      * @return Mixed Value of $key
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function get($key, $collection, $where = null)
+    public function get($key, $collection, $params = null)
     {
         $sql = sprintf(
             "select %s
             from %s",
             $this->sanitize($key==='*' ? '*' : $this->stringify($key, true, '`')),
             $this->sanitize($collection)
-        ) . $this->buildWhere($where);
-        return $this->query($sql, true);
+        ) . $this->buildWhere($params);
+
+        return $this->query($sql, $params, true);
     }
 
     /**
@@ -159,7 +193,7 @@ class FirebirdModel extends Model
             $sql = '';
         }
         foreach ($where as $key => $value) {
-            $sql .= " where ".$this->stringify($key, true, '`')."=".$this->stringify($value);
+            $sql .= " where ".$this->stringify($key, true, '`')."=:$key";
         }
         return $sql;
     }
@@ -196,7 +230,7 @@ class FirebirdModel extends Model
     {
         $sql = "insert into $collection (".$this->stringify(array_keys($set), true, '`').")
             values (".$this->stringify(array_values($set), true). ") ".$this->buildWhere($where);
-        return $this->query($sql, true);
+        return $this->query($sql, $where, true);
     }
 
     /**
@@ -344,5 +378,11 @@ class FirebirdModel extends Model
                 $ret = $id;
         }
         return $ret;
+    }
+
+    /* @todo Extract to reusable class */
+    private function stripWhitespace($dirty)
+    {
+        return preg_replace("/[ \\t\\n]+/u", " ", $dirty);
     }
 }

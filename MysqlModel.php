@@ -65,8 +65,11 @@ class MysqlModel extends Model
      * @return void
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function connect()
+    public function connect($options = null)
     {
+        if (!is_null($options)) {
+            $this->options = array_merge($this->options, $options);
+        }
         $keys = array_keys($this->options);
         if (in_array('type',  $keys)
             && in_array('host', $keys)

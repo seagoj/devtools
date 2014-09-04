@@ -51,7 +51,7 @@ abstract class Model
     public abstract function set($key, $value, $collection);
     public abstract function query($queryString);
     public static abstract function sanitize($queryString);
-    public abstract function connect();
+    public abstract function connect($options);
 
     /**
      * connectFirebird
