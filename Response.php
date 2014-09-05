@@ -1,4 +1,4 @@
-<?php
+<?php namespace Devtools;
 /**
  * Response
  *
@@ -13,8 +13,6 @@
  * @version  GIT:
  * @link     http://github.com/seagoj/Devtools/Response.php
  **/
-
-namespace Devtools;
 
 /**
  * Response
@@ -37,6 +35,8 @@ class Response implements IService, \Serializable
     private $options;
     private $suppressHeader;
     private $data;
+    private $publicProperties;
+    private $model;
 
     /**
      * __construct
@@ -53,13 +53,15 @@ class Response implements IService, \Serializable
      * @return void
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function __construct($options=array())
+    public function __construct($options=array(), \Devtools\Model $model = null)
     {
         $this->options = $this->loadOptions($options);
         $this->suppressHeader = $this->options['suppress_header'];
         $this->status = 'OK';
         $this->request = $this->getRequest();
         $this->message = $this->status ? "" : "Data could not be set\n";
+        $this->publicProperties = getProperties($this);
+        $this->model = $model;
     }
 
     /**
@@ -151,14 +153,9 @@ class Response implements IService, \Serializable
      **/
     public function __sleep()
     {
-        $safe = array(
-            'status',
-            'request',
-            'message'
-        );
         return !is_null($this->data)
-            ? array_merge($safe, array_keys($this->data))
-            : $safe;
+            ? array_merge($this->publicProperties, array_keys($this->data))
+            : $this->publicProperties;
     }
 
     /**
@@ -256,32 +253,37 @@ class Response implements IService, \Serializable
      * @return array Array of results from SQL call
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function load($sql)
+    public function load($sql, $params = null)
     {
-        if ($q=mysql_query($sql) && !is_bool($q) && mysql_num_rows($q) > 0) {
-            /* === SELECT === */
-            $this->data = Model::reduceResult(
-                Model::mysqlFetchAll($q)
-            );
-        } else if ($q && is_bool($q) && mysql_num_rows($q) > 0
-            && $insert_id = mysql_insert_id()
-        ) {
-            /* === INSERT === */
-            $this->data(
-                array(
-                    'insert_id' => $insert_id
-                )
-            );
-        } else if ($q && is_bool($q) && !$insert_id) {
-            /* === UPDATE === */
-            $this->data(
-                array('update' => true)
-            );
-        } else {
-            /* === FAILURE === */
-            $this->fail('ID not found.');
+        if (is_null($this->model))  {
+            throw new \Exception('No model available.');
         }
-        return $this;
+
+        return $this->data = $this->model->query($sql, $params, true);
+/*         if ($q=mysql_query($sql) && !is_bool($q) && mysql_num_rows($q) > 0) { */
+/*             /1* === SELECT === *1/ */
+/*             $this->data = Model::reduceResult( */
+/*                 Model::mysqlFetchAll($q) */
+/*             ); */
+/*         } else if ($q && is_bool($q) && mysql_num_rows($q) > 0 */
+/*             && $insert_id = mysql_insert_id() */
+/*         ) { */
+/*             /1* === INSERT === *1/ */
+/*             $this->data( */
+/*                 array( */
+/*                     'insert_id' => $insert_id */
+/*                 ) */
+/*             ); */
+/*         } else if ($q && is_bool($q) && !$insert_id) { */
+/*             /1* === UPDATE === *1/ */
+/*             $this->data( */
+/*                 array('update' => true) */
+/*             ); */
+/*         } else { */
+/*             /1* === FAILURE === *1/ */
+/*             $this->fail('ID not found.'); */
+/*         } */
+/*         return $this; */
     }
 
     /**
@@ -469,20 +471,27 @@ class Response implements IService, \Serializable
      **/
     public function unserialize($serialized)
     {
-        $data = unserialize($serialized);
-        $safe = array_merge(
-            array(
-                'status',
-                'request',
-                'message'
-            ),
-            array_keys($data['data'])
-        );
-
-        var_dump($safe);
-
-        foreach ($safe as $key) {
-            $this->$key = $data[$key];
+        foreach (unserialize($serialized) as $key => $value) {
+            if (in_array($key, $this->publicProperties)) {
+                $this->$key = $value;
+            } else {
+                $this->data[$key] = $value;
+            }
         }
     }
+}
+
+/**
+ * getProperties
+ *
+ * Returns accessible properties of $object
+ *
+ * @param Object $object Object to list accessible properties
+ *
+ * @return array Array of property names
+ * @author Jeremy Seago <seagoj@gmail.com>
+ **/
+function getProperties($object)
+{
+    return array_keys(get_object_vars($object));
 }

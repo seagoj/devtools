@@ -5,7 +5,11 @@ var notify = require('gulp-notify');
 
 gulp.task('test', function() {
     gulp.src('spec/**/*.php')
-        .pipe(phpspec( '', { clear: true, notify: true } ))
+        .pipe(phpspec( '', {
+            clear: true,
+            notify: true,
+            verbose: 'v'
+        }))
         .on('error', notify.onError({
             title: 'PHP: FAILED!',
             message: 'Your tests have failed!',
