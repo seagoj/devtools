@@ -1,4 +1,4 @@
-<?php
+<?php namespace Devtools;
 /**
  * Autoload: Autoloader for PHP classes
  *
@@ -13,7 +13,6 @@
  * @version   1.0
  * @link      https://github.com/seagoj/devtools
  */
-namespace Devtools;
 
 /**
  * autoload Class
