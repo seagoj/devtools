@@ -1,4 +1,4 @@
-<?php
+<?php namespace Devtools;
 /**
  * Logger for PHP
  *
@@ -10,8 +10,6 @@
  * @license  http://github.com/seagoj/Devtools/LICENSE MIT
  * @link     http://github.com/seagoj/Devtools
  **/
-
-namespace Devtools;
 
 /**
  * Class Log
@@ -49,6 +47,8 @@ class Log
      * True if yes; false if no
      **/
     public $first;
+
+    protected $timestamp;
 
     /**
      * Log::__construct
@@ -106,7 +106,7 @@ class Log
 
         switch ($this->config['type']) {
             case 'file':
-                return $this->file($content);
+                $this->file($content);
             case 'stdout':
                 $this->stdout($content);
                 break;
@@ -114,6 +114,11 @@ class Log
                 throw new \InvalidArgumentException($this->config['type'].' is not a valid Log type');
         }
         return true;
+    }
+
+    public function getTimestamp()
+    {
+        return (string)$this->timestamp;
     }
 
     /**
@@ -205,7 +210,8 @@ class Log
 
         if ($this->first) {
             date_default_timezone_set('America/Chicago');
-            $content = date("m-d-Y H:i:s").PHP_EOL.$content;
+            $this->timestamp = date("m-d-Y H:i:s");
+            $content = $this->timestamp.PHP_EOL.$content;
             $this->first=false;
         }
 
@@ -221,12 +227,13 @@ class Log
      **/
     public function __destruct()
     {
-        if ($this->testCount !== 0) {
-            $footers = array(
-                'tap'=>'1..'.$this->testCount.PHP_EOL
-            );
-
-            $this->write($footers[$this->config['format']]);
+        if (!is_null($this->config)) {
+            if ($this->testCount !== 0) {
+                $footers = array(
+                    'tap' => '1..'.$this->testCount.PHP_EOL
+                );
+                $this->write($footers[$this->config['format']]);
+            }
         }
     }
 
@@ -349,4 +356,9 @@ class Log
         });
         assert($term);
     }
+
+    public function __get($property) {
+        return $this->$property;
+    }
 }
+
