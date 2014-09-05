@@ -32,7 +32,6 @@ class Response implements IService, \Serializable
     public $status;
     public $request;
     public $message;
-    private $options;
     private $suppressHeader;
     private $data;
     private $publicProperties;
@@ -43,20 +42,14 @@ class Response implements IService, \Serializable
      *
      * Object initializer
      *
-     * @param array $options Options array [
-     *     'suppress_header' => false, // Supress writing headers
-     *     'rowDelim'        => "\n",  // Row delim for delimitted output
-     *     'colDelim'        => "|",   // Column delim for delimitted output
-     *     'type'            => ''     // Type of response to return
-     * ]
+     * @param Model $model Model to pull data from in load()
      *
      * @return void
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function __construct($options=array(), \Devtools\Model $model = null)
+    public function __construct(\Devtools\Model $model = null)
     {
-        $this->options = $this->loadOptions($options);
-        $this->suppressHeader = $this->options['suppress_header'];
+        $this->suppressHeader = $this->isSuppressHeader();
         $this->status = 'OK';
         $this->request = $this->getRequest();
         $this->message = $this->status ? "" : "Data could not be set\n";
@@ -305,29 +298,6 @@ class Response implements IService, \Serializable
         );
     }
 
-    /**
-     * Response::loadOptions
-     *
-     * Loads options hash into the instance
-     *
-     * @param array $options Options array to be added to the instance
-     *
-     * @return  array   Options array
-     **/
-    private static function loadOptions($options)
-    {
-       return array_merge(
-           /* Defaults */
-           array(
-               'suppress_header' => false,
-               'rowDelim' => "\n",
-               'colDelim' => "|",
-               'type' => isset($_REQUEST['type']) ? $_REQUEST['type'] : ''
-           ),
-           is_null($options) ? array() : $options
-       );
-    }
-
     // =====INTERFACES=====
     /**
      * IService::data
@@ -387,7 +357,6 @@ class Response implements IService, \Serializable
      *     'suppress_header' => false, // Supress writing headers
      *     'rowDelim'        => "\n",  // Row delim for delimitted output
      *     'colDelim'        => "|",   // Column delim for delimitted output
-     *     'type'            => ''     // Type of response to return
      * ]
      *
      * @return string Delimited representation of response
@@ -395,9 +364,20 @@ class Response implements IService, \Serializable
      **/
     public function delimited($options = null)
     {
-       $options = (!isset($this) || get_class($this) !== __CLASS__) ?
-           Response::loadOptions($options) :
-           $this->options;
+        $default = array(
+            'rowDelim' => "\n",
+            'colDelim' => "|"
+        );
+
+        if (!is_null($options)) {
+            $options = array_merge(
+                $default,
+                $options
+            );
+        } else {
+            $options = $default;
+        }
+
        $response = '';
        foreach ($this->data as $row) {
            $rowStr = '';

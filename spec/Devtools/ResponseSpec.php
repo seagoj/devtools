@@ -5,22 +5,15 @@ use Prophecy\Argument;
 
 class ResponseSpec extends ObjectBehavior
 {
-    function let(\Devtools\MysqlModel $model)
+    function let(\Devtools\MysqlModel $modelMock)
     {
-        $_REQUEST = array(
+        $_REQUEST = [
             'param1' => 'val1',
             'param2' => 'val2',
             'param3'
-        );
+        ];
 
-        $model
-            ->query(
-                'select `user_name`, `last_name` from users where `user_id`=:user_id',
-                ['user_id' => 1],
-                true
-            )
-            ->willReturn(['user_name' =>'seagoj', 'last_name' => 'Seago']);
-        $this->beConstructedWith([], $model);
+        $this->beConstructedWith($modelMock);
     }
 
     function letgo()
@@ -36,11 +29,11 @@ class ResponseSpec extends ObjectBehavior
     function it_collects_request()
     {
         $this->getRequest()->shouldReturn(
-            array(
+            [
                 'param1' => 'val1',
                 'param2' => 'val2',
                 'param3'
-            )
+            ]
         );
     }
 
@@ -48,7 +41,7 @@ class ResponseSpec extends ObjectBehavior
     {
         $this->json()->shouldReturn(
             json_encode(
-                array(
+                [
                     'status' => 'OK',
                     'request' => array(
                         'param1' => 'val1',
@@ -56,7 +49,7 @@ class ResponseSpec extends ObjectBehavior
                         'param3'
                     ),
                     'message' => ''
-                )
+                ]
             )
         );
     }
@@ -64,25 +57,25 @@ class ResponseSpec extends ObjectBehavior
     function it_should_sleep()
     {
         $this->data(
-            array(
+            [
                 'key1' => 'value',
                 'key2' => 1,
-            )
+            ]
         )->__sleep()->shouldReturn(
-            array(
+            [
                 'status',
                 'request',
                 'message',
                 'key1',
                 'key2'
-            )
+            ]
         );
     }
 
     function it_speaks_php_objects()
     {
         $this->php()->shouldReturn(
-            array(
+            [
                 'status' => 'OK',
                 'request' => array(
                     'param1' => 'val1',
@@ -90,17 +83,17 @@ class ResponseSpec extends ObjectBehavior
                     'param3'
                 ),
                 'message' => ''
-            )
+            ]
         );
     }
 
     function it_speaks_bar_delimitted_strings()
     {
         $this->data(
-            array(
+            [
                 array("val1","val2"),
                 array("val3", "val4")
-            )
+            ]
         )->delimited()->shouldReturn(
             "val1|val2\nval3|val4\n"
         );
@@ -109,10 +102,10 @@ class ResponseSpec extends ObjectBehavior
     function it_is_serializable()
     {
         $this->data(
-            array(
+            [
                 "var1" => "val1",
                 "var2" => "val2"
-            )
+            ]
         );
 
         $this->serialize()
@@ -125,7 +118,7 @@ class ResponseSpec extends ObjectBehavior
         );
         $this->json()->shouldReturn(
             json_encode(
-                array(
+                [
                     'status'  => 'OK',
                     'request' => array(
                         'param1' => 'val1',
@@ -135,13 +128,21 @@ class ResponseSpec extends ObjectBehavior
                     'message' => '',
                     'var1'    => 'val1',
                     'var2'    => 'val2'
-                )
+                ]
             )
         );
     }
 
-    function it_loads_data_from_model()
+    function it_loads_data_from_model(\Devtools\MysqlModel $modelMock)
     {
+        $modelMock
+            ->query(
+                'select `user_name`, `last_name` from users where `user_id`=:user_id',
+                ['user_id' => 1],
+                true
+            )
+            ->willReturn(['user_name' =>'seagoj', 'last_name' => 'Seago']);
+
         $this
             ->load(
                 'select `user_name`, `last_name` from users where `user_id`=:user_id',

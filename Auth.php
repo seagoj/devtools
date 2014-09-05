@@ -1,4 +1,4 @@
-<?php
+<?php namespace Devtools;
 /**
  * Authentication class
  *
@@ -8,8 +8,6 @@
  * @license  http://github.com/seagoj/Devtools/LICENSE MIT
  * @link     http://github.com/seagoj/Devtools
  **/
-
-namespace Devtools;
 
 /**
  * Class Auth
@@ -27,86 +25,39 @@ namespace Devtools;
 class Auth
 {
     /**
-     * Email address provded
-     *
-     * Used as username for authentication
-     **/
-    private $email;
-
-    /**
-     * Hash of password provided
-     *
-     * Password provided has been hashed using password_hash
-     **/
-    private $hash;
-
-    /**
-     * Auth::__construct
-     *
-     * Constructor for Auth class
-     *
-     * Initializes Auth.email and Auth.pass if provided
-     *
-     * @param string $email Email to be used in authentication; defaults to
-     *                          null
-     * @param string $pass Password to be used in authentication; defaults
-     *                          to null
-     *
-     * @return void
-     **/
-    public function __construct($email = null, $pass = null)
-    {
-        if (!is_null($email) && !is_null($pass)) {
-            $this->email = $email;
-            $this->hash = $this->hash($pass);
-        }
-    }
-
-    /**
-     * Auth::validate
-     *
-     * Validation for the Auth class
-     *
-     * Validates accepted values for email and password against expected
-     *
-     * @param string $email_attempt Email provided in attempt to
-     *                                  authenticate
-     * @param string $pass_attempt Password provided in attempt to
-     *                                  authenticate
-     *
-     * @return boolean Result of validation
-     **/
-    public function validate($email_attempt, $pass_attempt)
-    {
-        return 'PHP_VERSION_ID'>=5.5 ?
-            ($this->email===$email_attempt) && password_verify($this->hash($pass_attempt), $this->hash) :
-            ($this->email===$email_attempt) && ($this->hash===$pass_attempt);
-    }
-
-    /**
      * Auth::hash
      *
      * Password hasher for the Auth class
      *
      * Hashes passwords using password_hash with salt
      *
-     * @param string $pass Raw password to be hashed
+     * @param string $pass    Raw password to be hashed
+     * @param array  $options Password hashing options
      *
      * @return string Hashed password
      **/
-    public function hash($pass)
+    public static function hash($pass, $options = array())
     {
-        $salt = $this->email;
-        while (strlen($salt)<22) {
-            $salt.=$this->email;
-        }
+        $options = array_merge(
+            array('cost' => 10),
+            $options
+        );
+        return password_hash($pass, PASSWORD_DEFAULT, $options);
+    }
 
-        $options = [
-            'salt'=> $salt
-        ];
-
-        return 'PHP_VERSION_ID'>=5.5 ?
-            password_hash(Model::sanitize($pass), PASSWORD_DEFAULT, $options) :
-            $pass;
+    /**
+     * check
+     *
+     * Checks string against hash
+     *
+     * @param string $pass Potential password
+     * @param string $hash Hash of password
+     *
+     * @return Boolean Status  of comparison
+     * @author Jeremy Seago <seagoj@gmail.com>
+     **/
+    public static function check($pass, $hash)
+    {
+        return password_verify($pass, $hash);
     }
 }

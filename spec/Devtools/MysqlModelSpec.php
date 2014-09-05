@@ -7,9 +7,9 @@ use Prophecy\Argument;
 
 class MysqlModelSpec extends ObjectBehavior
 {
-    function let(\PDO $connection)
+    function let(\PDO $connectionMock)
     {
-        $this->beConstructedWith($connection);
+        $this->beConstructedWith($connectionMock);
     }
 
     function it_is_initializable()
@@ -26,19 +26,19 @@ class MysqlModelSpec extends ObjectBehavior
         );
     }
 
-    function it_should_perform_PDO_queries(\PDO $connection, \PDOStatement $stmt)
+    function it_should_perform_PDO_queries(\PDO $connectionMock, \PDOStatement $stmtMock)
     {
-        $connection->prepare(
+        $connectionMock->prepare(
             "SELECT `user_name` FROM users WHERE userid = :userid"
-        )->willReturn($stmt);
+        )->willReturn($stmtMock);
 
-        $stmt->execute(
+        $stmtMock->execute(
             array(
                 'userid' => 1
             )
         )->willReturn(true);
 
-        $stmt->fetch(\PDO::FETCH_ASSOC)
+        $stmtMock->fetch(\PDO::FETCH_ASSOC)
             ->willReturn(
                 array('user_name' => 'seagoj')
             );
@@ -47,19 +47,19 @@ class MysqlModelSpec extends ObjectBehavior
             ->shouldReturn('seagoj');
     }
 
-    function it_should_return_multiple_values(\PDO $connection, \PDOStatement $stmt)
+    function it_should_return_multiple_values(\PDO $connectionMock, \PDOStatement $stmtMock)
     {
-        $connection->prepare(
+        $connectionMock->prepare(
             "SELECT `user_name`,`last_name` FROM users WHERE userid = :userid"
-        )->willReturn($stmt);
+        )->willReturn($stmtMock);
 
-        $stmt->execute(
+        $stmtMock->execute(
             array(
                 'userid' => 1
             )
         )->willReturn(true);
 
-        $stmt->fetch(\PDO::FETCH_ASSOC)
+        $stmtMock->fetch(\PDO::FETCH_ASSOC)
             ->willReturn(
                 array(
                     'user_name' => 'seagoj',
@@ -71,20 +71,20 @@ class MysqlModelSpec extends ObjectBehavior
             ->shouldReturn(array('user_name' => 'seagoj', 'last_name' => 'Seago'));
     }
 
-    function it_should_set_a_value(\PDO $connection, \PDOStatement $stmt)
+    function it_should_set_a_value(\PDO $connectionMock, \PDOStatement $stmtMock)
     {
-        $connection->prepare(
+        $connectionMock->prepare(
             "INSERT INTO users (`user_name`,`last_name`) VALUES(:user_name,:last_name)"
-        )->willReturn($stmt);
+        )->willReturn($stmtMock);
 
-        $stmt->execute(
+        $stmtMock->execute(
             array(
                 'user_name' => 'seagoj',
                 'last_name' => 'Seago'
             )
         )->willReturn(true);
 
-        $stmt->fetch(\PDO::FETCH_ASSOC)
+        $stmtMock->fetch(\PDO::FETCH_ASSOC)
             ->willReturn(
                 array(
                     'userid' => 1000
