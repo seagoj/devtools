@@ -469,6 +469,20 @@ class Response implements IService, \Serializable
      **/
     public function unserialize($serialized)
     {
-        return unserialize($serialized);
+        $data = unserialize($serialized);
+        $safe = array_merge(
+            array(
+                'status',
+                'request',
+                'message'
+            ),
+            array_keys($data['data'])
+        );
+
+        var_dump($safe);
+
+        foreach ($safe as $key) {
+            $this->$key = $data[$key];
+        }
     }
 }

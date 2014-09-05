@@ -7,13 +7,14 @@ gulp.task('test', function() {
     gulp.src('spec/**/*.php')
         .pipe(phpspec( '', { clear: true, notify: true } ))
         .on('error', notify.onError({
-            title: 'Dangit',
-            message: 'Your tests failed!',
-            icon: __dirname + '/fail.png'
+            title: 'PHP: FAILED!',
+            message: 'Your tests have failed!',
+            icon: __dirname + '/spec/failed.jpg'
         }))
         .pipe(notify({
-            title: 'Success',
-            message: 'All tests have returned green!'
+            title: 'PHP: Success',
+            message: 'All tests have returned green!',
+            icon: __dirname + '/spec/success.jpg'
         }));
 });
 
