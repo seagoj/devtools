@@ -1,4 +1,4 @@
-<?php
+<?php namespace Devtools;
 /**
  * Random data generator
  *
@@ -8,8 +8,6 @@
  * @license     http://github.com/seagoj/Devtools/LICENSE MIT
  * @link        http://github.com/seagoj/Devtools
  **/
-
-namespace Devtools;
 
 /**
  * Class RandData

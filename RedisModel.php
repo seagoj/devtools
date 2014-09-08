@@ -1,19 +1,5 @@
-<?php
-/**
- * RedisModel
- *
- * Model for connection to Redis key/value stores
- *
- * PHP version 5.3
- *
- * @category Seago
- * @package  DEVTOOLS
- * @author   Jeremy Seago <seagoj@gmail.com>
- * @license  http://www.opensource.org/licenses/mit-license.html  MIT License
- * @version  GIT: 1.0
- * @link     http://github.com/seagoj/Devtools/RedisModel.php
- **/
-namespace Devtools;
+<?php namespace Devtools;
+
 /**
  * Class RedisModel
  *
@@ -26,6 +12,7 @@ namespace Devtools;
 class RedisModel implements IModel
 {
     private $connection;
+
     /**
      * __construct
      *
@@ -99,7 +86,7 @@ class RedisModel implements IModel
     {
         return is_null($collection) ?
             $this->connection->set($key, $value) :
-            $this->connection->hset($key, $value, $collection);
+            $this->connection->hset($collection, $key, $value);
     }
 
     /**
@@ -135,7 +122,7 @@ class RedisModel implements IModel
     }
 
     /**
-    * Model::expireRedis
+    * Model::expire
     *
     * Performs the expiration operation on redis datastores
     *
@@ -144,7 +131,7 @@ class RedisModel implements IModel
     *
     * @return  boolean Status of setting the expiration
     **/
-    public function expireRedis($key, $expiry)
+    public function expire($key, $expiry)
     {
        return $this->connection->expire($key, $expiry);
     }

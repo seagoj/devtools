@@ -1,20 +1,4 @@
-<?php
-/**
- * Markdown
- *
- * Translates markdown into HTML
- *
- * PHP version 5.3
- *
- * @category Seago
- * @package  DEVTOOLS
- * @author   Jeremy Seago <seagoj@gmail.com>
- * @license  http://www.opensource.org/licenses/mit-license.html  MIT License
- * @version  GIT:
- * @link     http://github.com/seagoj/Devtools
- **/
-
-namespace Devtools;
+<?php namespace Devtools;
 
 /**
  * Class Markdown
@@ -67,7 +51,7 @@ class Markdown
     public function __construct($options = [])
     {
         $defaults = [
-            'flavor' => 'multimarkdown',
+            'flavor'  => 'multimarkdown',
             'logType' => 'stdout',
             'htmlTag' => true
         ];
@@ -121,6 +105,10 @@ class Markdown
      **/
     public function convert($input)
     {
+        if (!is_string($input)) {
+            throw new \InvalidArgumentException('Input is not a string or path.');
+        }
+
         // Pull contents of file if input is a path to a file
         if (is_file($input)) {
             $code = file_get_contents($input);
@@ -177,14 +165,14 @@ class Markdown
         if ($this->config['flavor'] === 'multimarkdown') {
             foreach ($this->code as $index => $line) {
                 $md = '';
-
-                if ($ended !== true && $line !== '' &&
-                    !in_array($line[0], $syntax) &&
-                    ($pivot = strpos($line, ':', 1)) !==false &&
-                    ($label = substr($line, 0, $pivot)) !==false &&
-                    ($value = substr($line, $pivot+1)) !==false &&
-                    ($link = strpos($label, 'http'))===false) {
-
+                if ($ended !== true
+                    && $line !== ''
+                    && !in_array($line[0], $syntax)
+                    && ($pivot = strpos($line, ':', 1)) !==false
+                    && ($label = substr($line, 0, $pivot)) !==false
+                    && ($value = substr($line, $pivot+1)) !==false
+                    && ($link = strpos($label, 'http'))===false
+                ) {
                     $md = $first ? "<head>\n" : "";
                     $first = false;
 

@@ -1,6 +1,4 @@
-<?php
-
-namespace Devtools;
+<?php namespace Devtools;
 
 class Rest
 {
@@ -16,14 +14,12 @@ class Rest
     {
         $this->debugLog = \Devtools\Log::debugLog();
         $this->response = new \Devtools\Response;
-
         $this->options = array_merge(
             array(
                 'type' => null
             ),
             $options
         );
-
         $this->setMethod();
         $this->setRequest();
         $this->setParameters();
@@ -71,7 +67,6 @@ class Rest
                 case 'GET':
                     $table = array_shift($this->request);
                     $sql = $this->buildSQL($table);
-
                     if ($q=mysql_query($sql)) {
                         $this->response->data(\Devtools\Model::mysql_fetch_all($q));
                     } else {
@@ -88,7 +83,6 @@ class Rest
                 $pharmacy = array_shift($this->request);
                 $table = array_shift($this->request);
                 $sql = $this->buildSQL($table);
-
                 $this->debugLog->write($sql);
                 $fb = getFirebirdModel($pharmacy);
                 $this->response->data($fb->query($sql));
@@ -105,17 +99,14 @@ class Rest
         $first_dir = $first_dir[1];
         $path_array = explode('/', getCWD());
         $path = array();
-
         for ($p = 0; $p<count($path_array); $p++) {
             if ($path_array[$p] === $first_dir) {
                 break;
             }
         }
-
         for ($p; $p<count($path_array); $p++) {
             array_push($path, $path_array[$p]);
         }
-
         return '/'.implode('/', $path).'/';
     }
 
@@ -132,21 +123,18 @@ class Rest
                 $cols = implode(',', $cols);
             }
         }
-
         return !empty($cols) ? $cols : '*';
     }
 
     private function buildSQL($table)
     {
         $cols = $this->getCols();
-
         $sql = sprintf(
             "SELECT %s
             FROM %s",
             mysql_real_escape_string($cols),
             mysql_real_escape_string($table)
         );
-
         if (isset($this->id)) {
             $sql .= sprintf(
                 " WHERE %s=%s",
@@ -163,18 +151,15 @@ class Rest
                     $first = false;
                 }
                 $sql .= $key;
-
                 if (is_array($value)) {
                     $operand = ' IN ';
                     $value = '('.implode(',', $value).')';
                 } else {
                     $operand = '=';
                 }
-
                 $sql .= $operand.$value;
             }
         }
-
         return $sql;
     }
 

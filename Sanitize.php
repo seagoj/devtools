@@ -1,7 +1,11 @@
-<?php
+<?php namespace Devtools;
 
 class Sanitize
 {
+
+    public function __construct()
+    {}
+
     /**
      * @param string $dirty
      */
@@ -13,9 +17,10 @@ class Sanitize
         );
     }
 
-    public static function sql($dirty) {
-        return Sanitize::str(
-            mysql_real_escape_string($dirty)
-        );
-    }
+    /* Unecessary in PDO */
+    /* public static function sql($dirty) { */
+    /*     return Sanitize::str( */
+    /*         mysql_real_escape_string($dirty) */
+    /*     ); */
+    /* } */
 }

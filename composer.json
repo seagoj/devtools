@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "predis/predis": ">=0.8"
+        "predis/predis": ">=1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*",
@@ -20,18 +20,14 @@
         "phpspec/phpspec": "dev-master"
     },
     "scripts": {
-        "pre-install-cmd": [
-        ],
-        "post-install-cmd": [
-            "rm -rf vendor/predis-lib",
-            "rm -f vendor/Devtools",
-            "mv vendor/predis vendor/predis-lib",
-            "ln -s predis-lib/predis/lib/Predis vendor/Predis",
-            "ln -s .. vendor/Devtools"
-        ]
+        "pre-install-cmd": [],
+        "post-install-cmd": []
     },
     "config": {},
     "autoload": {
-        "psr-4": {"Devtools\\": "vendor/Devtools"}
+        "psr-4": {
+            "Devtools\\": "vendor/Devtools",
+            "Predis\\": "vendor/predis/predis/src"
+        }
     }
 }
