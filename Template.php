@@ -1,15 +1,4 @@
-<?php
-/**
- * Templating class
- *
- * @category Seagoj
- * @package  Devtools
- * @author   Jeremy Seago <seagoj@gmail.com>
- * @license  http://github.com/seagoj/Devtools/LICENSE MIT
- * @link     http://github.com/seagoj/Devtools
- **/
-
-namespace Devtools;
+<?php namespace Devtools;
 
 /**
  * Templating class
@@ -39,7 +28,7 @@ class Template
     public function __construct($options = [])
     {
         $defaults = [];
-        
+
         $this->config = array_merge($defaults, $options);
     }
 
@@ -58,6 +47,7 @@ class Template
         $template = is_file($template) ? file_get_contents($template) : $template;
 
         foreach ($vars as $var => $value) {
+            $value = is_array($value) ? implode(', ', $value) : $value;
             if (($swap = str_replace('{{'.$var.'}}', $value, $template))!==false) {
                 $template = $swap;
             }
