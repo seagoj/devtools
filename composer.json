@@ -6,6 +6,10 @@
         {
             "url": "https://github.com/seagoj/predis",
             "type": "vcs"
+        },
+        {
+            "url": "https://github.com/seagoj/prophecy",
+            "type": "vcs"
         }
     ],
     "require": {
@@ -17,11 +21,16 @@
         "phpunit/dbunit": "1.2.*",
         "phpunit/phpunit-selenium": "1.3.*",
         "phpunit/phpunit-story": "1.0.*",
-        "phpspec/phpspec": "dev-master"
+        "phpspec/phpspec": "dev-master",
+        "seagoj/prophecy": "dev-development"
     },
     "scripts": {
         "pre-install-cmd": [],
-        "post-install-cmd": []
+        "post-install-cmd": [
+            "ln -s .. vendor/Devtools",
+            "sudo rm -r vendor/phpspec/prophecy",
+            "ln -s ../seagoj/prophecy vendor/phpspec/prophecy"
+        ]
     },
     "config": {},
     "autoload": {

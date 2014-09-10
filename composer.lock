@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "897854f29e5932d7ae22946ceca12c4b",
+    "hash": "549f67cf2d900ef05298e6380dd72720",
     "packages": [
         {
             "name": "predis/predis",
@@ -905,6 +905,67 @@
             "time": "2013-04-02 16:07:28"
         },
         {
+            "name": "seagoj/prophecy",
+            "version": "dev-development",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/seagoj/prophecy.git",
+                "reference": "14e5e623f36279514f33569708776b4fd095e270"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/seagoj/prophecy/zipball/14e5e623f36279514f33569708776b4fd095e270",
+                "reference": "14e5e623f36279514f33569708776b4fd095e270",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/instantiator": "~1.0,>=1.0.2",
+                "phpdocumentor/reflection-docblock": "~2.0"
+            },
+            "require-dev": {
+                "phpspec/phpspec": "~2.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Prophecy\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Konstantin Kudryashov",
+                    "email": "ever.zet@gmail.com",
+                    "homepage": "http://everzet.com"
+                },
+                {
+                    "name": "Marcello Duarte",
+                    "email": "marcello.duarte@gmail.com"
+                }
+            ],
+            "description": "Highly opinionated mocking framework for PHP 5.3+",
+            "homepage": "http://phpspec.org",
+            "keywords": [
+                "Double",
+                "Dummy",
+                "Fake",
+                "Mock",
+                "Spy",
+                "Stub"
+            ],
+            "support": {
+                "source": "https://github.com/seagoj/prophecy/tree/master"
+            },
+            "time": "2014-09-10 18:26:22"
+        },
+        {
             "name": "sebastian/exporter",
             "version": "1.0.1",
             "source": {
@@ -1228,7 +1289,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "phpspec/phpspec": 20
+        "phpspec/phpspec": 20,
+        "seagoj/prophecy": 20
     },
     "prefer-stable": false,
     "platform": [],
