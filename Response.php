@@ -420,6 +420,7 @@ class Response implements IService, \Serializable
     public function php($serialize = false)
     {
        $ret = array();
+       var_dump($this->__sleep());
        foreach ($this->__sleep() as $property) {
            $ret[$property] = $this->$property;
        }
