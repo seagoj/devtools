@@ -4,20 +4,12 @@
     "license": "MIT",
     "repositories": [
         {
-            "type": "package",
-            "package": {
-                "name": "predis",
-                "version": "1.0",
-                "source": {
-                    "url": "https://github.com/seagoj/predis.git",
-                    "type": "git",
-                    "reference": "v1.0"
-                }
-            }
+            "url": "https://github.com/seagoj/predis",
+            "type": "vcs"
         }
     ],
     "require": {
-        "predis": "dev-v1.0"
+        "predis/predis": ">=1.1"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*",
@@ -35,7 +27,7 @@
     "autoload": {
         "psr-4": {
             "Devtools\\": "vendor/Devtools",
-            "Predis\\": "vendor/predis/src"
+            "Predis\\": "vendor/predis/predis/src"
         }
     }
 }
