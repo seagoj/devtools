@@ -124,6 +124,7 @@ class FirebirdModel extends Model
 
         try {
             $stmt = $this->connection->prepare($sql);
+            var_dump($stmt);
             if (is_null($params)) {
                 $stmt->execute();
             } else {
