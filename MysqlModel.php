@@ -168,6 +168,8 @@ class MysqlModel extends Model
     public function query($queryString, $params=null, $fetchType=\PDO::FETCH_ASSOC, $reduce=true)
     {
         $stmt = $this->connection->prepare($queryString);
+        var_dump($queryString);
+        var_dump($stmt);
         if (!is_null($params)) {
             $stmt->execute($params);
         } else {
