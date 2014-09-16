@@ -269,9 +269,10 @@ class Log
                     } elseif (is_bool($arg)) {
                         $args[] = ($arg) ? "true" : "false";
                     } elseif (is_object($arg)) {
-                        $args[] = $arg;
+                        $args[] = serialize($arg);
                     } elseif (is_array($arg)) {
-                        $args[] = $arg;
+                        var_dump((gettype($arg));
+                        $args[] = serialize($arg);
                     } elseif (is_resource($arg)) {
                         $args[] = get_resource_type($arg);
                     } else {
