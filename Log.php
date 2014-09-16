@@ -273,6 +273,7 @@ class Log
                         $args[] = serialize($arg);
                     } elseif (is_array($arg)) {
                         var_dump(gettype($arg));
+                        var_dump($arg);
                         $args[] = serialize($arg);
                     } elseif (is_resource($arg)) {
                         $args[] = get_resource_type($arg);
