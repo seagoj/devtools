@@ -165,7 +165,7 @@ class MysqlModel extends Model
      * @return array|string|integer Result of query
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function query($queryString, $params=null, $fetchType=\PDO::FETCH_ASSOC, $reduce=true)
+    public function query($queryString, $params=null, $reduce, $fetchType=\PDO::FETCH_ASSOC)
     {
         $stmt = $this->connection->prepare($queryString);
         if (!is_null($params)) {
