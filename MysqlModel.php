@@ -106,7 +106,7 @@ class MysqlModel extends Model
      **/
     public function get($key, $collection, $where=null)
     {
-        $sql = "SELECT ".(MysqlModel::stringify($key, true, '`'))
+        $sql = "SELECT ".(self::stringify($key, true, '`'))
             ." FROM $collection";
 
         if (!is_null($where)) {
@@ -186,7 +186,7 @@ class MysqlModel extends Model
     {
         foreach ($params as $field => $value) {
             if (is_array($value)) {
-                $queryString = str_replace(':'.$field, stringify($value), $queryString);
+                $queryString = str_replace(':'.$field, self::stringify($value), $queryString);
                 unset($params[$field]);
             }
         }
@@ -227,7 +227,7 @@ class MysqlModel extends Model
         foreach ($key as $name) {
             array_push($fields, ':'.$name);
         }
-        $sql = "INSERT INTO $collection (".stringify($key, true, '`').") VALUES(".implode(',', $fields).")";
+        $sql = "INSERT INTO $collection (".self::stringify($key, true, '`').") VALUES(".implode(',', $fields).")";
 
         if (!is_null($where)) {
             // Initializes $where and $params
