@@ -246,39 +246,15 @@ class Response implements IService, \Serializable
      * @return array Array of results from SQL call
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function load($sql, $params = null)
-    {
-        if (is_null($this->model))  {
-            throw new \Exception('No model available.');
-        }
+    /* public function load($sql, $params = null) */
+    /* { */
+    /*     if (is_null($this->model))  { */
+    /*         throw new \Exception('No model available.'); */
+    /*     } */
 
-        $data = $this->model->query($sql, $params, true);
-        return $this->data = is_array($data) ? $data : array('data' => $data);
-/*         if ($q=mysql_query($sql) && !is_bool($q) && mysql_num_rows($q) > 0) { */
-/*             /1* === SELECT === *1/ */
-/*             $this->data = Model::reduceResult( */
-/*                 Model::mysqlFetchAll($q) */
-/*             ); */
-/*         } else if ($q && is_bool($q) && mysql_num_rows($q) > 0 */
-/*             && $insert_id = mysql_insert_id() */
-/*         ) { */
-/*             /1* === INSERT === *1/ */
-/*             $this->data( */
-/*                 array( */
-/*                     'insert_id' => $insert_id */
-/*                 ) */
-/*             ); */
-/*         } else if ($q && is_bool($q) && !$insert_id) { */
-/*             /1* === UPDATE === *1/ */
-/*             $this->data( */
-/*                 array('update' => true) */
-/*             ); */
-/*         } else { */
-/*             /1* === FAILURE === *1/ */
-/*             $this->fail('ID not found.'); */
-/*         } */
-/*         return $this; */
-    }
+    /*     $data = $this->model->query($sql, $params, true); */
+    /*     return $this->data = is_array($data) ? $data : array('data' => $data); */
+    /* } */
 
     /**
      * isSuppressHeader
