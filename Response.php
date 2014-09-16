@@ -252,7 +252,7 @@ class Response implements IService, \Serializable
             throw new \Exception('No model available.');
         }
 
-        return $this->data = $this->model->query($sql, $params, true);
+        return $this->data = $this->model->query($sql, $params);
 /*         if ($q=mysql_query($sql) && !is_bool($q) && mysql_num_rows($q) > 0) { */
 /*             /1* === SELECT === *1/ */
 /*             $this->data = Model::reduceResult( */
