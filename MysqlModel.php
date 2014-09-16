@@ -165,7 +165,7 @@ class MysqlModel extends Model
      * @return array|string|integer Result of query
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function query($queryString, $params=null, $reduce=false, $fetchType=\PDO::FETCH_BOTH)
+    public function query($queryString, $params=null, $reduce=false, $fetchType=\PDO::FETCH_ASSOC)
     {
         $stmt = $this->connection->prepare($queryString);
         if (!is_null($params)) {
@@ -173,6 +173,7 @@ class MysqlModel extends Model
         } else {
             $stmt->execute();
         }
+        var_dump($stmt->rowCount());
         $data = $stmt->fetchAll($fetchType);
         var_dump($queryString);
         var_dump($params);
