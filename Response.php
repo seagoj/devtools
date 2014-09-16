@@ -421,7 +421,6 @@ class Response implements IService, \Serializable
     {
        $ret = array();
        $sleep = $this->__sleep();
-       var_dump($sleep);
        foreach ($sleep as $property) {
            $ret[$property] = $this->$property;
        }
