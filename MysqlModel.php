@@ -173,6 +173,7 @@ class MysqlModel extends Model
         } else {
             $stmt->execute();
         }
+        var_dump($fetchType);
         return $reduce
             ? $this->reduceResult($stmt->fetchAll($fetchType))
             : $stmt->fetchAll($fetchType);
