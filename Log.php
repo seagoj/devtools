@@ -262,7 +262,7 @@ class Log
             if (isset($frame['args'])) {
                 $args = array();
                 foreach ($frame['args'] as $arg) {
-                    if (is_string($arg) || get_class($arg) === 'PDOStatement') {
+                    if (is_string($arg) || ((is_object($arg) || is_array($arg)) && get_class($arg) === 'PDOStatement')) {
                         $args[] = "'" . $arg . "'";
                     } elseif (is_array($arg)) {
                         $args[] = serialize($arg);
