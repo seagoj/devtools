@@ -186,7 +186,7 @@ class MysqlModel extends Model
     {
         foreach ($params as $field => $value) {
             if (is_array($value)) {
-                str_replace(':'.$field, stringify($value), $stmt);
+                $queryString = str_replace(':'.$field, stringify($value), $queryString);
                 unset($params[$field]);
             }
         }
