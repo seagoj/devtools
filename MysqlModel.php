@@ -173,9 +173,11 @@ class MysqlModel extends Model
         } else {
             $stmt->execute();
         }
+        $data = $stmt->fetchAll($fetchType);
+        var_dump($data);
         return $reduce
-            ? $this->reduceResult($stmt->fetchAll($fetchType))
-            : $stmt->fetchAll($fetchType);
+            ? $this->reduceResult($data)
+            : $data;
     }
 
     /**
