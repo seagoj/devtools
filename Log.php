@@ -262,16 +262,16 @@ class Log
             if (isset($frame['args'])) {
                 $args = array();
                 foreach ($frame['args'] as $arg) {
-                    var_dump(get_class($arg));
                     if (is_string($arg) || is_a($arg, 'PDOStatement')) {
                         $args[] = "'" . $arg . "'";
-                    } elseif (is_array($arg)) {
-                        $args[] = serialize($arg);
                     } elseif (is_null($arg)) {
                         $args[] = 'NULL';
                     } elseif (is_bool($arg)) {
                         $args[] = ($arg) ? "true" : "false";
                     } elseif (is_object($arg)) {
+                        var_dump(get_class($arg));
+                        $args[] = serialize($arg);
+                    } elseif (is_array($arg)) {
                         $args[] = serialize($arg);
                     } elseif (is_resource($arg)) {
                         $args[] = get_resource_type($arg);
