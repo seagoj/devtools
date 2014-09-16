@@ -272,15 +272,10 @@ class Log
                         var_dump(get_class($arg));
                         $args[] = serialize($arg);
                     } elseif (is_array($arg)) {
-                        var_dump($arg);
-                        $pdo = false;
-                        foreach ($arg as $key =>$value) {
-                            if (is_a($value, 'PDOStatement')) {
-                                $pdo = true;
-                            }
-                        }
-                        if (!$pdo) {
+                        try {
                             $args[] = serialize($arg);
+                        } catch (\PDOException $e) {
+                            var_dump($e->getMessage());
                         }
                     } elseif (is_resource($arg)) {
                         $args[] = get_resource_type($arg);
