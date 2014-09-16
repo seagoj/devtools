@@ -269,7 +269,6 @@ class Log
                     } elseif (is_bool($arg)) {
                         $args[] = ($arg) ? "true" : "false";
                     } elseif (is_object($arg)) {
-                        var_dump(get_class($arg));
                         $args[] = serialize($arg);
                     } elseif (is_array($arg)) {
                         try {
