@@ -275,7 +275,7 @@ class Log
                         try {
                             $args[] = serialize($arg);
                         } catch (\PDOException $e) {
-                            var_dump($e->getMessage());
+                            var_dump($e);
                         }
                     } elseif (is_resource($arg)) {
                         $args[] = get_resource_type($arg);
