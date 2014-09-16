@@ -271,7 +271,7 @@ class Log
                     } elseif (is_object($arg)) {
                         $args[] = serialize($arg);
                     } elseif (is_array($arg)) {
-                        uar_dump(gettype($arg));
+                        var_dump(gettype($arg));
                         $args[] = serialize($arg);
                     } elseif (is_resource($arg)) {
                         $args[] = get_resource_type($arg);
