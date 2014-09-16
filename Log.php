@@ -262,16 +262,16 @@ class Log
             if (isset($frame['args'])) {
                 $args = array();
                 foreach ($frame['args'] as $arg) {
-                    if (is_string($arg) || is_a($arg, 'PDOStatement')) {
+                    if (is_string($arg)) {
                         $args[] = "'" . $arg . "'";
                     } elseif (is_null($arg)) {
                         $args[] = 'NULL';
                     } elseif (is_bool($arg)) {
                         $args[] = ($arg) ? "true" : "false";
                     } elseif (is_object($arg)) {
-                        $args[] = var_export($arg, true);
+                        $args[] = $arg;
                     } elseif (is_array($arg)) {
-                        $args[] = var_export($arg, true);
+                        $args[] = $arg;
                     } elseif (is_resource($arg)) {
                         $args[] = get_resource_type($arg);
                     } else {
