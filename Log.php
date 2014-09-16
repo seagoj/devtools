@@ -274,9 +274,7 @@ class Log
                     } elseif (is_array($arg)) {
                         try {
                             $args[] = serialize($arg);
-                        } catch (\PDOException $e) {
-                            var_dump($e);
-                        }
+                        } catch (\PDOException $e) {}
                     } elseif (is_resource($arg)) {
                         $args[] = get_resource_type($arg);
                     } else {
