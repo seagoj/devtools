@@ -167,20 +167,29 @@ class MysqlModel extends Model
      **/
     public function query($queryString, $params=null, $reduce=false, $fetchType=\PDO::FETCH_ASSOC)
     {
+        if (strpos($queryString, 'IN') && !is_null($params)) {
+            $this->fixInClause($queryString, $params);
+        }
         $stmt = $this->connection->prepare($queryString);
         if (!is_null($params)) {
             $stmt->execute($params);
         } else {
             $stmt->execute();
         }
-        var_dump($stmt->rowCount());
         $data = $stmt->fetchAll($fetchType);
-        var_dump($queryString);
-        var_dump($params);
-        var_dump($data);
         return $reduce
             ? $this->reduceResult($data)
             : $data;
+    }
+
+    private function fixInClause(&$queryString, &$params)
+    {
+        foreach ($params as $field => $value) {
+            if (is_array($value)) {
+                str_replace(':'.$field, stringify($value), $stmt);
+                unset($params[$field]);
+            }
+        }
     }
 
     /**
@@ -218,7 +227,7 @@ class MysqlModel extends Model
         foreach ($key as $name) {
             array_push($fields, ':'.$name);
         }
-        $sql = "INSERT INTO $collection (".MysqlModel::stringify($key, true, '`').") VALUES(".implode(',', $fields).")";
+        $sql = "INSERT INTO $collection (".stringify($key, true, '`').") VALUES(".implode(',', $fields).")";
 
         if (!is_null($where)) {
             // Initializes $where and $params
