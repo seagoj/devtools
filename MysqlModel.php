@@ -174,6 +174,8 @@ class MysqlModel extends Model
             $stmt->execute();
         }
         $data = $stmt->fetchAll($fetchType);
+        var_dump($queryString);
+        var_dump($params);
         var_dump($data);
         return $reduce
             ? $this->reduceResult($data)
