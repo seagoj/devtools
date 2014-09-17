@@ -273,7 +273,9 @@ class Log
                     } elseif (is_array($arg)) {
                         try {
                             $args[] = serialize($arg);
-                        } catch (\PDOException $e) {}
+                        } catch (\PDOException $e) {
+                            $args[] = $e->getMessage();
+                        }
                     } elseif (is_resource($arg)) {
                         $args[] = get_resource_type($arg);
                     } else {
