@@ -268,9 +268,7 @@ class Log
                         $args[] = 'NULL';
                     } elseif (is_bool($arg)) {
                         $args[] = ($arg) ? "true" : "false";
-                    } elseif (is_object($arg)) {
-                        $args[] = serialize($arg);
-                    } elseif (is_array($arg)) {
+                    } elseif (is_object($arg) || is_array($arg)) {
                         try {
                             $args[] = serialize($arg);
                         } catch (\PDOException $e) {
