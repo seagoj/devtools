@@ -17,7 +17,7 @@ abstract class IoC
         if (isset(self::$registryOfCreatedObjects[$objectName])) {
             return self::$registryOfCreatedObjects[$objectName];
         }
-        var_dump($self::$objectDefinitions);
+        var_dump(self::$objectDefinitions);
         $func = self::$objectDefinitions[$objectName];
         return self::$registryOfCreatedObjects[$objectName] = $func();
     }
