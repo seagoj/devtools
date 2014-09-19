@@ -270,6 +270,7 @@ class Log
                         $args[] = ($arg) ? "true" : "false";
                     } elseif (is_object($arg) || is_array($arg)) {
                         try {
+                            var_dump($arg);
                             $args[] = serialize($arg);
                         } catch (\PDOException $e) {
                             $args[] = $e->getMessage();
