@@ -170,6 +170,8 @@ class MysqlModel extends Model
         if (strpos($queryString, 'IN') && !is_null($params)) {
             $this->fixInClause($queryString, $params);
         }
+        global $debugLog;
+        $debugLog->write($queryString);
         $stmt = $this->connection->prepare($queryString);
         if (!is_null($params)) {
             $stmt->execute($params);
