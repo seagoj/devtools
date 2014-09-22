@@ -173,6 +173,7 @@ class MysqlModel extends Model
         global $debugLog;
         $debugLog->write($queryString);
         $stmt = $this->connection->prepare($queryString);
+        $debugLog->write($stmt);
         if (!is_null($params)) {
             $stmt->execute($params);
         } else {
