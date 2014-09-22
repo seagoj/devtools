@@ -170,8 +170,6 @@ class MysqlModel extends Model
         if (strpos($queryString, 'IN') && !is_null($params)) {
             $this->fixInClause($queryString, $params);
         }
-        global $debugLog;
-        $debugLog->write($queryString);
         $stmt = $this->connection->prepare($queryString);
         if (!is_null($params)) {
             $stmt->execute($params);
@@ -179,7 +177,6 @@ class MysqlModel extends Model
             $stmt->execute();
         }
         $data = $stmt->fetchAll($fetchType);
-        $debugLog->write($data);
         return $reduce
             ? $this->reduceResult($data)
             : $data;
