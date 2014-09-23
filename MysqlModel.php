@@ -178,12 +178,12 @@ class MysqlModel extends Model
             $stmt->execute();
         }
         $data = $stmt->fetchAll($fetchType);
-        if (empty($data) && strpos(strtoupper($queryString), 'INSERT ')) {
+        if (empty($data) && strpos(strtoupper($queryString), 'INSERT ') !== false) {
             $data = array('insert_id' => $this->connection->lastInsertId());
         }
         global $debugLog;
         $debugLog->write(empty($data));
-        $debugLog->write(strpos(strtoupper($queryString), 'INSERT '));
+        $debugLog->write(strpos(strtoupper($queryString), 'INSERT ') !== false);
         $debugLog->write($queryString);
         $debugLog->write($data);
         return $reduce
