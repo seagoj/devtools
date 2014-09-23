@@ -178,6 +178,7 @@ class MysqlModel extends Model
         }
         $data = $stmt->fetchAll($fetchType);
         global $debugLog;
+        $debugLog->write($queryString);
         $debugLog->write($data);
         return $reduce
             ? $this->reduceResult($data)
