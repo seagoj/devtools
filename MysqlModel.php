@@ -167,9 +167,10 @@ class MysqlModel extends Model
      **/
     public function query($queryString, $params=null, $reduce=false, $fetchType=\PDO::FETCH_ASSOC)
     {
-        if (strpos($queryString, 'IN') && !is_null($params)) {
+        if (strpos(strtoupper($queryString), 'IN ') && !is_null($params)) {
             $this->fixInClause($queryString, $params);
         }
+
         $stmt = $this->connection->prepare($queryString);
         if (!is_null($params)) {
             $stmt->execute($params);
@@ -177,6 +178,9 @@ class MysqlModel extends Model
             $stmt->execute();
         }
         $data = $stmt->fetchAll($fetchType);
+        if (empty($data) && strpos(strtoupper($queryString), 'INSERT ')) {
+            $data = array('insert_id' => $this->connection->lastInsertId());
+        }
         global $debugLog;
         $debugLog->write($queryString);
         $debugLog->write($data);
