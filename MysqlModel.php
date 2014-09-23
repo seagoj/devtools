@@ -182,6 +182,8 @@ class MysqlModel extends Model
             $data = array('insert_id' => $this->connection->lastInsertId());
         }
         global $debugLog;
+        $debugLog->write(empty($data));
+        $debugLog->write(strpos(strtoupper($queryString), 'INSERT '));
         $debugLog->write($queryString);
         $debugLog->write($data);
         return $reduce
