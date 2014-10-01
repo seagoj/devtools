@@ -10,3 +10,4 @@ vendor
 coverage.xml
 report/
 node_modules
+tmux.sh
