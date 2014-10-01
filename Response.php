@@ -444,6 +444,11 @@ class Response implements IService, \Serializable
             && isset($_SERVER['HTTP_X_REQUESTED_WITH'])
             && $_SERVER['HTTP_X_REQUESTED_WITH']  === 'XMLHttpRequest';
     }
+
+    public static function isNotTest()
+    {
+        return !isset($_REQUEST['phpspec']);
+    }
 }
 
 /**
@@ -458,5 +463,7 @@ class Response implements IService, \Serializable
  **/
 function getProperties($object)
 {
-    return array_keys(get_object_vars($object));
+    return array_keys(
+        get_object_vars($object)
+    );
 }
