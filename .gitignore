@@ -9,3 +9,4 @@ vendor
 .DS_Store
 coverage.xml
 report/
+node_modules

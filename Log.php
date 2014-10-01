@@ -106,7 +106,8 @@ class Log
 
         switch ($this->config['type']) {
             case 'file':
-                return $this->file($content);
+                $this->file($content);
+                break;
             case 'stdout':
                 $this->stdout($content);
                 break;
@@ -256,14 +257,16 @@ class Log
                 foreach ($frame['args'] as $arg) {
                     if (is_string($arg)) {
                         $args[] = "'" . $arg . "'";
-                    } elseif (is_array($arg)) {
-                        $args[] = serialize($arg);
                     } elseif (is_null($arg)) {
                         $args[] = 'NULL';
                     } elseif (is_bool($arg)) {
                         $args[] = ($arg) ? "true" : "false";
-                    } elseif (is_object($arg)) {
+                    } elseif (is_object($arg) || is_array($arg)) {
+                        try {
                         $args[] = serialize($arg);
+                        } catch (\PDOException $e) {
+                            $args[] = var_export($arg, true);
+                        }
                     } elseif (is_resource($arg)) {
                         $args[] = get_resource_type($arg);
                     } else {
