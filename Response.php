@@ -450,7 +450,7 @@ class Response implements IService// , \Serializable
         return !isset($_REQUEST['phpspec']);
     }
 
-    private function loadRequest($defaults)
+    protected function loadRequest($defaults)
     {
         $request = $this->getRequest($defaults);
         foreach ($request as $key => $value) {
