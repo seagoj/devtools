@@ -449,6 +449,14 @@ class Response implements IService// , \Serializable
     {
         return !isset($_REQUEST['phpspec']);
     }
+
+    private function loadRequest($defaults)
+    {
+        $request = $this->getRequest($defaults);
+        foreach ($request as $key => $value) {
+            $this->$key = $value;
+        }
+    }
 }
 
 /**
@@ -467,3 +475,5 @@ function getProperties($object)
         get_object_vars($object)
     );
 }
+
+
