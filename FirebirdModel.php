@@ -14,205 +14,10 @@
  * @link     http://github.com/seagoj/Devtools/FirebirdModel.php
  **/
 
-/**
- * Class FirebirdModel
- *
- * @category Seago
- * @package  DEVTOOLS
- * @author   Jeremy Seago <seagoj@gmail.com>
- * @license  http://www.opensource.org/licenses/mit-license.html  MIT License
- * @link     http://github.com/seagoj/Devtools/FirebirdModel.php
- */
-class FirebirdModel extends Model
+class FirebirdModel extends PDOModel
 {
     const RET_VAL_STR = 'STRING';
     const RET_VAL_ARR = 'ARRAY';
-
-    private $options;
-    /**
-     * __construct
-     *
-     * Constructor for FirebirdModel
-     *
-     * @param Mixed $connection Firebird resource or path to options json
-     *
-     * @return FirebirdModel Model object for Firebird
-     * @author Jeremy Seago <seagoj@gmail.com>
-     **/
-    public function __construct(\PDO $connection = null)
-    {
-        if (!(is_null($connection) || $this->connection = $connection)) {
-            throw new \Exception('connection to host could not be established');
-        }
-    }
-
-    /**
-     * connect
-     *
-     * Connect to Firebird database
-     *
-     * @return boolean Status of connection
-     * @author Jeremy Seago <seagoj@gmail.com>
-     **/
-    public function connect($connection)
-    {
-        switch(gettype($connection)) {
-            case 'string':
-                $options = is_file($connection)
-                    ? (array) json_decode(file_get_contents($connection))
-                    : array();
-                break;
-            case 'array':
-                $options = $connection;
-                break;
-            case 'object':
-                $options = (array)$connection;
-                break;
-            default:
-                var_dump(gettype($connection));
-                $options = array();
-                break;
-        }
-
-        $defaults = array(
-            'host'          => "HOST",
-            'location'      => "NJ",
-            'environment'   => "TOMORROW",
-            'dba'           => "DBA",
-            'password'      => "PASSWORD",
-            'type'          => 'firebird'
-        );
-
-        $this->options = array_merge($defaults, $options);
-
-        if (!$this->connection = new \PDO(
-                sprintf(
-                    'firebird:dbname=%s:C:\%s\%\CMPDWIN.PKF',
-                    $this->options['host'],
-                    $this->options['environment'],
-                    $this->options['location']
-                ),
-                "SYSDBA",
-                "masterkey"
-            )
-        ) {
-            throw new \Exception('connection to host could not be established');
-        }
-
-        return $this->isConnected();
-    }
-
-    public function isConnected()
-    {
-        return  isset($this->connection) && !empty($this->connection);
-    }
-
-    /**
-     * query
-     *
-     * Query firebird model
-     *
-     * @param String  $sql    Query string
-     * @param Boolean $reduce Reduce result if true
-     *
-     * @return mixed Result of query
-     * @author Jeremy Seago <seagoj@gmail.com>
-     **/
-    public function query($sql, $params = null, $reduce=false, $fetchType = \PDO::FETCH_ASSOC)
-    {
-        $sql = $this->stripWhitespace($sql);
-
-        try {
-            $stmt = $this->connection->prepare($sql);
-            if (is_null($params)) {
-                $stmt->execute();
-            } else {
-                $stmt->execute($params);
-            }
-            return $reduce
-                ? $this->reduceResult($stmt->fetchAll($fetchType))
-                : $stmt->fetchAll($fetchType);
-        } catch(\Exception $e) {
-            var_dump($e->getMessage());
-            throw $e;
-        }
-
-        /* $sql = \Devtools\FirebirdModel::sanitize($sql); */
-        /* $q = \ibase_query($this->connection, $sql); */
-        /* if (!(is_bool($q) || is_int($q))) { */
-        /*     $result = array(); */
-        /*     while ($row = \ibase_fetch_assoc($q, IBASE_TEXT)) { */
-        /*         array_push($result, $row); */
-        /*     } */
-        /*     ibase_free_result($q); */
-        /* } else { */
-        /*     $result = $q; */
-        /* } */
-        /* return $reduce ? $this->reduceResult($result) : $result; */
-    }
-
-    /**
-     * get
-     *
-     * Return value based on $key
-     *
-     * @param String $key        Parameter whose value is returned
-     * @param String $collection Collection to search for $key
-     * @param Array  $where      Array of where clause elements
-     *
-     * @return Mixed Value of $key
-     * @author Jeremy Seago <seagoj@gmail.com>
-     **/
-    public function get($key, $collection, $params = null)
-    {
-        $sql = sprintf(
-            "select %s
-            from %s",
-            $this->sanitize($key==='*' ? '*' : $this->stringify($key, true, '`')),
-            $this->sanitize($collection)
-        ) . $this->buildWhere($params);
-
-        return $this->query($sql, $params, true);
-    }
-
-    /**
-     * buildWhere
-     *
-     * Builds where clause from array
-     *
-     * @param array $where Array of keys and values to create where clause
-     *
-     * @return string SQL representation of constructed where
-     * @author Jeremy Seago <seagoj@gmail.com>
-     **/
-    private function buildWhere($where)
-    {
-        if (is_null($where)) {
-            return '';
-        } else {
-            $sql = '';
-        }
-        foreach ($where as $key => $value) {
-            $sql .= " where ".$this->stringify($key, true, '`')."=:$key";
-        }
-        return $sql;
-    }
-
-    /**
-     * getAll
-     *
-     * Return all values in $collection
-     *
-     * @param String     $collection Collection whose values are returned
-     * @param Array|Null $where      Optional: array of where clause
-     *
-     * @return Array Values in collection
-     * @author Jeremy Seago <seagoj@gmail.com>
-     **/
-    public function getAll($collection, $where = null)
-    {
-        return $this->get('*', $collection, $where);
-    }
 
     /**
      * set
@@ -226,27 +31,34 @@ class FirebirdModel extends Model
      * @return boolean|null Status of assignment
      * @author Jeremy Seago <seagoj@gmail.com>
      **/
-    public function set($set, $collection, $where = null)
+    public function set($assignments, $collection, $where=null)
     {
-        $sql = "insert into $collection (".$this->stringify(array_keys($set), true, '`').")
-            values (".$this->stringify(array_values($set), true). ") ".$this->buildWhere($where);
-        return $this->query($sql, $where, true);
+        $key = array_keys($assignments);
+        $fields = array();
+        foreach ($key as $name) {
+            array_push($fields, ':'.$name);
+        }
+        $sql = "INSERT INTO $collection ("
+            .self::stringify($key, true, '`')
+        .") VALUES ("
+            .implode(',', $fields)
+        .")";
+
+        /* @todo - update on duplicate */
+
+        if (!is_null($where)) {
+            extract(
+                $this->buildWhere($where)
+            );
+            $sql .= $where;
+        } else {
+            $params = array();
+        }
+
+        return $this->query($sql, array_merge($assignments, $params), true);
     }
 
-    /**
-     * sanitize
-     *
-     * Sanitizes queryString for Firebird
-     *
-     * @param string $queryString String to be sanitized
-     *
-     * @return string Sanitized queryString
-     * @author Jeremy Seago <seagoj@gmail.com>
-     **/
-    public static function sanitize($queryString)
-    {
-        return str_replace("\'", "''", $queryString);
-    }
+    /* @todo - Move Below to Entities/UseCases */
 
     public function getLastPatients($limit=20)
     {
@@ -378,11 +190,5 @@ class FirebirdModel extends Model
                 $ret = $id;
         }
         return $ret;
-    }
-
-    /* @todo Extract to reusable class */
-    private function stripWhitespace($dirty)
-    {
-        return preg_replace("/[ \\t\\n]+/u", " ", $dirty);
     }
 }

@@ -15,19 +15,10 @@ class MysqlModelSpec extends ObjectBehavior
         $this->shouldHaveType('Devtools\MysqlModel');
     }
 
-    function it_should_santize_input()
-    {
-        $this->sanitize(
-            "SELECT * FROM users WHERE 1; DROP TABLE;"
-        )->shouldReturn(
-            "SELECT * FROM users WHERE 1; DROP TABLE;"
-        );
-    }
-
     function it_should_perform_PDO_queries(\PDO $connectionMock, \PDOStatement $stmtMock)
     {
         $connectionMock->prepare(
-            "SELECT `user_name` FROM users WHERE userid = :userid"
+            "SELECT `user_name` FROM users WHERE `userid` = :userid"
         )->willReturn($stmtMock);
 
         $stmtMock->execute(
@@ -48,7 +39,7 @@ class MysqlModelSpec extends ObjectBehavior
     function it_should_return_multiple_values(\PDO $connectionMock, \PDOStatement $stmtMock)
     {
         $connectionMock->prepare(
-            "SELECT `user_name`,`last_name` FROM users WHERE userid = :userid"
+            "SELECT `user_name`,`last_name` FROM users WHERE `userid` = :userid"
         )->willReturn($stmtMock);
 
         $stmtMock->execute(

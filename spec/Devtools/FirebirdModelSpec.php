@@ -1,12 +1,12 @@
-<?php
-namespace spec\Devtools;
+<?php namespace spec\Devtools;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class FirebirdModelSpec extends ObjectBehavior
 {
-    function let(\PDO $connectionMock) {
+    function let(\PDO $connectionMock)
+    {
         $this->beConstructedWith($connectionMock);
     }
 
@@ -23,19 +23,19 @@ class FirebirdModelSpec extends ObjectBehavior
     function it_gets_a_single_value_as_string(\PDO $connectionMock, \PDOStatement $stmtMock)
     {
         $connectionMock
-            ->prepare("select `user_name` from users where `user_id`=:user_id")
+            ->prepare("SELECT `user_name` FROM users WHERE `user_id` = :user_id")
             ->willReturn($stmtMock);
         $stmtMock->execute(['user_id' => 1])->willReturn(true);
         $stmtMock->fetchAll(\PDO::FETCH_ASSOC)->willReturn([['user_name' => 'seagoj']]);
 
         $this->get('user_name', 'users', array('user_id' => 1))
-            ->shouldReturn('seagoj');
+            ->shouldReturn([['user_name' => 'seagoj']]);
     }
 
     function it_gets_multiple_values_as_array(\PDO $connectionMock, \PDOStatement $stmtMock)
     {
         $connectionMock
-            ->prepare("select `user_name`,`last_name` from users where `user_id`=:user_id")
+            ->prepare("SELECT `user_name`,`last_name` FROM users WHERE `user_id` = :user_id")
             ->willReturn($stmtMock);
         $stmtMock->execute(['user_id' => 1])->willReturn(true);
         $stmtMock
@@ -43,20 +43,20 @@ class FirebirdModelSpec extends ObjectBehavior
             ->willReturn([['user_name' => 'seagoj', 'last_name' => 'Seago']]);
 
         $this->get(
-            ['user_name','last_name'],
+            ['user_name', 'last_name'],
             'users',
             ['user_id' => 1]
         )->shouldReturn(
-            ['user_name' => 'seagoj', 'last_name' => 'Seago']
+            [['user_name' => 'seagoj', 'last_name' => 'Seago']]
         );
     }
 
     function it_sets_values_based_on_array(\PDO $connectionMock, \PDOStatement $stmtMock)
     {
         $connectionMock
-            ->prepare("insert into users (`first_name`) values ('Jeremy') where `user_id`=:user_id")
+            ->prepare("INSERT INTO users (`first_name`) VALUES (:first_name) WHERE `user_id` = :user_id")
             ->willReturn($stmtMock);
-        $stmtMock->execute(['user_id' => 1])->willReturn(true);
+        $stmtMock->execute(['first_name' => 'Jeremy', 'user_id' => 1])->willReturn(true);
         $stmtMock->fetchAll(\PDO::FETCH_ASSOC)->willReturn([['insert_id' => 1000]]);
 
         $this->set(
@@ -68,7 +68,7 @@ class FirebirdModelSpec extends ObjectBehavior
 
     function it_returns_all_values_from_a_collection(\PDO $connectionMock, \PDOStatement $stmtMock)
     {
-        $connectionMock->prepare('select * from users')
+        $connectionMock->prepare('SELECT * FROM users')
             ->willReturn($stmtMock);
         $stmtMock ->execute()->willReturn(true);
         $stmtMock->fetchAll(\PDO::FETCH_ASSOC)->willReturn(
@@ -110,7 +110,7 @@ class FirebirdModelSpec extends ObjectBehavior
 
     function it_conditionally_returns_all_from_database(\PDO $connectionMock, \PDOStatement $stmtMock)
     {
-        $connectionMock->prepare('select * from users where `user_id`=:user_id')
+        $connectionMock->prepare('SELECT * FROM users WHERE `user_id` = :user_id')
             ->willReturn($stmtMock);
         $stmtMock->execute(['user_id' => 1])->willReturn(true);
         $stmtMock->fetchAll(\PDO::FETCH_ASSOC)->willReturn(
@@ -128,12 +128,12 @@ class FirebirdModelSpec extends ObjectBehavior
                 'user_id' => 1
             )
         )->shouldReturn(
-            array(
+            [[
                 'user_id' => 1,
                 'user_name' => 'seagoj',
                 'first_name' => 'Jeremy',
                 'last_name' => 'Seago'
-            )
+            ]]
         );
     }
 }
