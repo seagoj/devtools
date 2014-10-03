@@ -1,6 +1,4 @@
-<?php
-
-namespace spec\Devtools;
+<?php namespace spec\Devtools;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -38,13 +36,13 @@ class MysqlModelSpec extends ObjectBehavior
             )
         )->willReturn(true);
 
-        $stmtMock->fetch(\PDO::FETCH_ASSOC)
+        $stmtMock->fetchAll(\PDO::FETCH_ASSOC)
             ->willReturn(
                 array('user_name' => 'seagoj')
             );
 
         $this->get('user_name', 'users', array('userid' => 1))
-            ->shouldReturn('seagoj');
+            ->shouldReturn(['user_name' => 'seagoj']);
     }
 
     function it_should_return_multiple_values(\PDO $connectionMock, \PDOStatement $stmtMock)
@@ -59,7 +57,7 @@ class MysqlModelSpec extends ObjectBehavior
             )
         )->willReturn(true);
 
-        $stmtMock->fetch(\PDO::FETCH_ASSOC)
+        $stmtMock->fetchAll(\PDO::FETCH_ASSOC)
             ->willReturn(
                 array(
                     'user_name' => 'seagoj',
@@ -73,8 +71,9 @@ class MysqlModelSpec extends ObjectBehavior
 
     function it_should_set_a_value(\PDO $connectionMock, \PDOStatement $stmtMock)
     {
+        $sql = "INSERT INTO users (`user_name`,`last_name`) VALUES (:user_name,:last_name) ON DUPLICATE KEY UPDATE `user_name`=VALUES(`user_name`),`last_name`=VALUES(`last_name`)";
         $connectionMock->prepare(
-            "INSERT INTO users (`user_name`,`last_name`) VALUES(:user_name,:last_name)"
+            $sql
         )->willReturn($stmtMock);
 
         $stmtMock->execute(
@@ -84,7 +83,7 @@ class MysqlModelSpec extends ObjectBehavior
             )
         )->willReturn(true);
 
-        $stmtMock->fetch(\PDO::FETCH_ASSOC)
+        $stmtMock->fetchAll(\PDO::FETCH_ASSOC)
             ->willReturn(
                 array(
                     'userid' => 1000
@@ -98,7 +97,9 @@ class MysqlModelSpec extends ObjectBehavior
             ),
             'users'
         )->shouldReturn(
-            1000
+            array(
+                'userid' => 1000
+            )
         );
     }
 }

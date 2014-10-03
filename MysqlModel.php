@@ -231,7 +231,15 @@ class MysqlModel extends Model
         foreach ($key as $name) {
             array_push($fields, ':'.$name);
         }
-        $sql = "INSERT INTO $collection (".self::stringify($key, true, '`').") VALUES(".implode(',', $fields).")";
+        $sql = "INSERT INTO $collection (".self::stringify($key, true, '`').") VALUES (".implode(',', $fields).") ON DUPLICATE KEY UPDATE ";
+        $first = true;
+        foreach ($key as $field) {
+            if (!$first) {
+                $sql .= ',';
+            }
+            $sql .= "`$field`=VALUES(`$field`)";
+            $first = false;
+        }
 
         if (!is_null($where)) {
             // Initializes $where and $params

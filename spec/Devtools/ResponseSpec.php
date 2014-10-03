@@ -133,35 +133,6 @@ class ResponseSpec extends ObjectBehavior
         );
     }
 
-    function it_loads_data_from_model(\Devtools\MysqlModel $modelMock)
-    {
-        $modelMock
-            ->query(
-                'select `user_name`, `last_name` from users where `user_id`=:user_id',
-                ['user_id' => 1],
-                true
-            )
-            ->willReturn(['user_name' =>'seagoj', 'last_name' => 'Seago']);
-
-        $this
-            ->load(
-                'select `user_name`, `last_name` from users where `user_id`=:user_id',
-                ['user_id' => 1]
-            )
-            ->shouldReturn(['user_name' => 'seagoj', 'last_name' => 'Seago']);
-        $this->json()->shouldReturn(
-            json_encode(
-                [
-                    'status'    => 'OK',
-                    'request'   => $_REQUEST,
-                    'message'   => '',
-                    'user_name' => 'seagoj',
-                    'last_name' => 'Seago'
-                ]
-            )
-        );
-    }
-
     function it_sets_and_gets_magically()
     {
         $this->param1 = 'val1';
