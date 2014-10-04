@@ -77,7 +77,7 @@ abstract class PDOModel extends Model
         );
     }
 
-    public function query($queryString, $params=null, $reduce=false, $fetchType=\PDO::FETCH_ASSOC)
+    public function query($queryString, $params = null, $reduce=false, $fetchType=\PDO::FETCH_ASSOC)
     {
         $queryString = $this->stripWhitespace($queryString);
 
