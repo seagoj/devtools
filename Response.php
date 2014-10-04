@@ -378,10 +378,11 @@ class Response implements IService// , \Serializable
      **/
     public function json()
     {
-       if (!$this->isSuppressHeader() && !headers_sent()) {
-           header('Content-type: application/json');
-       }
-       return json_encode($this->php());
+        var_dump($this);
+        if (!$this->isSuppressHeader() && !headers_sent()) {
+            header('Content-type: application/json');
+        }
+        return json_encode($this->php());
     }
 
     /**
