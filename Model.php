@@ -24,7 +24,7 @@ abstract class Model
     public abstract function getAll($collection);
     public abstract function set($key, $value, $collection);
     public abstract function query($queryString);
-    public static abstract function connect($options);
+    /* public abstract function connect($options); */
 
     protected function reduceResult($result)
     {
