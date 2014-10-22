@@ -1,20 +1,4 @@
 <?php namespace Devtools;
-/**
- * Model
- *
- * Model library for PHP
- *
- * PHP version 5.3
- *
- * @name      Model
- * @category  Seagoj
- * @package   Devtools
- * @author    Jeremy Seago <seagoj@gmail.com>
- * @copyright 2012 Jeremy Seago
- * @license   http://opensource.org/licenses/mit-license.php, MIT
- * @version   GIT: 1.0
- * @link      https://github.com/seagoj/Devtools
- */
 
 abstract class Model
 {
@@ -53,7 +37,7 @@ abstract class Model
         return $ret;
     }
 
-     protected function stripWhitespace($dirty)
+    protected function stripWhitespace($dirty)
     {
         return preg_replace("/[ \\t\\n]+/u", " ", $dirty);
     }

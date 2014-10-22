@@ -14,19 +14,6 @@
  * @link     http://github.com/seagoj/Devtools/Response.php
  **/
 
-/**
- * Response
- *
- * Defines Response object for AJAX responses
- *
- * PHP version 5.3
- *
- * @category Seago
- * @package  DEVTOOLS
- * @author   Jeremy Seago <seagoj@gmail.com>
- * @license  http://www.opensource.org/licenses/mit-license.html  MIT License
- * @link     http://github.com/seagoj/Devtools/Response.php
- **/
 class Response implements IService// , \Serializable
 {
     public $status;
@@ -35,70 +22,28 @@ class Response implements IService// , \Serializable
     private $suppressHeader;
     private $data;
     private $publicProperties;
-    private $model;
+    private $repository;
 
-    /**
-     * __construct
-     *
-     * Object initializer
-     *
-     * @param Model $model Model to pull data from in load()
-     *
-     * @return void
-     * @author Jeremy Seago <seagoj@gmail.com>
-     **/
-    public function __construct(\Devtools\Model $model = null)
+    public function __construct(Repository $repository = null)
     {
         $this->suppressHeader = $this->isSuppressHeader();
         $this->status = 'OK';
         $this->request = $this->getRequest();
         $this->message = $this->status ? "" : "Data could not be set\n";
         $this->publicProperties = getProperties($this);
-        $this->model = $model;
+        $this->repository = $repository;
     }
 
-    /**
-     * __get
-     *
-     * Class Getter
-     *
-     * @param string $property Name of value to return
-     *
-     * @return mixed Value of $this->$property
-     * @author Jeremy Seago <seagoj@gmail.com>
-     **/
     public function __get($property)
     {
         return $this->data[$property];
     }
 
-    /**
-     * __set
-     *
-     * Class Setter
-     *
-     * @param string $property Name of property to set
-     * @param mixed  $value    Value to set
-     *
-     * @return boolean Result of assignment
-     * @author Jeremy Seago <seagoj@gmail.com>
-     **/
     public function __set($property, $value)
     {
         return $this->data[$property] = $value;
     }
 
-    /**
-     * __call
-     *
-     * Call undefined methods
-     *
-     * @param string $method Method being called
-     * @param array  $params Parameters to call method wih
-     *
-     * @return mixed Return of called function.
-     * @author Jeremy Seago <seagoj@gmail.com>
-     **/
     public function __call($method, $params)
     {
         switch($method) {
@@ -112,17 +57,6 @@ class Response implements IService// , \Serializable
         }
     }
 
-    /**
-     * __callStatic
-     *
-     * Call undefined methods
-     *
-     * @param string $method Method being called
-     * @param array  $params Parameters to call method wih
-     *
-     * @return mixed Return of called function.
-     * @author Jeremy Seago <seagoj@gmail.com>
-    **/
     public static function __callStatic($method, $params)
     {
         switch($method) {
@@ -136,14 +70,6 @@ class Response implements IService// , \Serializable
         }
     }
 
-    /**
-     * __sleep
-     *
-     * Return array of property names to serialize
-     *
-     * @return array Properties to serialize
-     * @author Jeremy Seago <seagoj@gmail.com>
-     **/
     public function __sleep()
     {
         return !is_null($this->data)
@@ -151,17 +77,6 @@ class Response implements IService// , \Serializable
             : $this->publicProperties;
     }
 
-    /**
-     * message
-     *
-     * Add message to response
-     *
-     * @param string|array|object $msg   Value to be added as message
-     * @param boolean             $error Error : message
-     *
-     * @return void
-     * @author Jeremy Seago <seagoj@gmail.com>
-     **/
     public function message($msg, $error=false)
     {
         if (is_array($msg) || is_object($msg)) {
@@ -174,33 +89,11 @@ class Response implements IService// , \Serializable
         }
     }
 
-    /**
-     * fail
-     *
-     * Sets response status to failed and adds message
-     *
-     * @param string|array|object $msg Value to be added as message
-     *
-     * @return void
-     * @author Jeremy Seago <seagoj@gmail.com>
-     **/
     public function fail($msg)
     {
         $this->message($msg, true);
     }
 
-    /**
-     * ajax
-     *
-     * Performs AJAX call on page and returns results
-     *
-     * @param string  $url      URL of service
-     * @param array   $request  Array of variables passed as request to service
-     * @param boolean $dataOnly Return data of response only
-     *
-     * @return array Array representation of response
-     * @author Jeremy Seago <seagoj@gmail.com>
-     **/
     public static function ajax($url='', $request=array(), $dataOnly=true)
     {
         if (!empty($url)) {
@@ -236,34 +129,16 @@ class Response implements IService// , \Serializable
         }
     }
 
-    /**
-     * load
-     *
-     * Loads result of SQL call into response object
-     *
-     * @param string $sql SQL query to return result
-     *
-     * @return array Array of results from SQL call
-     * @author Jeremy Seago <seagoj@gmail.com>
-     **/
     /* public function load($sql, $params = null) */
     /* { */
-    /*     if (is_null($this->model))  { */
-    /*         throw new \Exception('No model available.'); */
+    /*     if (is_null($this->repository))  { */
+    /*         throw new \Exception('No repository available.'); */
     /*     } */
 
-    /*     $data = $this->model->query($sql, $params, true); */
+    /*     $data = $this->repository->query($sql, $params, true); */
     /*     return $this->data = is_array($data) ? $data : array('data' => $data); */
     /* } */
 
-    /**
-     * isSuppressHeader
-     *
-     * Checks request for suppress_header parameter
-     *
-     * @return bool Existence of suppress_header parameter
-     * @author Jeremy Seago <seagoj@gmail.com>
-     **/
     public static function isSuppressHeader()
     {
         return array(
@@ -276,16 +151,6 @@ class Response implements IService// , \Serializable
     }
 
     // =====INTERFACES=====
-    /**
-     * IService::data
-     *
-     * Add items to data for response
-     *
-     * @param array $data Array of keys and values to attach to response
-     *
-     * @return boolean Result of assignment
-     * @author Jeremy Seago <seagoj@gmail.com>
-     **/
     public function data(array $data)
     {
        if (empty($data)) {
@@ -297,16 +162,6 @@ class Response implements IService// , \Serializable
        return $this;
     }
 
-    /**
-     * IService::getRequest
-     *
-     * Returns array based on _REQUEST
-     *
-     * @param array $validParams Array of valid parameters and their defaults
-     *
-     * @return array Values from request or fallback defaults
-     * @author Jeremy Seago <seagoj@gmail.com>
-     **/
     public static function getRequest($validParams = null)
     {
         if (is_null($validParams)) {
@@ -325,20 +180,6 @@ class Response implements IService// , \Serializable
         return $request;
     }
 
-    /**
-     * IService::delimited
-     *
-     * Returns delimited representation of response
-     *
-     * @param array $options Options array[
-     *     'suppress_header' => false, // Supress writing headers
-     *     'rowDelim'        => "\n",  // Row delim for delimitted output
-     *     'colDelim'        => "|",   // Column delim for delimitted output
-     * ]
-     *
-     * @return string Delimited representation of response
-     * @author Jeremy Seago <seagoj@gmail.com>
-     **/
     public function delimited($options = null)
     {
         $default = array(
@@ -368,14 +209,6 @@ class Response implements IService// , \Serializable
        return $response;
     }
 
-    /**
-     * IService::json
-     *
-     * Return response in json format
-     *
-     * @return string JSON representation of response
-     * @author Jeremy Seago <seagoj@gmail.com>
-     **/
     public function json()
     {
         if (!$this->isSuppressHeader() && !headers_sent()) {
@@ -384,16 +217,6 @@ class Response implements IService// , \Serializable
         return json_encode($this->php());
     }
 
-    /**
-     * IService::php
-     *
-     * Return response as a PHP array
-     *
-     * @param boolean $serialize Return serialization : Return PHP
-     *
-     * @return array PHP array representation of response
-     * @author Jeremy Seago <seagoj@gmail.com>
-     **/
     public function php($serialize = false)
     {
        $ret = array();
@@ -404,29 +227,11 @@ class Response implements IService// , \Serializable
        return $serialize ? serialize($ret) : $ret;
     }
 
-    /**
-     * Serializable::serialize
-     *
-     * Defines serialization of object
-     *
-     * @return string
-     * @author Jeremy Seago <seagoj@gmail.com>
-     **/
     public function serialize()
     {
         return $this->php(true);
     }
 
-    /**
-     * Serializable::unserialize
-     *
-     * Defines unserialization of object
-     *
-     * @param string $serialized Serialized representation of object
-     *
-     * @return object Object representation of serialized string
-     * @author Jeremy Seago <seagoj@gmail.com>
-     **/
     public function unserialize($serialized)
     {
         foreach (unserialize($serialized) as $key => $value) {
@@ -459,16 +264,6 @@ class Response implements IService// , \Serializable
     }
 }
 
-/**
- * getProperties
- *
- * Returns accessible properties of $object
- *
- * @param Object $object Object to list accessible properties
- *
- * @return array Array of property names
- * @author Jeremy Seago <seagoj@gmail.com>
- **/
 function getProperties($object)
 {
     return array_keys(

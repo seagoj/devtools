@@ -14,7 +14,7 @@
  * @link     http://github.com/seagoj/Devtools/FirebirdModel.php
  **/
 
-class FirebirdModel extends PDOModel
+class FirebirdModel extends PDORepository
 {
     const RET_VAL_STR = 'STRING';
     const RET_VAL_ARR = 'ARRAY';
@@ -48,7 +48,7 @@ class FirebirdModel extends PDOModel
 
         if (!is_null($where)) {
             extract(
-                $this->buildWhere($where)
+                $this->where($where)
             );
             $sql .= $where;
         } else {

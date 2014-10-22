@@ -28,7 +28,7 @@ class FirebirdModelSpec extends ObjectBehavior
         $stmtMock->execute(['user_id' => 1])->willReturn(true);
         $stmtMock->fetchAll(\PDO::FETCH_ASSOC)->willReturn([['user_name' => 'seagoj']]);
 
-        $this->get('user_name', 'users', array('user_id' => 1))
+        $this->get('user_name', 'users', ['user_id', '=', 1])
             ->shouldReturn([['user_name' => 'seagoj']]);
     }
 
@@ -45,7 +45,7 @@ class FirebirdModelSpec extends ObjectBehavior
         $this->get(
             ['user_name', 'last_name'],
             'users',
-            ['user_id' => 1]
+            ['user_id', '=', 1]
         )->shouldReturn(
             [['user_name' => 'seagoj', 'last_name' => 'Seago']]
         );
@@ -62,7 +62,7 @@ class FirebirdModelSpec extends ObjectBehavior
         $this->set(
             ['first_name' => 'Jeremy'],
             'users',
-            ['user_id' => 1]
+            ['user_id', '=', 1]
         )->shouldReturn(1000);
     }
 
@@ -124,16 +124,18 @@ class FirebirdModelSpec extends ObjectBehavior
 
         $this->getAll(
             'users',
-            array(
-                'user_id' => 1
-            )
+            [
+                'user_id', '=', 1
+            ]
         )->shouldReturn(
-            [[
+            [
+                [
                 'user_id' => 1,
                 'user_name' => 'seagoj',
                 'first_name' => 'Jeremy',
                 'last_name' => 'Seago'
-            ]]
+                ]
+            ]
         );
     }
 }

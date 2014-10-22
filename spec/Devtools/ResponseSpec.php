@@ -2,10 +2,11 @@
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Devtools;
 
 class ResponseSpec extends ObjectBehavior
 {
-    function let(\Devtools\MysqlModel $modelMock)
+    function let(Devtools\Repository $repository)
     {
         $_REQUEST = [
             'param1' => 'val1',
@@ -13,7 +14,7 @@ class ResponseSpec extends ObjectBehavior
             'param3'
         ];
 
-        $this->beConstructedWith($modelMock);
+        $this->beConstructedWith($repository);
     }
 
     function letgo()

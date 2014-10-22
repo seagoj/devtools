@@ -14,8 +14,12 @@
  * @link     http://github.com/seagoj/Devtools/MysqlModel.php
  **/
 
-class MysqlModel extends PDOModel
+class MysqlModel extends PDORepository
 {
+    protected $table = 'users';
+    protected $primaryKey = 'userid';
+    protected $required = [];
+
     public function set($assignments, $collection, $where=null)
     {
         $key = array_keys($assignments);
@@ -40,7 +44,7 @@ class MysqlModel extends PDOModel
 
         if (!is_null($where)) {
             extract(
-                $this->buildWhere($where)
+                $this->where($where)
             );
             $sql .= $where;
         } else {

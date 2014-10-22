@@ -1,5 +1,5 @@
 suites:
     UniqueIndicator:
         namespace: Devtools
-        spec_path: vendor/Devtools
-        src_path: vendor/
+        spec_path:
+        src_path:
