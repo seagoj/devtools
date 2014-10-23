@@ -104,6 +104,9 @@ abstract class PDORepository extends BaseRepository implements Repository
         }
 
         if ($isLogicalOperand) {
+            if ($operand === 'IN') {
+                var_dump($clause);
+            }
             $operand = " $operand ";
         } else {
             $operand = ' ';

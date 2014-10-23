@@ -270,5 +270,3 @@ function getProperties($object)
         get_object_vars($object)
     );
 }
-
-
