@@ -30,39 +30,6 @@ abstract class PDORepository extends BaseRepository implements Repository
         }
     }
 
-    public static function connect($parameters)
-    {
-        $keys = array_keys($parameters);
-        if (!in_array('type',  $keys)
-            || !in_array('host', $keys)
-            || !in_array('db', $keys)
-            || !in_array('username', $keys)
-            || !in_array('password', $keys)
-        ) {
-            throw new \Exception('Invalid connection options.');
-        }
-
-        switch($parameters['type']) {
-        case 'mysql':
-            $connectionStr = '%s:host=%s;dbname=%s';
-            break;
-        case 'firebird':
-            $connectionStr = '%s:dbname=%s:%s';
-            break;
-        }
-
-        return new \PDO(
-            sprintf(
-                $connectionStr,
-                $parameters['type'],
-                $parameters['host'],
-                $parameters['db']
-            ),
-            $parameters['username'],
-            $parameters['password']
-        );
-    }
-
     public function get()
     {
         $result = $this->query(
