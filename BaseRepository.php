@@ -52,7 +52,7 @@ abstract class BaseRepository
     public function orFail()
     {
         $result = $this->get();
-        if (is_empty($result) || !$result) {
+        if (empty($result) || !$result) {
             throw new \Exception('Query failed or result is empty.');
         }
         return $result;
