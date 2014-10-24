@@ -38,7 +38,9 @@ abstract class PDORepository extends BaseRepository implements Repository
             true
         );
 
-        $this->apply($result);
+        if (is_array($result)) {
+            $this->apply($result);
+        }
         return $result;
     }
 
