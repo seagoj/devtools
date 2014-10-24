@@ -85,7 +85,7 @@ abstract class PDORepository extends BaseRepository implements Repository
     {
         $params = array();
         $isInitalWhereCall = is_null($operand);
-        $isLogicalOperand = !is_integer($operand);
+        $isLogicalOperand = in_array(strtoupper($operand), array('AND', 'OR'));
 
         if ($isInitalWhereCall) {
             $clause = $this->wrapInArrayIfNotAssoc($clause);
@@ -104,9 +104,6 @@ abstract class PDORepository extends BaseRepository implements Repository
         }
 
         if ($isLogicalOperand) {
-            if ($operand === 'IN') {
-                var_dump($clause);
-            }
             $operand = " $operand ";
         } else {
             $operand = ' ';
@@ -273,7 +270,10 @@ abstract class PDORepository extends BaseRepository implements Repository
     private function prepareBinding(&$clause, &$params)
     {
         $params[$clause[0]] = array_pop($clause);
-        array_push($clause, ':'.$clause[0]);
+        $binding = strtoupper($clause[1]) === 'IN'
+            ? '(:'.$clause[0].')'
+            : ':'.$clause[0];
+        array_push($clause, $binding);
         $clause[0] = '`'.$clause[0].'`';
     }
 
