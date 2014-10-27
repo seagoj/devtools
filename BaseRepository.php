@@ -14,7 +14,7 @@ abstract class BaseRepository
 
     public function __get($property)
     {
-        return in_array($property, array_keys($this->data))
+        return !isset($this->data) || in_array($property, array_keys($this->data))
             ? $this->data[$property]
             : null;
     }
