@@ -348,6 +348,34 @@ class PDORepositorySpec extends ObjectBehavior
         $this->all()->get();
         $this->shouldThrow('\Exception')->duringDelete();
     }
+
+    function it_resets_object(\PDO $connection, \PDOStatement $stmt)
+    {
+        $connection->lastInsertId()->willReturn(0);
+        $connection->prepare("SELECT * FROM test WHERE `testid` = :testid")->willReturn($stmt);
+        $stmt->execute(['testid' => 1])->willReturn(true);
+        $stmt->fetchAll(\PDO::FETCH_ASSOC)->willReturn(
+            [
+                0 =>
+                    [
+                        'testid'    => 1,
+                        'testvalue' => 'Test 1'
+                    ]
+            ]
+        );
+
+        $this->where(['testid', '=', 1])
+            ->get()->shouldReturn(
+                [
+                    'testid'    => 1,
+                    'testvalue' => 'Test 1'
+                ]
+            );
+
+        $this->testvalue->shouldReturn('Test 1');
+        $this->reset();
+        $this->testvalue->shouldReturn(null);
+    }
 }
 
 class TestPDORepository extends Devtools\PDORepository

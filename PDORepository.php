@@ -30,6 +30,13 @@ abstract class PDORepository extends BaseRepository implements Repository
         }
     }
 
+    public function reset()
+    {
+        parent::reset();
+        $this->position = 1;
+        $this->count = null;
+    }
+
     public function get()
     {
         $result = $this->query(

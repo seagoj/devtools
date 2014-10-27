@@ -14,7 +14,9 @@ abstract class BaseRepository
 
     public function __get($property)
     {
-        return $this->data[$property];
+        return in_array($property, array_keys($this->data))
+            ? $this->data[$property]
+            : null;
     }
 
     public function __set($property, $value)
@@ -22,6 +24,12 @@ abstract class BaseRepository
         $this->data[$property] = $value;
     }
 
+    public function reset()
+    {
+        $this->query = '';
+        $this->data = array();
+        $this->params = null;
+    }
 
     public function find($id)
     {
