@@ -47,9 +47,7 @@ abstract class BaseRepository
             $filter = array($this->primaryKey, '=', $filter);
         }
 
-        $this->apply(
-            $this->all()->where($filter)
-        );
+        $this->all()->where($filter);
 
         return $this;
     }
