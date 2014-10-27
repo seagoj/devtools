@@ -48,7 +48,7 @@ abstract class BaseRepository
         }
 
         $this->apply(
-            $this->all()->where($filter)
+            $this->all()->where($filter)->get()
         );
 
         return $this;
