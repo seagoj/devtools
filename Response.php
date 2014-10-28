@@ -36,18 +36,12 @@ class Response implements IService// , \Serializable
 
     public function __get($property)
     {
-        return isset($this->$property)
-            ? $this->property
-            : $this->data[$property];
+        return $this->data[$property];
     }
 
     public function __set($property, $value)
     {
-        if (is_object($value)) {
-            $this->$property = $value;
-        } else {
-            $this->data[$property] = $value;
-        }
+        return $this->data[$property] = $value;
     }
 
     public function __call($method, $params)
