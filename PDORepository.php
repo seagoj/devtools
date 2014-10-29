@@ -21,9 +21,9 @@ abstract class PDORepository extends BaseRepository implements Repository
             throw new \Exception('Missing table.');
         }
 
-        if (!isset($this->primaryKey)) {
-            throw new \Exception('Missing Primary Key.');
-        }
+        /* if (!isset($this->primaryKey)) { */
+        /*     throw new \Exception('Missing Primary Key.'); */
+        /* } */
 
         if (!isset($this->required)) {
             throw new \Exception('Missing required creation fields.');
