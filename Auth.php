@@ -58,6 +58,6 @@ class Auth
      **/
     public static function check($pass, $hash)
     {
-        return password_verify($pass, $hash);
+        return \password_verify($pass, $hash);
     }
 }
