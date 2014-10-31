@@ -1,27 +1,7 @@
 <?php namespace Devtools;
-/**
- * Authentication class
- *
- * @category Seagoj
- * @package  Devtools
- * @author   Jeremy Seago <seagoj@gmail.com>
- * @license  http://github.com/seagoj/Devtools/LICENSE MIT
- * @link     http://github.com/seagoj/Devtools
- **/
 
-/**
- * Class Auth
- *
- * @category Seagoj
- * @package  Markdown
- * @author   Jeremy Seago <seagoj@gmail.com>
- * @license  http://github.com/seagoj/Devtools/LICENSE MIT
- * @link     http://github.com/seagoj/Devtools
- *
- * Authentication tools for basic security
- *
- * Provides login, sanitization, and validation interface for basic PHP authentication
- **/
+require_once 'vendor/ircmaxell/password-compat/lib/password.php';
+
 class Auth
 {
     /**

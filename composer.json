@@ -13,7 +13,8 @@
         }
     ],
     "require": {
-        "predis/predis": ">=1.1"
+        "predis/predis": ">=1.1",
+        "ircmaxell/password-compat": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*",
