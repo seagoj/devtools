@@ -84,6 +84,11 @@ abstract class PDORepository extends BaseRepository implements Repository
         $stmt->debugDumpParams();
         $data = $stmt->fetchAll($fetchType);
 
+        var_dump($query);
+        var_dump($params);
+        var_dump($data);
+        var_dump($stmt->errorInfo());
+
         $this->prepareResponseData($data, $executionResult);
 
         return $reduce
@@ -189,7 +194,6 @@ abstract class PDORepository extends BaseRepository implements Repository
         }
         $sql .= (' WHERE '.$this->primaryKey.'=:'.$this->primaryKey);
         $result = $this->query($sql, $values, true);
-        var_dump($result);
         /* $this->find($this->data[$this->primaryKey])->get(); */
         return $result;
     }
