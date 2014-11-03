@@ -176,7 +176,6 @@ abstract class PDORepository extends BaseRepository implements Repository
 
     public function save()
     {
-        var_dump($this->data);
         return $this->update($this->data);
     }
 
@@ -185,6 +184,7 @@ abstract class PDORepository extends BaseRepository implements Repository
         var_dump($values);
         $this->checkDataForPrimaryKey($values);
         var_dump($values);
+        exit();
 
         $sql = 'UPDATE '.$this->table.' SET ';
         $first = true;
