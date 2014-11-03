@@ -47,7 +47,8 @@ abstract class PDORepository extends BaseRepository implements Repository
 
         /* var_dump($this->getQueryString()); */
         /* var_dump($this->params); */
-        /* var_dump($result); */
+        var_dump($result);
+        var_dump(is_array($result));
 
         if (is_array($result)) {
             $this->apply($result);
@@ -248,7 +249,6 @@ abstract class PDORepository extends BaseRepository implements Repository
 
     private function checkDataForPrimaryKey(&$data)
     {
-        var_dump($this->data);
         if (!in_array($this->primaryKey, array_keys($data)) && $this->data[$this->primaryKey]) {
             $data[$this->primaryKey] = $this->data[$this->primaryKey];
         }
