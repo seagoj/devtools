@@ -84,6 +84,8 @@ abstract class PDORepository extends BaseRepository implements Repository
         }
 
         $stmt = $this->connection->prepare($query);
+        var_dump($query);
+        var_dump($params);
         $executionResult = !is_null($params)
             ? $stmt->execute($params)
             : $stmt->execute();
