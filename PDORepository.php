@@ -47,7 +47,7 @@ abstract class PDORepository extends BaseRepository implements Repository
 
         /* var_dump($this->getQueryString()); */
         /* var_dump($this->params); */
-        var_dump($result);
+        /* var_dump($result); */
 
         if (is_array($result)) {
             $this->apply($result);
@@ -177,8 +177,9 @@ abstract class PDORepository extends BaseRepository implements Repository
 
     public function update(Array $values)
     {
-        /* var_dump($values); */
+        var_dump($values);
         $this->checkDataForPrimaryKey($values);
+        var_dump($values);
 
         $sql = 'UPDATE '.$this->table.' SET ';
         $first = true;
@@ -245,9 +246,12 @@ abstract class PDORepository extends BaseRepository implements Repository
         }
     }
 
-    private function checkDataForPrimaryKey($data)
+    private function checkDataForPrimaryKey(&$data)
     {
-        /* array_merge($this->data, $data); */
+        if (!in_array($this->primaryKey, array_keys($data)) && $this->data[$this->primaryKey]) {
+            $data[$this->primaryKey] = $this->data[$this->primaryKey];
+        }
+
         if (!in_array($this->primaryKey, array_keys($data))) {
             throw new \Exception('Primary key is not in value set.');
         }
