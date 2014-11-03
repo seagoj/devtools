@@ -179,9 +179,7 @@ abstract class PDORepository extends BaseRepository implements Repository
 
     public function update(Array $values)
     {
-        var_dump($values);
         $this->checkDataForPrimaryKey($values);
-        var_dump($values);
 
         $sql = 'UPDATE '.$this->table.' SET ';
         $first = true;
