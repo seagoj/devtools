@@ -176,6 +176,8 @@ abstract class PDORepository extends BaseRepository implements Repository
 
     public function save()
     {
+        var_dump($this->data);
+        exit();
         return $this->update($this->data);
     }
 
