@@ -190,6 +190,8 @@ abstract class PDORepository extends BaseRepository implements Repository
         }
         $sql .= ' WHERE '.$this->primaryKey.'=:'.$this->primaryKey;
         $result = $this->query($sql, $values, true);
+        $this->find($this->primaryKey)->get();
+        return $result;
     }
 
     public function create(Array $userValues)
