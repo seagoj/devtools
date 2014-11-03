@@ -71,6 +71,8 @@ abstract class PDORepository extends BaseRepository implements Repository
         $reduce=false, $fetchType=\PDO::FETCH_ASSOC
     ) {
         $query = $this->stripWhitespace($query);
+        var_dump($sql);
+        var_dump($params);
         if (strpos(strtoupper($query), 'IN ')
             && !is_null($params)
         ) {
@@ -173,9 +175,7 @@ abstract class PDORepository extends BaseRepository implements Repository
 
     public function update(Array $values)
     {
-        var_dump($values);
         $this->checkDataForPrimaryKey($values);
-        var_dump($values);
 
         $sql = 'UPDATE '.$this->table.' SET ';
         $first = true;
@@ -189,7 +189,7 @@ abstract class PDORepository extends BaseRepository implements Repository
             }
         }
         $sql .= ' WHERE '.$this->primaryKey.'=:'.$this->primaryKey;
-        return $this->query($sql, $values, true);
+        $result = $this->query($sql, $values, true);
     }
 
     public function create(Array $userValues)
