@@ -257,7 +257,7 @@ abstract class PDORepository extends BaseRepository implements Repository
     {
         if (empty($data)) {
             $isInsertStatement = $executionResult
-                && ($lastInsertId = $this->connection->lastInsertId()) !== 0;
+                && ($lastInsertId = $this->connection->lastInsertId()) != 0;
 
             $data = $isInsertStatement
                 ?  array('insert_id' => $lastInsertId)
