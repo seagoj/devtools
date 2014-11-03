@@ -45,9 +45,9 @@ abstract class PDORepository extends BaseRepository implements Repository
             true
         );
 
-        var_dump($this->getQueryString());
-        var_dump($this->params);
-        var_dump($result);
+        /* var_dump($this->getQueryString()); */
+        /* var_dump($this->params); */
+        /* var_dump($result); */
 
         if (is_array($result)) {
             $this->apply($result);
