@@ -187,7 +187,7 @@ abstract class PDORepository extends BaseRepository implements Repository
                 $first = false;
             }
         }
-        $sql .= ' WHERE '.$this->primaryKey.'=:'.$this->primaryKey;
+        $sql .= (' WHERE '.$this->primaryKey.'=:'.$this->primaryKey);
         $result = $this->query($sql, $values, true);
         $this->find($this->data[$this->primaryKey])->get();
         return $result;
