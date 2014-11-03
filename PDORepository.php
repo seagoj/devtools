@@ -71,8 +71,6 @@ abstract class PDORepository extends BaseRepository implements Repository
         $reduce=false, $fetchType=\PDO::FETCH_ASSOC
     ) {
         $query = $this->stripWhitespace($query);
-        var_dump($query);
-        var_dump($params);
         if (strpos(strtoupper($query), 'IN ')
             && !is_null($params)
         ) {
@@ -80,6 +78,7 @@ abstract class PDORepository extends BaseRepository implements Repository
         }
 
         $stmt = $this->connection->prepare($query);
+        $stmt->debugDumpParams();
         $executionResult = !is_null($params)
             ? $stmt->execute($params)
             : $stmt->execute();
