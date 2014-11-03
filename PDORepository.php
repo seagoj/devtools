@@ -183,7 +183,7 @@ abstract class PDORepository extends BaseRepository implements Repository
                 if (!$first) {
                     $sql .= ',';
                 }
-                $sql .= $key.'=:'.$key;
+                $sql .= ($key.'=:'.$key);
                 $first = false;
             }
         }
