@@ -248,6 +248,7 @@ abstract class PDORepository extends BaseRepository implements Repository
 
     private function checkDataForPrimaryKey(&$data)
     {
+        var_dump($this->data);
         if (!in_array($this->primaryKey, array_keys($data)) && $this->data[$this->primaryKey]) {
             $data[$this->primaryKey] = $this->data[$this->primaryKey];
         }
