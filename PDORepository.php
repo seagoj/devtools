@@ -45,15 +45,9 @@ abstract class PDORepository extends BaseRepository implements Repository
             true
         );
 
-        /* var_dump($this->getQueryString()); */
-        /* var_dump($this->params); */
-        /* var_dump($result); */
-        /* var_dump(is_array($result)); */
-
         if (is_array($result)) {
             $this->apply($result);
         }
-        /* var_dump($this); */
         return $result;
     }
 
@@ -84,8 +78,6 @@ abstract class PDORepository extends BaseRepository implements Repository
         }
 
         $stmt = $this->connection->prepare($query);
-        var_dump($query);
-        var_dump($params);
         $executionResult = !is_null($params)
             ? $stmt->execute($params)
             : $stmt->execute();
@@ -176,15 +168,12 @@ abstract class PDORepository extends BaseRepository implements Repository
 
     public function save()
     {
-        var_dump($this->data);
-        exit();
         return $this->update($this->data);
     }
 
     public function update(Array $values)
     {
         $this->checkDataForPrimaryKey($values);
-        /* exit($values); */
 
         $sql = 'UPDATE '.$this->table.' SET ';
         $first = true;
