@@ -77,9 +77,6 @@ abstract class PDORepository extends BaseRepository implements Repository
             $this->fixInClause($query, $params);
         }
 
-        var_dump($query);
-        var_dump($params);
-
         $stmt = $this->connection->prepare($query);
         $executionResult = !is_null($params)
             ? $stmt->execute($params)
@@ -191,7 +188,6 @@ abstract class PDORepository extends BaseRepository implements Repository
         }
         $sql .= (' WHERE '.$this->primaryKey.'=:'.$this->primaryKey);
         $result = $this->query($sql, $values, true);
-        var_dump($result);
         $this->find($this->data[$this->primaryKey])->get();
         return $result;
     }
