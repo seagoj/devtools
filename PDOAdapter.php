@@ -14,7 +14,6 @@ class PDOAdapter
 
     public static function connect($parameters)
     {
-        var_dump($parameters);
         self::validateParameters($parameters);
 
         return new \PDO(
@@ -26,6 +25,7 @@ class PDOAdapter
 
     private static function validateParameters($parameters)
     {
+        var_dump($parameters);
         $keys = array_keys($parameters);
         if (!in_array('type',  $keys)
             || !in_array('host', $keys)
