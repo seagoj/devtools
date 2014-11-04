@@ -14,6 +14,7 @@ class PDOAdapter
 
     public static function connect($parameters)
     {
+        var_dump($parameters);
         self::validateParameters($parameters);
 
         return new \PDO(
