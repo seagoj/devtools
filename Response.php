@@ -211,9 +211,11 @@ class Response implements IService// , \Serializable
 
     public function json()
     {
-        if (!$this->isSuppressHeader() && !headers_sent($file, $line)) {
+        $suppressHeader = $this->isSuppressHeader();
+        if (!$suppressHeader['suppress_header'] && !headers_sent($file, $line)) {
             header('Content-type: application/json');
         }
+
         return json_encode($this->php());
     }
 
