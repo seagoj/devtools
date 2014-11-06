@@ -8,6 +8,7 @@ abstract class BaseRepository
     protected $fillable;
     protected $required;
     protected $primaryKey;
+    protected $primaryName;
     protected $data;
     protected $count;
     protected $query;
@@ -43,8 +44,12 @@ abstract class BaseRepository
             return $this->all();
         }
 
-        if (is_string($filter) || is_integer($filter)) {
+        if (is_integer($filter)) {
             $filter = array($this->primaryKey, '=', $filter);
+        }
+
+        if (is_string($filter)) {
+            $filter = array($this->primaryName, '=', $filter);
         }
 
         $this->all()->where($filter);

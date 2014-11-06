@@ -34,9 +34,7 @@ abstract class BaseEntity
 
     public function byName($name)
     {
-        $this->repository->findBy(
-            array($this->nameField => $name)
-        )->get();
+        $this->repository->find($name)->get();
         return clone $this;
     }
 }
