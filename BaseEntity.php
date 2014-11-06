@@ -4,6 +4,7 @@ abstract class BaseEntity
 {
     protected $repository;
     protected $log;
+    protected $nameField;
 
     public function __construct(
         Repository $repository,
@@ -31,10 +32,10 @@ abstract class BaseEntity
         return clone $this;
     }
 
-    public function byName(Array $namePair)
+    public function byName($name)
     {
         $this->repository->findBy(
-            $namePair
+            array($this->nameField => $name)
         )->get();
         return clone $this;
     }
