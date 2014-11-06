@@ -4,7 +4,6 @@ abstract class BaseEntity
 {
     protected $repository;
     protected $log;
-    protected $nameField;
 
     public function __construct(
         Repository $repository,
