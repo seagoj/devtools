@@ -6,8 +6,8 @@ abstract class BaseEntity
     protected $log;
 
     public function __construct(
-        Devtools\Repository $repository,
-        Devtools\Log $log
+        Repository $repository,
+        Log $log
     ) {
         $this->repository = $repository;
         $this->log = $log;
