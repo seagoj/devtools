@@ -44,7 +44,7 @@ abstract class BaseRepository
             return $this->all();
         }
 
-        if (is_integer($filter)) {
+        if (is_numeric($filter)) {
             $filter = array($this->primaryKey, '=', $filter);
         }
 
