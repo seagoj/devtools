@@ -245,6 +245,11 @@ class Response implements IService// , \Serializable
         }
     }
 
+    public static function isApiCall()
+    {
+        return $this->isAjax() || $_REQUEST['phpspec'];
+    }
+
     public static function isAjax()
     {
         return isset($_SERVER)
