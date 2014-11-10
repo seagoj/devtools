@@ -129,6 +129,7 @@ class Response implements IService// , \Serializable
         }
     }
 
+    /* DEPRECATED */
     public function load($sql, $params = null)
     {
         if (is_null($this->repository))  {
