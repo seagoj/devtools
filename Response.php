@@ -129,15 +129,15 @@ class Response implements IService// , \Serializable
         }
     }
 
-    /* public function load($sql, $params = null) */
-    /* { */
-    /*     if (is_null($this->repository))  { */
-    /*         throw new \Exception('No repository available.'); */
-    /*     } */
+    public function load($sql, $params = null)
+    {
+        if (is_null($this->repository))  {
+            throw new \Exception('No repository available.');
+        }
 
-    /*     $data = $this->repository->query($sql, $params, true); */
-    /*     return $this->data = is_array($data) ? $data : array('data' => $data); */
-    /* } */
+        $data = $this->repository->query($sql, $params, true);
+        return $this->data = is_array($data) ? $data : array('data' => $data);
+    }
 
     public static function isSuppressHeader()
     {
