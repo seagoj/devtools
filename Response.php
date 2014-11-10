@@ -248,7 +248,7 @@ class Response implements IService// , \Serializable
     public static function isApiCall()
     {
         return self::isAjax()
-            || isset($_REQUEST['phpspec']);
+            && !isset($_REQUEST['phpspec']);
     }
 
     public static function isAjax()
