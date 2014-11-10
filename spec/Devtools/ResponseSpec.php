@@ -150,4 +150,17 @@ class ResponseSpec extends ObjectBehavior
             )
         );
     }
+
+    function it_determines_if_api_call()
+    {
+        $this::isApiCall()->shouldReturn(false);
+        $_SERVER = [
+            'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+        ];
+        $this::isApiCall()->shouldReturn(true);
+        $_SERVER = [];
+        $this::isApiCall()->shouldReturn(false);
+        $_REQUEST['phpspec'] = true;
+        $this::isApiCall()->shouldReturn(true);
+    }
 }
