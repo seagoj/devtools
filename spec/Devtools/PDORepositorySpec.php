@@ -23,9 +23,9 @@ class PDORepositorySpec extends ObjectBehavior
 
     function it_returns_all_models(\PDO $connection, \PDOStatement $stmt)
     {
-        $connection->lastInsertId()->willReturn(0);
-        $connection->prepare("SELECT * FROM test")
-            ->willReturn($stmt);
+        $connection->prepare("SELECT * FROM test")->willReturn($stmt);
+        $this->all()->shouldReturn($this);
+
         $stmt->execute()->willReturn(true);
         $stmt->fetchAll(\PDO::FETCH_ASSOC)->willReturn(
             [
@@ -39,7 +39,6 @@ class PDORepositorySpec extends ObjectBehavior
                 ]
             ]
         );
-        $this->all()->shouldReturn($this);
         $this->all()->get()->shouldReturn(
             [
                 [
@@ -56,7 +55,6 @@ class PDORepositorySpec extends ObjectBehavior
 
     function it_returns_a_model_from_where_object(\PDO $connection, \PDOStatement $stmt)
     {
-        $connection->lastInsertId()->willReturn(0);
         $connection->prepare("SELECT * FROM test WHERE `testid` IN (:testid)")->willReturn($stmt);
         $stmt->execute(['testid' => 1])->willReturn(true);
         $stmt->fetchAll(\PDO::FETCH_ASSOC)->willReturn(
