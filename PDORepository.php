@@ -173,6 +173,7 @@ abstract class PDORepository extends BaseRepository implements Repository
 
     public function update(Array $values)
     {
+        $this->log->write($values);
         $this->checkDataForPrimaryKey($values);
 
         $sql = 'UPDATE '.$this->table.' SET ';
@@ -187,6 +188,7 @@ abstract class PDORepository extends BaseRepository implements Repository
             }
         }
         $sql .= (' WHERE '.$this->primaryKey.'=:'.$this->primaryKey);
+        $this->log->write($sql);
         $result = $this->query($sql, $values, true);
         $this->find($this->data[$this->primaryKey])->get();
         return $result;
