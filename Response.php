@@ -150,11 +150,6 @@ class Response implements IService// , \Serializable
         );
     }
 
-    public static function isNotTest()
-    {
-        return !isset($_REQUEST['phpspsec']);
-    }
-
     // =====INTERFACES=====
     public function data(array $data)
     {
