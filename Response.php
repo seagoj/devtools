@@ -1,18 +1,4 @@
 <?php namespace Devtools;
-/**
- * Response
- *
- * Defines Response object for AJAX responses
- *
- * PHP version 5.3
- *
- * @category Seago
- * @package  DEVTOOLS
- * @author   Jeremy Seago <seagoj@gmail.com>
- * @license  http://www.opensource.org/licenses/mit-license.html  MIT License
- * @version  GIT:
- * @link     http://github.com/seagoj/Devtools/Response.php
- **/
 
 class Response implements IService// , \Serializable
 {
@@ -136,7 +122,7 @@ class Response implements IService// , \Serializable
     /* DEPRECATED */
     public function load($sql, $params = null)
     {
-        if (is_null($this->repository))  {
+        if (is_null($this->repository)) {
             throw new \Exception('No repository available.');
         }
 
@@ -273,6 +259,16 @@ class Response implements IService// , \Serializable
         $request = $this->getRequest($defaults);
         foreach ($request as $key => $value) {
             $this->$key = $value;
+        }
+    }
+
+    public static function startService($serviceCreation)
+    {
+        if (Devtools\Response::isAjax()) {
+            $service = eval($serviceCreation);
+            if (Devtools\Response::isNotTest()) {
+                echo $service->json();
+            }
         }
     }
 }
