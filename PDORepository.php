@@ -257,6 +257,17 @@ abstract class PDORepository extends BaseRepository implements Repository
     private function prepareResponseData(&$data, $executionResult)
     {
         if (empty($data)) {
+            try {
+                $lastInsertId = $this->connection->lastInsertId();
+            } catch (\PDOException $e) {
+                if ($e->getCode() === 'IM001')  {
+                    $lastInsertId = 0;
+                } else {
+                    var_dump($e->getCode());
+                    throw $e;
+                }
+            }
+
             $isInsertStatement = $executionResult
                 && ($lastInsertId = $this->connection->lastInsertId()) != 0;
 
