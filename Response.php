@@ -264,9 +264,9 @@ class Response implements IService// , \Serializable
 
     public static function startService($serviceCreation)
     {
-        if (Devtools\Response::isAjax()) {
+        if (self::isAjax()) {
             $service = eval($serviceCreation);
-            if (Devtools\Response::isNotTest()) {
+            if (self::isNotTest()) {
                 echo $service->json();
             }
         }
