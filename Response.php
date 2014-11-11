@@ -261,16 +261,6 @@ class Response implements IService// , \Serializable
             $this->$key = $value;
         }
     }
-
-    public static function startService($serviceCreation)
-    {
-        if (self::isAjax()) {
-            $service = eval($serviceCreation);
-            if (self::isNotTest()) {
-                echo $service->json();
-            }
-        }
-    }
 }
 
 function getProperties($object)
