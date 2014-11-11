@@ -4,14 +4,12 @@ abstract class PDORepository extends BaseRepository implements Repository
 {
     protected $params;
     protected $position;
-    protected $log;
 
-    public function __construct(\PDO $connection, Log $log)
+    public function __construct(\PDO $connection)
     {
         $this->validateObject();
 
         $this->connection = $connection;
-        $this->log = $log;
         $this->params = null;
         $this->position = 1;
         $this->count = null;
@@ -259,20 +257,18 @@ abstract class PDORepository extends BaseRepository implements Repository
     private function prepareResponseData(&$data, $executionResult)
     {
         if (empty($data)) {
-            try {
-                $lastInsertId = $this->connection->lastInsertId();
-            } catch (\Exception $e) {
-                $this->log->write($e->getCode());
-                $this->log->write($e->getMessage());
-                $lastInsertId = 0;
+            switch($this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME)) {
+
+            default:
+                $this->log->write($this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME));
+                $isInsertStatement = $executionResult
+                    && ($lastInsertId = $this->connection->lastInsertId()) != 0;
+
+                $data = $isInsertStatement
+                    ?  array('insert_id' => $lastInsertId)
+                    :  $executionResult;
+                break;
             }
-
-            $isInsertStatement = $executionResult
-                && ($lastInsertId = $this->connection->lastInsertId()) != 0;
-
-            $data = $isInsertStatement
-                ?  array('insert_id' => $lastInsertId)
-                :  $executionResult;
         }
     }
 
