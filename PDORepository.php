@@ -259,7 +259,8 @@ abstract class PDORepository extends BaseRepository implements Repository
     {
         if (empty($data)) {
             switch($this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME)) {
-
+            case 'firebird':
+                break;
             default:
                 $this->log->write($this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME));
                 $isInsertStatement = $executionResult
