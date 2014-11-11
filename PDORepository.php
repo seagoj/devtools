@@ -4,12 +4,14 @@ abstract class PDORepository extends BaseRepository implements Repository
 {
     protected $params;
     protected $position;
+    protected $log;
 
-    public function __construct(\PDO $connection)
+    public function __construct(\PDO $connection, Devtools\Log)
     {
         $this->validateObject();
 
         $this->connection = $connection;
+        $this->log = $log;
         $this->params = null;
         $this->position = 1;
         $this->count = null;
