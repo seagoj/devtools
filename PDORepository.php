@@ -259,7 +259,7 @@ abstract class PDORepository extends BaseRepository implements Repository
         if (empty($data)) {
             try {
                 $lastInsertId = $this->connection->lastInsertId();
-            } catch (\PDOException $e) {
+            } catch (\Exception $e) {
                 var_dump($e->getCode());
                 if ($e->getCode() == 2) {
                     $lastInsertId = 0;
