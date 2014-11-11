@@ -17,9 +17,9 @@ abstract class PDORepository extends BaseRepository implements Repository
 
     private function validateObject()
     {
-        if (!isset($this->table)) {
-            throw new \Exception('Missing table.');
-        }
+        /* if (!isset($this->table)) { */
+        /*     throw new \Exception('Missing table.'); */
+        /* } */
 
         /* if (!isset($this->primaryKey)) { */
         /*     throw new \Exception('Missing Primary Key.'); */
