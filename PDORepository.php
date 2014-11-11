@@ -261,12 +261,12 @@ abstract class PDORepository extends BaseRepository implements Repository
                 $lastInsertId = $this->connection->lastInsertId();
             } catch (\Exception $e) {
                 $this->log->write($e->getCode());
-                if ($e->getCode() == 2) {
-                    $lastInsertId = 0;
-                } else {
-                    $this->log->write($e->getCode());
-                    throw $e;
-                }
+                /* if ($e->getCode() == 2) { */
+                /*     $lastInsertId = 0; */
+                /* } else { */
+                /*     $this->log->write($e->getCode()); */
+                /*     throw $e; */
+                /* } */
             }
 
             $isInsertStatement = $executionResult
