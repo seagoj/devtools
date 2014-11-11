@@ -6,12 +6,13 @@ use Devtools;
 
 class PDORepositorySpec extends ObjectBehavior
 {
-    function let(\PDO $connection)
+    function let(\PDO $connection, Devtools\Log $log)
     {
         $this->beAnInstanceOf(
             'spec\Devtools\TestPDORepository'
         );
-        $this->beConstructedWith($connection);
+        $connection->getAttribute(16)->willReturn('mysql');
+        $this->beConstructedWith($connection, $log);
     }
 
     function it_is_initializable()

@@ -161,6 +161,6 @@ class ResponseSpec extends ObjectBehavior
         $_SERVER = [];
         $this::isApiCall()->shouldReturn(false);
         $_REQUEST['phpspec'] = true;
-        $this::isApiCall()->shouldReturn(true);
+        $this::isApiCall()->shouldReturn(false);
     }
 }
