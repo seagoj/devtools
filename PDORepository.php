@@ -84,7 +84,6 @@ abstract class PDORepository extends BaseRepository implements Repository
             : $stmt->execute();
         $data = $stmt->fetchAll($fetchType);
 
-        /* $stmt->debugDumpParams(); */
         $this->prepareResponseData($data, $executionResult);
 
         return $reduce
@@ -260,7 +259,7 @@ abstract class PDORepository extends BaseRepository implements Repository
         if (empty($data)) {
             switch($this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME)) {
             case 'firebird':
-                $data = array();
+                /* $data = array(); */
                 break;
             default:
                 $this->log->write($this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME));
