@@ -72,6 +72,10 @@ class Response implements IService// , \Serializable
 
     public function __sleep()
     {
+        if (is_null($this->publicProperties)) {
+            $this->publicProperties = array();
+        }
+
         return !is_null($this->data)
             ? array_merge($this->publicProperties, array_keys($this->data))
             : $this->publicProperties;
