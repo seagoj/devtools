@@ -86,6 +86,7 @@ abstract class PDORepository extends BaseRepository implements Repository
 
         $this->log->write('DATA: ');
         $this->log->write($data);
+        $this->log->write($params);
 
         $this->prepareResponseData($data, $executionResult);
 
