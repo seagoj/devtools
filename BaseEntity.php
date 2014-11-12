@@ -39,7 +39,7 @@ abstract class BaseEntity
 
     public function where($whereClause)
     {
-        $this->repository->where($whereClause);
+        $this->repository->where($whereClause)->get();
         return clone $this;
     }
 }
