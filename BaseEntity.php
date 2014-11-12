@@ -36,10 +36,4 @@ abstract class BaseEntity
         $this->repository->find($name)->get();
         return clone $this;
     }
-
-    public function where($whereClause)
-    {
-        $this->repository->where($whereClause)->get();
-        return clone $this;
-    }
 }
