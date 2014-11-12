@@ -160,6 +160,8 @@ class Response implements IService// , \Serializable
         }
         $request = array();
         foreach ($validParams as $param => $default) {
+            var_dump($param);
+            var_dump($default);
             if (is_numeric($param)) {
                 $param = $default;
                 $default = null;
