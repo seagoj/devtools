@@ -257,12 +257,13 @@ abstract class PDORepository extends BaseRepository implements Repository
     private function prepareResponseData(&$data, $executionResult)
     {
         if (empty($data)) {
+            $this->log->write($this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME));
+            $this->log->write($data);
             switch($this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME)) {
             case 'firebird':
                 /* $data = array(); */
                 break;
             default:
-                $this->log->write($this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME));
                 $isInsertStatement = $executionResult
                     && ($lastInsertId = $this->connection->lastInsertId()) != 0;
 
