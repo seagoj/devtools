@@ -82,6 +82,12 @@ abstract class PDORepository extends BaseRepository implements Repository
         $executionResult = !is_null($params)
             ? $stmt->execute($params)
             : $stmt->execute();
+        $this->log->write(
+            $this->connection->errorInfo()
+        );
+        $this->log->write(
+            $stmt->errorInfo()
+        );
         $data = $stmt->fetchAll($fetchType);
 
         $this->prepareResponseData($data, $executionResult);
