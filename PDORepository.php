@@ -259,6 +259,7 @@ abstract class PDORepository extends BaseRepository implements Repository
         if (empty($data)) {
             $this->log->write($this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME));
             $this->log->write($data);
+            $this->log->write($executionResult);
             switch($this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME)) {
             case 'firebird':
                 /* $data = array(); */
