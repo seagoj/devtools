@@ -43,16 +43,6 @@ class Response implements IService// , \Serializable
         }
     }
 
-    public function api()
-    {
-        switch($_SERVER['REQUEST_METHOD']) {
-        case 'GET':
-            return $this->get();
-        default:
-            throw new \Exception('Method not yet implemented.');
-        }
-    }
-
     public static function __callStatic($method, $params)
     {
         switch($method) {
