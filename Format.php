@@ -2,7 +2,7 @@
 
 class Format
 {
-    public static function underscoreToCamelCase($underscore)
+    public static function snakeToCamelCase($underscore)
     {
         return preg_replace_callback(
             "/(_\\w)/u",
@@ -13,7 +13,7 @@ class Format
         );
     }
 
-    public static function camelCaseToUnderscore($camelCase)
+    public static function camelToSnakeCase($camelCase)
     {
         return preg_replace_callback(
             "/([A-Z])/u",
