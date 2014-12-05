@@ -236,6 +236,17 @@ class Response implements IService// , \Serializable
         }
     }
 
+    public function api()
+    {
+        $method = strtolower($_SERVER['REQUEST_METHOD']);
+
+        if (method_exists($this, $method)) {
+            return $this->$method();
+        }
+
+        throw new \Exception("Method {$method} not yet implemented.");
+    }
+
     public static function isApiCall()
     {
         return self::isAjax()
