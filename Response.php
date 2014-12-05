@@ -67,6 +67,13 @@ class Response implements IService// , \Serializable
             : $this->publicProperties;
     }
 
+    public function processRequest()
+    {
+        if ($this->isApiCall()) {
+            $this->api();
+        }
+    }
+
     public function message($msg, $error=false)
     {
         if (is_array($msg) || is_object($msg)) {
