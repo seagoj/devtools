@@ -23,4 +23,10 @@ class Format
             $camelCase
         );
     }
+
+    public static function mysqlDate($date)
+    {
+        list ($tmpMonth, $tmpDay, $tmpYear) = explode("/", $date);
+        return "$tmpYear/$tmpMonth/$tmpDay";
+    }
 }
