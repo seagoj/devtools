@@ -1,14 +1,16 @@
 require 'json'
 require 'fileutils'
 
-Vagrant::Config.run do |config|
+Vagrant.configure("2") do |config|
     options = {
-        :cookbook_location => 'remote',
-        :cookbooks_path => 'cookbooks',
-        :os => 'centos-6.5-parallels',
-        :force_update => false,
-        :gui => false
+        :cookbook_location => 'local',
+        :cookbooks_path    => 'cookbooks',
+        :os                => 'centos-6.5-parallels',
+        :force_update      => false,
+        :gui               => false
     }
+
+    config.berkshelf.enabled = true
 
     case options[:os]
     when 'arch'
@@ -26,26 +28,26 @@ Vagrant::Config.run do |config|
     end
 
     config.vm.boot_mode = :gui if options[:gui]
-    config.vm.network :bridged
-    config.vm.forward_port 80, 8080
-    config.vm.forward_port 6379, 6379
-    config.vm.provision "shell", path: "bootstrap.sh"
-    # config.vm.provision :chef_solo do |chef|
-    #     chef.json = JSON.parse(File.open('chef.json').read, :symbolize_names => true);
-    #     chef.cookbooks_path = options[:cookbooks_path]
+    config.vm.hostname = File.basename(Dir.getwd)
+    config.vm.network :public_network
+    config.vm.provision :chef_solo do |chef|
+        chef.cookbooks_path = options[:cookbooks_path]
+        chef.custom_config_path = "Vagrantfile.chef"
 
-    #     case options[:cookbook_location]
-    #     when 'remote'
-    #         FileUtils.rm_rf(chef.cookbooks_path) if options[:force_update]
-    #         Dir.mkdir(chef.cookbooks_path) unless Dir.exists?(chef.cookbooks_path)
+        case options[:cookbook_location]
+        when 'remote'
+            cookbook = 'cookbook-bot'
+            repo = "git@github.com:seagoj/#{cookbook}"
+            path = "#{chef.cookbooks_path}/#{cookbook}"
+            if Dir.exists?(path)
+                system("cd #{path} && git pull #{repo} master")
+            else
+                system("git clone #{repo} #{path}")
+            end
+        when 'local'
+        end
 
-    #         chef.json[:ingredients].each do |k,v|
-    #             k = k.to_s
-    #             cookbook = k[0,(k.index(':') || k.length)]
-    #             path = "#{chef.cookbooks_path}/#{cookbook}"
-    #             system("git clone #{v} #{path}") if !Dir.exists?(path)
-    #             chef.add_recipe(k)
-    #         end
-    #     end
-    # end
+        chef.add_recipe('bot')
+        chef.add_recipe('mysql')
+    end
 end
