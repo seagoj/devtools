@@ -1,7 +1,7 @@
 DEPENDENCIES
   bot
     git: git@github.com:seagoj/cookbook-bot.git
-    revision: 80d83d58d218f8ee50c41665b7e05216e3b6e460
+    revision: 5c67acaf22e5bcfeab7731d0c7c93c1070a56de1
 
 GRAPH
   bot (0.1.0)
