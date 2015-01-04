@@ -1,12 +1,12 @@
 DEPENDENCIES
   bot
     git: git@github.com:seagoj/cookbook-bot.git
-    revision: 5c67acaf22e5bcfeab7731d0c7c93c1070a56de1
+    revision: 6875c0b15e018f46c104b0b16ee1a13076346fec
 
 GRAPH
   bot (0.1.0)
     mysql (>= 0.0.0)
-  mysql (6.0.4)
+  mysql (6.0.5)
     smf (>= 0.0.0)
     yum-mysql-community (>= 0.0.0)
   rbac (1.0.2)
@@ -14,6 +14,6 @@ GRAPH
   smf (2.2.1)
     rbac (>= 1.0.1)
     resource-control (>= 0.0.0)
-  yum (3.5.1)
+  yum (3.5.2)
   yum-mysql-community (0.1.11)
     yum (>= 3.0)

@@ -1,5 +1,6 @@
 Vagrant.configure("2") do |config|
     config.berkshelf.enabled = true
+    config.omnibus.chef_version = :latest
     config.vm.box = 'centos56parallels'
     config.vm.box_url = "http://download.parallels.com/desktop/vagrant/centos64.box"
     config.vm.hostname = File.basename(Dir.getwd)
