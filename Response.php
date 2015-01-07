@@ -86,9 +86,12 @@ class Response implements IService// , \Serializable
         }
     }
 
-    public function fail($msg)
+    public function fail($msg, $throwException = false)
     {
         $this->message($msg, true);
+        if ($throwException) {
+            throw new \Exception($msg);
+        }
     }
 
     public static function ajax($url='', $request=array(), $dataOnly=true)
