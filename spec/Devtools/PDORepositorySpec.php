@@ -68,14 +68,6 @@ class PDORepositorySpec extends ObjectBehavior
             ]
         );
 
-        /* $this->where(['testid', '=', 1]) */
-        /*     ->get()->shouldReturn( */
-        /*         [ */
-        /*             'testid'    => 1, */
-        /*             'testvalue' => 'Test 1' */
-        /*         ] */
-        /*     ); */
-
         $this->where(['testid', 'IN', '1,2,3'])
             ->get()->shouldReturn(
                 [
@@ -288,9 +280,10 @@ class PDORepositorySpec extends ObjectBehavior
 
     function it_should_throw_exception_is_user_is_created_without_required_field()
     {
-        $this->shouldThrow(new \Exception('testvalue is not a value in creation array.'))->duringCreate([
-            'notatestvalue' => 'Not A Test Value'
-        ]);
+        $this->shouldThrow(new \Exception('testvalue is not a value in creation array.'))
+            ->duringCreate(
+                [ 'notatestvalue' => 'Not A Test Value' ]
+            );
     }
 
     function it_creates_a_new_model_from_array_with_primary_key(\PDO $connection, \PDOStatement $stmt)
@@ -307,12 +300,14 @@ class PDORepositorySpec extends ObjectBehavior
     {
         $connection->prepare('SELECT * FROM test WHERE `testid` = :testid')->willReturn($stmt);
         $stmt->execute(['testid' => 1])->willReturn(true);
-        $stmt->fetchAll(\PDO::FETCH_ASSOC)->willReturn([
-            0 => [
-                'testid'    => 1,
-                'testvalue' => 'Test Value'
+        $stmt->fetchAll(\PDO::FETCH_ASSOC)->willReturn(
+            [
+                0 => [
+                    'testid'    => 1,
+                    'testvalue' => 'Test Value'
+                ]
             ]
-        ]);
+        );
 
         $connection->prepare('DELETE FROM test WHERE `testid` = :testid')->willReturn($stmt2);
         $connection->lastInsertId()->willReturn(0);
@@ -377,7 +372,7 @@ class PDORepositorySpec extends ObjectBehavior
     }
 }
 
-class TestPDORepository extends Devtools\PDORepository
+class TestPDORepository extends \Devtools\PDORepository
 {
     protected $table = 'test';
     protected $primaryKey = 'testid';

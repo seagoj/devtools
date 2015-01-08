@@ -23,7 +23,7 @@ class TemplateSpec extends ObjectBehavior
 
     function it_will_join_array_values_with_commas()
     {
-        $this->autofill(
+        $this::autofill(
             'My name is {{name}}. I like {{fruit}}.',
             [
                 'name' => 'Jeremy',
