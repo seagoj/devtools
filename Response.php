@@ -269,6 +269,7 @@ class Response implements IService// , \Serializable
     public static function isAjax()
     {
         var_dump(__METHOD__);
+        var_dump($_SERVER['HTTP_X_REQUESTED_WITH']);
         return isset($_SERVER)
             && isset($_SERVER['HTTP_X_REQUESTED_WITH'])
             && $_SERVER['HTTP_X_REQUESTED_WITH']  === 'XMLHttpRequest';
