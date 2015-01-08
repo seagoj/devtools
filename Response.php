@@ -210,14 +210,14 @@ class Response implements IService// , \Serializable
        return $response;
     }
 
-    public function json()
+    public function json($dataOnly = false)
     {
         $suppressHeader = $this->isSuppressHeader();
         if (!$suppressHeader['suppress_header'] && !headers_sent($file, $line)) {
             header('Content-type: application/json');
         }
 
-        return json_encode($this->php());
+        return json_encode($dataOnly ? $this->data : $this->php());
     }
 
     public function php($serialize = false)
