@@ -69,7 +69,7 @@ class Response implements IService// , \Serializable
 
     public function processRequest()
     {
-        $this->log->write(__METHOD__);
+        var_dump(__METHOD__);
         if ($this->isApiCall()) {
             $this->api();
         }
@@ -249,7 +249,7 @@ class Response implements IService// , \Serializable
 
     public function api()
     {
-        $this->log->write(__METHOD__);
+        var_dump(__METHOD__);
         $method = strtolower($_SERVER['REQUEST_METHOD']);
 
         if (method_exists($this, $method)) {
@@ -261,14 +261,14 @@ class Response implements IService// , \Serializable
 
     public static function isApiCall()
     {
-        $this->log->write(__METHOD__);
+        var_dump(__METHOD__);
         return self::isAjax()
             && !isset($_REQUEST['phpspec']);
     }
 
     public static function isAjax()
     {
-        $this->log->write(__METHOD__);
+        var_dump(__METHOD__);
         return isset($_SERVER)
             && isset($_SERVER['HTTP_X_REQUESTED_WITH'])
             && $_SERVER['HTTP_X_REQUESTED_WITH']  === 'XMLHttpRequest';
