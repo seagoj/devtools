@@ -217,7 +217,7 @@ class Response implements IService// , \Serializable
             header('Content-type: application/json');
         }
 
-        return json_encode($this->php());
+        return json_encode($dataOnly ? $this->data : $this->php());
     }
 
     public function php($serialize = false)
