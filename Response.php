@@ -229,6 +229,34 @@ class Response implements IService// , \Serializable
        }
        return $serialize ? serialize($ret) : $ret;
     }
+    
+    function excel()
+    {
+        header("Cache-Control: no-cache, must-revalidate");
+        header("Pragma: no-cache");
+        header("Content-type: application/vnd.ms-excel");
+        header("Content-Disposition: attachment; filename=cmdReport.xls");
+
+        foreach ($this->data as $row) {
+            if (!isset($table)) {
+                $table = "<table><tr>";
+                foreach ($row as $key => $value) {
+                    $key = strtolower($key);
+                    $table .= "<td nowrap>{$key}</td>";
+                }
+                $table .= "</tr>";
+            }
+
+            $table .= '<tr>';
+
+            foreach ($row as $key => $value) {
+                $table .= "<td nowrap>{$value}</td>";
+            }
+            $table .= '</tr>';
+        }
+        $table .= "</table>";
+        print $table;
+    }
 
     public function serialize()
     {
