@@ -1,6 +1,6 @@
 <?php namespace Devtools;
 
-require_once 'vendor/ircmaxell/password-compat/lib/password.php';
+require_once '../ircmaxell/password-compat/lib/password.php';
 
 class Auth
 {
