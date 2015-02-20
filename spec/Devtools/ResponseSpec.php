@@ -155,7 +155,7 @@ class ResponseSpec extends ObjectBehavior
     {
         $this::isApiCall()->shouldReturn(false);
         $_SERVER = [
-            'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+            'HTTP_USER_AGENT' => 'Google Chrome'
         ];
         $this::isApiCall()->shouldReturn(true);
         $_SERVER = [];

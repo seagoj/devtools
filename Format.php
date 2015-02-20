@@ -29,4 +29,8 @@ class Format
         list ($tmpMonth, $tmpDay, $tmpYear) = explode("/", $date);
         return "$tmpYear/$tmpMonth/$tmpDay";
     }
+
+    public static function stripWhitespace($dirty) {
+        return preg_replace("/[ \\t\\n]+/u", " ", $dirty);
+    }
 }

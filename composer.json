@@ -2,42 +2,19 @@
     "name": "Devtools",
     "description": "Tools for PHP development",
     "license": "MIT",
-    "repositories": [
-        {
-            "url": "https://github.com/seagoj/predis",
-            "type": "vcs"
-        },
-        {
-            "url": "https://github.com/seagoj/prophecy",
-            "type": "vcs"
-        }
-    ],
     "require": {
-        "predis/predis": ">=1.1",
         "ircmaxell/password-compat": "@dev"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*",
         "phpunit/php-invoker": "1.1.*",
-        "phpunit/dbunit": "1.2.*",
         "phpunit/phpunit-selenium": "1.3.*",
-        "phpunit/phpunit-story": "1.0.*",
-        "phpspec/phpspec": "dev-master",
-        "seagoj/prophecy": "dev-development"
+        "phpspec/phpspec": "dev-master"
     },
-    "scripts": {
-        "pre-install-cmd": [],
-        "post-install-cmd": [
-            "ln -s .. vendor/Devtools",
-            "rm -r vendor/phpspec/prophecy",
-            "ln -s ../seagoj/prophecy vendor/phpspec/prophecy"
-        ]
-    },
-    "config": {},
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "Devtools\\": "vendor/Devtools",
-            "Predis\\": "vendor/predis/predis/src"
+            "Devtools\\": "./"
         }
     }
 }

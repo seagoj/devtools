@@ -96,7 +96,7 @@ abstract class BaseRepository
 
     public static function stripWhitespace($dirty)
     {
-        return preg_replace("/[ \\t\\n]+/u", " ", $dirty);
+        return Format::stripWhitespace($dirty);
     }
 
     public static function reduceResult($result)

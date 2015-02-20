@@ -24,6 +24,8 @@ class PDORepositorySpec extends ObjectBehavior
 
     function it_returns_all_models(\PDO $connection, \PDOStatement $stmt)
     {
+        $connection->errorInfo()->shouldBeCalled();
+        $stmt->errorInfo()->shouldBeCalled();
         $connection->prepare("SELECT * FROM test")->willReturn($stmt);
         $this->all()->shouldReturn($this);
 
@@ -56,6 +58,8 @@ class PDORepositorySpec extends ObjectBehavior
 
     function it_returns_a_model_from_where_object(\PDO $connection, \PDOStatement $stmt)
     {
+        $connection->errorInfo()->shouldBeCalled();
+        $stmt->errorInfo()->shouldBeCalled();
         $connection->prepare("SELECT * FROM test WHERE `testid` IN (:testid)")->willReturn($stmt);
         $stmt->execute(['testid' => 1])->willReturn(true);
         $stmt->fetchAll(\PDO::FETCH_ASSOC)->willReturn(
@@ -79,6 +83,8 @@ class PDORepositorySpec extends ObjectBehavior
 
     function it_returns_a_model_from_raw_where(\PDO $connection, \PDOStatement $stmt)
     {
+        $connection->errorInfo()->shouldBeCalled();
+        $stmt->errorInfo()->shouldBeCalled();
         $connection->lastInsertId()->willReturn(0);
         $connection->prepare("SELECT * FROM test WHERE `testid` = :testid")->willReturn($stmt);
         $stmt->execute(['testid' => 1])->willReturn(true);
@@ -103,6 +109,8 @@ class PDORepositorySpec extends ObjectBehavior
 
     function it_returns_a_model_by_filter(\PDO $connection, \PDOStatement $stmt)
     {
+        $connection->errorInfo()->shouldBeCalled();
+        $stmt->errorInfo()->shouldBeCalled();
         $connection->lastInsertId()->willReturn(0);
         $connection->prepare("SELECT * FROM test WHERE `testid` = :testid")->willReturn($stmt);
         $stmt->execute(['testid' => 1])->willReturn(true);
@@ -126,6 +134,9 @@ class PDORepositorySpec extends ObjectBehavior
 
     function it_returns_a_model_by_primary_key(\PDO $connection, \PDOStatement $stmt)
     {
+        $connection->errorInfo()->shouldBeCalled();
+        $stmt->errorInfo()->shouldBeCalled();
+
         $connection->lastInsertId()->willReturn(0);
         $connection->prepare("SELECT * FROM test WHERE `testid` = :testid")->willReturn($stmt);
         $stmt->execute(['testid' => 1])->willReturn(true);
@@ -149,6 +160,8 @@ class PDORepositorySpec extends ObjectBehavior
 
     function it_returns_the_first_model_from_selection(\PDO $connection, \PDOStatement $stmt)
     {
+        $connection->errorInfo()->shouldBeCalled();
+        $stmt->errorInfo()->shouldBeCalled();
         $connection->lastInsertId()->willReturn(0);
         $connection->prepare("SELECT * FROM test LIMIT 1")
             ->willReturn($stmt);
@@ -174,6 +187,10 @@ class PDORepositorySpec extends ObjectBehavior
     function it_returns_the_a_subset_of_the_model(\PDO $connection, \PDOStatement $stmt,
         \PDOStatement $stmt2, \PDOStatement $stmt3
     ) {
+        $connection->errorInfo()->shouldBeCalled();
+        $stmt->errorInfo()->shouldBeCalled();
+        $stmt2->errorInfo()->shouldBeCalled();
+        $stmt3->errorInfo()->shouldBeCalled();
         $connection->lastInsertId()->willReturn(0);
         $connection->prepare("SELECT * FROM test")
             ->willReturn($stmt);
@@ -232,6 +249,8 @@ class PDORepositorySpec extends ObjectBehavior
 
     function it_returns_count_of_rows_returned(\PDO $connection, \PDOStatement $stmt)
     {
+        $connection->errorInfo()->shouldBeCalled();
+        $stmt->errorInfo()->shouldBeCalled();
         $connection->lastInsertId()->willReturn(0);
         $connection->prepare("SELECT * FROM test")
             ->willReturn($stmt);
@@ -254,6 +273,9 @@ class PDORepositorySpec extends ObjectBehavior
 
     function it_writes_the_current_values_to_datastore(\PDO $connection, \PDOStatement $stmt, \PDOStatement $stmt2)
     {
+        $connection->errorInfo()->shouldBeCalled();
+        $stmt->errorInfo()->shouldBeCalled();
+        $stmt2->errorInfo()->shouldBeCalled();
         $connection->lastInsertId()->willReturn(0);
         $connection->prepare("SELECT * FROM test WHERE `testid` = :testid")->willReturn($stmt);
         $stmt->execute(['testid' => 1])->willReturn(true);
@@ -288,6 +310,8 @@ class PDORepositorySpec extends ObjectBehavior
 
     function it_creates_a_new_model_from_array_with_primary_key(\PDO $connection, \PDOStatement $stmt)
     {
+        $connection->errorInfo()->shouldBeCalled();
+        $stmt->errorInfo()->shouldBeCalled();
         $connection->lastInsertId()->willReturn(10);
         $connection->prepare('INSERT INTO test (testvalue) VALUES (:testvalue)')->willReturn($stmt);
         $stmt->execute(['testvalue' => 'New Test Value'])->willReturn(true);
@@ -298,6 +322,9 @@ class PDORepositorySpec extends ObjectBehavior
 
     function it_deletes_the_current_model_from_datastore(\PDO $connection, \PDOStatement  $stmt, \PDOStatement $stmt2)
     {
+        $connection->errorInfo()->shouldBeCalled();
+        $stmt->errorInfo()->shouldBeCalled();
+        $stmt2->errorInfo()->shouldBeCalled();
         $connection->prepare('SELECT * FROM test WHERE `testid` = :testid')->willReturn($stmt);
         $stmt->execute(['testid' => 1])->willReturn(true);
         $stmt->fetchAll(\PDO::FETCH_ASSOC)->willReturn(
@@ -324,6 +351,8 @@ class PDORepositorySpec extends ObjectBehavior
 
     function it_throws_exception_if_deleting_multiple_rows(\PDO $connection, \PDOStatement $stmt)
     {
+        $connection->errorInfo()->shouldBeCalled();
+        $stmt->errorInfo()->shouldBeCalled();
         $connection->prepare("SELECT * FROM test")
             ->willReturn($stmt);
         $stmt->execute()->willReturn(true);
@@ -345,6 +374,8 @@ class PDORepositorySpec extends ObjectBehavior
 
     function it_resets_object(\PDO $connection, \PDOStatement $stmt)
     {
+        $connection->errorInfo()->shouldBeCalled();
+        $stmt->errorInfo()->shouldBeCalled();
         $connection->lastInsertId()->willReturn(0);
         $connection->prepare("SELECT * FROM test WHERE `testid` = :testid")->willReturn($stmt);
         $stmt->execute(['testid' => 1])->willReturn(true);
