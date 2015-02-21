@@ -1,5 +1,7 @@
 <?php namespace Devtools;
 
+use Exception;
+
 class Response implements IService// , \Serializable
 {
     public $status;
@@ -70,7 +72,11 @@ class Response implements IService// , \Serializable
     public function processRequest()
     {
         if ($this->isApiCall()) {
-            $this->api();
+            try {
+                $this->api();
+            } catch (Exception $e) {
+                $this->fail($e->getMessage());
+            }
         }
     }
 
@@ -229,7 +235,7 @@ class Response implements IService// , \Serializable
        }
        return $serialize ? serialize($ret) : $ret;
     }
-    
+
     function excel()
     {
         header("Cache-Control: no-cache, must-revalidate");
