@@ -5,6 +5,16 @@ use Prophecy\Argument;
 
 class LogSpec extends ObjectBehavior
 {
+    function let()
+    {
+        ob_start();
+    }
+
+    function letgo()
+    {
+        ob_end_clean();
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType('Devtools\Log');
@@ -22,49 +32,44 @@ class LogSpec extends ObjectBehavior
     function it_logs_tap_to_file()
     {
         $this->beConstructedWith(['type' => 'file']);
-        $this
-            ->write('Test', true)
-            ->shouldReturn(true);
+        $this->write('Test', true)->shouldReturn(true);
 
-        $this->write('Test')
-            ->shouldReturn(true);
+        $this->write('Test')->shouldReturn(true);
     }
 
     function it_logs_html_to_stdout()
     {
         $this->beConstructedWith(['format' => 'html']);
-        $this
-            ->write('Test', true)
-            ->shouldReturn(true);
+        $this->write('Test', true)->shouldReturn(true);
 
-        $this->write('Test')
-            ->shouldReturn(true);
+        $this->write('Test')->shouldReturn(true);
     }
 
     function it_logs_html_to_file()
     {
-        $this->beConstructedWith([
-            'type' => 'file',
-            'format' => 'html'
-        ]);
-        $this
-            ->write('Test', true)
-            ->shouldReturn(true);
+        $this->beConstructedWith(
+            [
+                'type' => 'file',
+                'format' => 'html'
+            ]
+        );
 
-        $this->write('Test')
-            ->shouldReturn(true);
+        $this->write('Test', true)->shouldReturn(true);
+        $this->write('Test')->shouldReturn(true);
     }
 
     function it_throws_exception_on_invalid_type()
     {
         $this->beConstructedWith(['type' => 'invalid']);
-        $this->shouldThrow('\InvalidArgumentException')->duringWrite(['test', true]);
+        $this->shouldThrow('\InvalidArgumentException')
+            ->duringWrite(['test', true]);
     }
 
     function it_throws_exception_on_invalid_format()
     {
         $this->beConstructedWith(['format' => 'invalid']);
-        $this->shouldThrow('\InvalidArgumentException')->duringWrite(['Test', true]);
+        $this->shouldThrow('\InvalidArgumentException')
+            ->duringWrite(['Test', true]);
     }
 
     function it_creates_errorLog()

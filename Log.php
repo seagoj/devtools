@@ -1,72 +1,19 @@
 <?php namespace Devtools;
-/**
- * Logger for PHP
- *
- * Log to file or stdout in various formats (TAP, HTML, plaintext)
- *
- * @category Seagoj
- * @package  Devtools
- * @author   Jeremy Seago <seagoj@gmail.com>
- * @license  http://github.com/seagoj/Devtools/LICENSE MIT
- * @link     http://github.com/seagoj/Devtools
- **/
 
-/**
- * Class Log
- *
- * @category Seagoj
- * @package  Devtools
- * @author   Jeremy Seago <seagoj@gmail.com>
- * @license  http://github.com/seagoj/Devtools/LICENSE MIT
- * @link     http://github.com/seagoj/Devtools
- **/
-class Log
+class Log extends BaseObserver
 {
-    /**
-     * Number of tests passed to the logger
-     *
-     * Stores the number of tests passed to the logger; used in TAP output
-     **/
-    private $testCount;
-    /**
-     * Configuration array for the class
-     *
-     * Sets the type of log, file location (if necessary), and format of output
-     **/
-    private $config;
-    /**
-     * Type of log to write
-     *
-     * Stores the type of log to be written
-     **/
-    public $type;
-
-    /**
-     * Determines if current message is the first message
-     *
-     * True if yes; false if no
-     **/
     public $first;
-
+    public $type;
     protected $timestamp;
+    private $testCount;
+    private $config;
 
-    /**
-     * Log::__construct
-     *
-     * Initializes this.config, writes log header and sets testCount to 0
-     *
-     * @param array $options Options array to configure the log object
-     *
-     * @return void
-     *
-     * @todo validate $options array
-     **/
     public function __construct($options = array())
     {
         error_reporting(-1);
         ini_set('display_errors', 'On');
         set_exception_handler(array('Devtools\Log', 'exception_handler'));
-        set_error_handler(array('Devtools\Log','error_handler'));
+        set_error_handler(array('Devtools\Log', 'error_handler'));
 
         $defaults = array(
             'type' => 'stdout',
@@ -79,16 +26,6 @@ class Log
         $this->first = true;
     }
 
-    /**
-     * Log::write
-     *
-     * Writes content and tests to the log
-     *
-     * @param string  $content Message to be written to the log
-     * @param boolean $result  Result of test; defaults to 'EMPTY';
-     *
-     * @return void
-     **/
     public function write($content, $result = null)
     {
         $content = $this->stringify($content);
@@ -122,30 +59,11 @@ class Log
         return (string)$this->timestamp;
     }
 
-    /**
-     * Log::file
-     *
-     * Writes content to log file
-     *
-     * @param string $content String to be written to file
-     *
-     * @return integer Result of writing to file
-     **/
     private function file($content)
     {
         return file_put_contents($this->config['file'], $content.PHP_EOL, FILE_APPEND);
     }
 
-    /**
-     * Log::htmlify
-     *
-     * Formats content as HTML
-     *
-     * @param string    $content    String to be formatted
-     * @param boolean   $result     Result of the test
-     *
-     * @return string
-     **/
     private function htmlify($content, $result)
     {
         $tag = 'div';
@@ -155,29 +73,11 @@ class Log
             "<$tag>$result: $content</$tag>";
     }
 
-    /**
-     * Log::stdout
-     *
-     * Outputs log to stdout
-     *
-     * @param string $content String to be output to stdout
-     *
-     * @return void
-     **/
     private function stdout($content)
     {
         print $content.PHP_EOL;
     }
 
-    /**
-     * Log::stringify
-     *
-     * Turns $content into string through serialization if it is another type
-     *
-     * @param string $content Contents to be turned into a string
-     *
-     * @return string Serialization of $content
-     **/
     private function stringify($content)
     {
         return (is_array($content) || is_object($content)) ?
@@ -185,19 +85,8 @@ class Log
             $content;
     }
 
-    /**
-     * Log::tapify
-     *
-     * Formats $content as TAP output based on the value of $result
-     *
-     * @param string  $content Content of output
-     * @param boolean $result  Result of test
-     *
-     * @return string Content formatted as TAP output
-     **/
     private function tapify($content, $result)
     {
-
         $nextTest = $this->testCount+1;
         $prefix = 'ok '.$nextTest.' - ';
 
@@ -219,13 +108,6 @@ class Log
         return $content;
     }
 
-    /**
-     * Log::__destruct
-     *
-     * Writes footer to Log upon close
-     *
-     * @return void
-     **/
     public function __destruct()
     {
         if (!is_null($this->config)) {
@@ -245,7 +127,10 @@ class Log
 
     public static function exception_handler($e)
     {
-        \Devtools\Log::output($e->getMessage()."\n".\Devtools\Log::getExceptionTraceAsString($e));
+        self::output(
+            $e->getMessage() . "\n"
+            . self::getExceptionTraceAsString($e)
+        );
     }
 
     public static function error_handler($errno, $errstr, $errfile, $errline)
@@ -287,25 +172,24 @@ class Log
                 $frame[$type] = isset($frame[$type]) ? $frame[$type] : '';
             }
 
-            $rtn .= sprintf( "#%s %s(%s): %s(%s)\n",
+            $rtn .= sprintf(
+                "#%s %s(%s): %s(%s)\n",
                 $count,
                 $frame['file'],
                 $frame['line'],
                 $frame['function'],
-                $args );
+                $args
+            );
             $count++;
         }
         return $rtn;
     }
 
-    /**
-     * @param string $msg
-     */
     private static function output($msg)
     {
         global $errorLog;
 
-        if (isset($errorLog) && get_class($errorLog)==='Devtools\Log') {
+        if (isset($errorLog) && get_class($errorLog) === 'Devtools\Log') {
             $errorLog->write($msg, false);
         } else {
             echo $msg;
@@ -314,7 +198,7 @@ class Log
 
     public static function debugLog($path = '/home/www/Debug.log')
     {
-        return \Devtools\Log::newLog(
+        return self::newLog(
             array(
                 'name' => 'debugLog',
                 'path' => $path
@@ -324,7 +208,7 @@ class Log
 
     public static function errorLog($path = '/home/www/Error.log')
     {
-        return \Devtools\Log::newLog(
+        return self::newLog(
             array(
                 'name' => 'errorLog',
                 'path' => $path
@@ -338,14 +222,14 @@ class Log
         $path = $log['path'];
 
          global $$name;
-         return isset($$name) ?
-            $$name :
-             new \Devtools\Log(
-             array(
-                 'type'  => 'file',
-                 'file'  => $path
-             )
-         );
+        return isset($$name)
+            ? $$name
+            : new self(
+                array(
+                    'type'  => 'file',
+                    'file'  => $path
+                )
+            );
     }
 
     public function assert($term)
@@ -354,13 +238,17 @@ class Log
         assert_options(ASSERT_WARNING, true);
         assert_options(ASSERT_BAIL, false);
         assert_options(ASSERT_QUIET_EVAL, false);
-        assert_options(ASSERT_CALLBACK, function($script, $line, $message) {
-            $this->write("$script:$line $message");
-        });
+        assert_options(
+            ASSERT_CALLBACK,
+            function ($script, $line, $message) {
+                $this->write("$script:$line $message");
+            }
+        );
         assert($term);
     }
 
-    public function __get($property) {
+    public function __get($property)
+    {
         return $this->$property;
     }
 }
