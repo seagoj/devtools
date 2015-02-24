@@ -2,7 +2,7 @@
 
 use ErrorException;
 
-abstract class Logger
+abstract class Logger extends BaseObserver
 {
     public function __construct()
     {

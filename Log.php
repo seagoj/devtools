@@ -252,4 +252,3 @@ class Log extends BaseObserver
         return $this->$property;
     }
 }
-
