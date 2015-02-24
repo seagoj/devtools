@@ -65,7 +65,7 @@ abstract class IoC
 
     private static function makeWithReflection($namespace)
     {
-        $reflection = new ReflectionCLass($namespace);
+        $reflection = new ReflectionClass($namespace);
         $dependencies = $reflection->getMethod('__construct')->getParameters();
         $params = array();
         foreach ($dependencies as $dependency) {
