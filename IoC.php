@@ -1,5 +1,7 @@
 <?php namespace Devtools;
 
+use ReflectionClass;
+
 abstract class IoC
 {
     protected static $objectDefinitions = array();
