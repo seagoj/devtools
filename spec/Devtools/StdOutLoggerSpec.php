@@ -31,5 +31,6 @@ class StdOutLoggerSpec extends ObjectBehavior
         $formatter->format('Entry', null)->shouldBeCalled();
         $formatter->format('Entry2', true)->shouldBeCalled();
         $formatter->format('Entry3', false)->shouldBeCalled();
+        $formatter->footer()->willReturn('');
     }
 }

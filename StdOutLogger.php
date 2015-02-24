@@ -8,6 +8,11 @@ class StdOutLogger extends Logger
         parent::__construct();
     }
 
+    public function __destruct()
+    {
+        /* echo $this->formatter->footer(); */
+    }
+
     public function write($content, $result = null)
     {
         echo $this->formatter->format($content, $result) . PHP_EOL;

@@ -25,6 +25,6 @@ class FileLoggerSpec extends ObjectBehavior
         $formatter->format('Log1', null)->shouldBeCalled();
         $formatter->format('Log2', true)->shouldBeCalled();
         $formatter->format('Log3', false)->shouldBeCalled();
-        /* $formatter->footer()->shouldBeCalled(); */
+        $formatter->footer()->willreturn('');
     }
 }

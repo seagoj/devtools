@@ -1,6 +1,6 @@
 <?php namespace Devtools;
 
-class HTMLFormatter
+class HTMLFormatter extends Formatter
 {
     public function format($content, $result)
     {
@@ -11,15 +11,5 @@ class HTMLFormatter
         return is_null($result)
             ? "<p>{$content}</p>"
             : "<p>{$result}: {$content}</p>";
-    }
-
-    public function header()
-    {
-        return '';
-    }
-
-    public function footer()
-    {
-        return '';
     }
 }

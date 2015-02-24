@@ -1,5 +1,7 @@
 <?php namespace Devtools;
 
+use ErrorException;
+
 abstract class Logger
 {
     public function __construct()
@@ -14,13 +16,6 @@ abstract class Logger
         );
     }
 
-    public function __destruct()
-    {
-        /* $this->write( */
-        /*     $this->formatter->footer() */
-        /* ); */
-    }
-
     public abstract function write(
         $content, $result = null
     );
@@ -28,14 +23,13 @@ abstract class Logger
     public static function exception_handler($e)
     {
         self::output(
-            $e->getMessage() . "\n"
-            . self::getExceptionTraceAsString($e)
+            $e->getMessage() . "\n" . self::getExceptionTraceAsString($e)
         );
     }
 
     public static function error_handler($errno, $errstr, $errfile, $errline)
     {
-        throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
+        throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
     }
 
     private static function getExceptionTraceAsString($exception)

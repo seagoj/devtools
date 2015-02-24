@@ -2,9 +2,16 @@
 
 abstract class Formatter
 {
-    abstract public function header();
     abstract public function format($content, $result);
-    abstract public function footer();
+    public function header()
+    {
+        return '';
+    }
+
+    public function footer()
+    {
+        return '';
+    }
 
     private function stringify($content)
     {
