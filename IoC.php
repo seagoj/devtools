@@ -31,7 +31,7 @@ abstract class IoC
         }
 
         if (self::isRegistered($namespace)) {
-            return self::makeWithBinding[$namespace];
+            return self::makeWithBinding($namespace);
         }
 
         if (self::objectRegistersBinding($namespace)) {
