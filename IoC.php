@@ -67,10 +67,12 @@ abstract class IoC
 
     private static function makeWithReflection($namespace)
     {
+        var_dump($namespace);
         $reflection = new ReflectionClass($namespace);
         $dependencies = $reflection->getMethod('__construct')->getParameters();
         $params = array();
         foreach ($dependencies as $dependency) {
+            var_dump($dependency);
             array_push(
                 $params,
                 self::make(
