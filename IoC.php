@@ -28,6 +28,7 @@ abstract class IoC
 
     public static function make($namespace, $singleton = true)
     {
+        var_dump($namespace);
         if ($singleton && self::isInstantiated($namespace)) {
             return self::$registryOfCreatedObjects[$namespace];
         }
