@@ -11,3 +11,5 @@ coverage.xml
 report/
 node_modules
 tmux.sh
+coverage
+coverage.*
