@@ -6,7 +6,7 @@ use Redis;
 
 class RedisRepositorySpec extends ObjectBehavior
 {
-    function let(Redis $connection)
+    function let(RedisMock $connection)
     {
         $this->beConstructedWith($connection);
     }
@@ -60,4 +60,8 @@ class RedisRepositorySpec extends ObjectBehavior
     /*         ->expire('key', 10) */
     /*         ->shouldReturn(true); */
     /* } */
+}
+
+class RedisMock extends Redis
+{
 }
