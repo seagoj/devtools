@@ -6,7 +6,7 @@ use Redis;
 
 class RedisRepositorySpec extends ObjectBehavior
 {
-    function let(RedisMock $connection)
+    function let(Redis $connection)
     {
         $this->beConstructedWith($connection);
     }
@@ -61,10 +61,7 @@ class RedisRepositorySpec extends ObjectBehavior
     /*         ->shouldReturn(true); */
     /* } */
 }
-$classes = get_declared_classes();
-var_dump($classes['Redis']);
-/* if (!class_exists('Redis')) { */
-/*     class Redis */
-/*     { */
-/*     } */
-/* } */
+
+if (!class_exists('Redis')) {
+    include_once 'spec/helpers/Redis.php';
+}
