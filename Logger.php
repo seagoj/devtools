@@ -79,14 +79,14 @@ abstract class Logger extends BaseObserver
         return $rtn;
     }
 
-    private static function output($msg)
-    {
-        global $errorLog;
+    /* private static function output($msg) */
+    /* { */
+    /*     global $errorLog; */
 
-        if (isset($errorLog) && get_class($errorLog) === 'Devtools\Log') {
-            $errorLog->write($msg, false);
-        } else {
-            echo $msg;
-        }
-    }
+    /*     if (isset($errorLog) && get_class($errorLog) === 'Devtools\Log') { */
+    /*         $errorLog->write($msg, false); */
+    /*     } else { */
+    /*         echo $msg; */
+    /*     } */
+    /* } */
 }

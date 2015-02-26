@@ -185,16 +185,16 @@ class Log extends BaseObserver
         return $rtn;
     }
 
-    private static function output($msg)
-    {
-        global $errorLog;
+    /* private static function output($msg) */
+    /* { */
+    /*     global $errorLog; */
 
-        if (isset($errorLog) && get_class($errorLog) === 'Devtools\Log') {
-            $errorLog->write($msg, false);
-        } else {
-            echo $msg;
-        }
-    }
+    /*     if (isset($errorLog) && get_class($errorLog) === 'Devtools\Log') { */
+    /*         $errorLog->write($msg, false); */
+    /*     } else { */
+    /*         echo $msg; */
+    /*     } */
+    /* } */
 
     public static function debugLog($path = '/home/www/Debug.log')
     {
@@ -216,21 +216,21 @@ class Log extends BaseObserver
         );
     }
 
-    private static function newLog($log)
-    {
-        $name = $log['name'];
-        $path = $log['path'];
+    /* private static function newLog($log) */
+    /* { */
+    /*     $name = $log['name']; */
+    /*     $path = $log['path']; */
 
-         global $$name;
-        return isset($$name)
-            ? $$name
-            : new self(
-                array(
-                    'type'  => 'file',
-                    'file'  => $path
-                )
-            );
-    }
+    /*      global $$name; */
+    /*     return isset($$name) */
+    /*         ? $$name */
+    /*         : new self( */
+    /*             array( */
+    /*                 'type'  => 'file', */
+    /*                 'file'  => $path */
+    /*             ) */
+    /*         ); */
+    /* } */
 
     public function assert($term)
     {
