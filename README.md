@@ -1,9 +1,6 @@
 ## Devtools [![Build Status](https://scrutinizer-ci.com/g/seagoj/Devtools/badges/build.png?b=master)](https://scrutinizer-ci.com/g/seagoj/Devtools/build-status/master) [![Code Quality](https://scrutinizer-ci.com/g/seagoj/Devtools/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/seagoj/Devtools/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/seagoj/Devtools/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/seagoj/Devtools/?branch=master)
 Devtools is a collection of PHP libraries designed for rapid development and debugging.
 
-* **Autoload**:
-Class autoloader that is namespace and PSR-0 compliant
-
 * **Dbg**:
 Debuging class that manages exceptions and debugging output
 
