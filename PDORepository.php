@@ -54,7 +54,7 @@ abstract class PDORepository extends BaseRepository implements Repository
 
     public function all()
     {
-        $this->query = 'SELECT * FROM '.$this->table;
+        $this->query = "SELECT * FROM {$this->table}";
         return $this;
     }
 
@@ -64,7 +64,7 @@ abstract class PDORepository extends BaseRepository implements Repository
         $this->checkForData();
         $this->checkDataForPrimaryKey($this->data);
 
-        $sql = "DELETE FROM ".$this->table." WHERE `".$this->primaryKey.'` = :'.$this->primaryKey;
+        $sql = "DELETE FROM {$this->table} WHERE `{$this->primaryKey}` = :{$this->primaryKey}";
         return $this->query($sql, $this->params);
     }
 
