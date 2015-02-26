@@ -26,48 +26,48 @@ abstract class IoC
     /*     return self::$registryOfCreatedObjects[$objectName] = $func(); */
     /* } */
 
-    public static function make($namespace, $singleton = true)
+    public static function make($objectName, $singleton = true)
     {
-        if ($singleton && self::isInstantiated($namespace)) {
-            return self::$registryOfCreatedObjects[$namespace];
+        if ($singleton && self::isInstantiated($objectName)) {
+            return self::$registryOfCreatedObjects[$objectName];
         }
 
-        if (self::isRegistered($namespace)) {
-            return self::makeWithBinding($namespace);
+        if (self::isRegistered($objectName)) {
+            return self::makeWithBinding($objectName);
         }
 
-        if (self::objectRegistersBinding($namespace)) {
-            $namespace::register();
-            return self::make($namespace, $singleton);
+        if (self::objectRegistersBinding($objectName)) {
+            $objectName::register();
+            return self::make($objectName, $singleton);
         }
 
-        return self::makeWithReflection($namespace);
+        return self::makeWithReflection($objectName);
     }
 
-    private static function isInstantiated($namespace)
+    private static function isInstantiated($objectName)
     {
-        return isset(self::$registryOfCreatedObjects[$namespace]);
+        return isset(self::$registryOfCreatedObjects[$objectName]);
     }
 
-    private static function isRegistered($namespace)
+    private static function isRegistered($objectName)
     {
-        return isset(self::$objectDefinitions[$namespace]);
+        return isset(self::$objectDefinitions[$objectName]);
     }
 
-    private static function makeWithBinding($namespace)
+    private static function makeWithBinding($objectName)
     {
-        $func = self::$objectDefinitions[$namespace];
-        return self::$registryOfCreatedObjects[$namespace] = $func();
+        $func = self::$objectDefinitions[$objectName];
+        return self::$registryOfCreatedObjects[$objectName] = $func();
     }
 
-    private static function objectRegistersBinding($namespace)
+    private static function objectRegistersBinding($objectName)
     {
-        return method_exists($namespace, 'register');
+        return method_exists($objectName, 'register');
     }
 
-    private static function makeWithReflection($namespace)
+    private static function makeWithReflection($objectName)
     {
-        $reflection = new ReflectionClass($namespace);
+        $reflection = new ReflectionClass($objectName);
         $dependencies = $reflection->getMethod('__construct')->getParameters();
         $params = array();
         foreach ($dependencies as $dependency) {
