@@ -149,7 +149,7 @@ abstract class PDORepository extends BaseRepository implements Repository
         if (empty($this->query)) {
             $this->all();
         }
-        $this->query .= ' WHERE '.$clause;
+        $this->query .= " WHERE {$clause}";
         $this->params = $params;
         return $this;
     }
@@ -170,8 +170,10 @@ abstract class PDORepository extends BaseRepository implements Repository
             $rowsInBatch = $this->count - $this->position;
         }
 
+        $count = $this->position + $rowsInBatch - 1;
+
         $result = $this->query(
-            $this->query.' LIMIT '.$this->position.','.($this->position+$rowsInBatch-1),
+            "{$this->query} LIMIT {$this->position},{$count}",
             $this->params,
             true
         );
@@ -194,7 +196,7 @@ abstract class PDORepository extends BaseRepository implements Repository
     {
         $this->checkDataForPrimaryKey($values);
 
-        $sql = 'UPDATE '.$this->table.' SET ';
+        $sql = "UPDATE {$this->table} SET ";
         $first = true;
         foreach (array_keys($values) as $key) {
             if ($key !== $this->primaryKey) {
@@ -205,7 +207,7 @@ abstract class PDORepository extends BaseRepository implements Repository
                 $first = false;
             }
         }
-        $sql .= (' WHERE '.$this->primaryKey.'=:'.$this->primaryKey);
+        $sql .= " WHERE {$this->primaryKey}=:{$this->primaryKey}";
         $result = $this->query($sql, $values, true);
         $this->find($this->data[$this->primaryKey])->get();
         return $result;
@@ -224,11 +226,10 @@ abstract class PDORepository extends BaseRepository implements Repository
             }
         }
 
-        $sql = "INSERT INTO ".$this->table.' ('
-            .implode(',', $fields)
-            .') VALUES ('
-            .implode(',', $bindings)
-            .')';
+        $fields = implode(',', $fields);
+        $bindings = implode(',', $bindings);
+
+        $sql = "INSERT INTO {$this->table} ({$fields}) VALUES ({$bindings})";
         return $this->query($sql, $userValues, true);
     }
 
@@ -312,10 +313,10 @@ abstract class PDORepository extends BaseRepository implements Repository
     {
         $params[$clause[0]] = array_pop($clause);
         $binding = strtoupper($clause[1]) === 'IN'
-            ? '(:'.$clause[0].')'
-            : ':'.$clause[0];
+            ? "(:{$clause[0]})"
+            : ":{$clause[0]}";
         array_push($clause, $binding);
-        $clause[0] = '`'.$clause[0].'`';
+        $clause[0] = "`{$clause[0]}`";
     }
 
     private function wrapInArrayIfNotAssoc($clause)

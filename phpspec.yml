@@ -3,13 +3,3 @@ suites:
       namespace: Devtools
       spec_path:
       src_path:
-
-extensions:
-  - PhpSpec\Extension\CodeCoverageExtension
-
-code_coverage:
-    format:
-        - clover
-    output:
-        clover: coverage.xml
-
