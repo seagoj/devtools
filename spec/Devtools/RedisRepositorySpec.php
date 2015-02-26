@@ -61,7 +61,10 @@ class RedisRepositorySpec extends ObjectBehavior
     /*         ->shouldReturn(true); */
     /* } */
 }
-
-class RedisMock extends Redis
-{
-}
+$classes = get_declared_classes();
+var_dump($classes['Redis']);
+/* if (!class_exists('Redis')) { */
+/*     class Redis */
+/*     { */
+/*     } */
+/* } */
