@@ -3,7 +3,7 @@
     "description": "Tools for PHP development",
     "license": "MIT",
     "require": {
-        "ircmaxell/password-compat": "@dev"
+        "ircmaxell/password-compat": "1.*"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*",

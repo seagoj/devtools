@@ -4,20 +4,20 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c7f88c9bab82943152ffa19d1783b1c7",
+    "hash": "d9b8a5cc293f42aec43fe14491ffe25e",
     "packages": [
         {
             "name": "ircmaxell/password-compat",
-            "version": "dev-master",
+            "version": "1.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ircmaxell/password_compat.git",
-                "reference": "c859f7c11ef51f3a7bc5527b3df3f3830b620b0d"
+                "reference": "9b99377557a33a4129c9194e60a97a685fab21e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ircmaxell/password_compat/zipball/c859f7c11ef51f3a7bc5527b3df3f3830b620b0d",
-                "reference": "c859f7c11ef51f3a7bc5527b3df3f3830b620b0d",
+                "url": "https://api.github.com/repos/ircmaxell/password_compat/zipball/9b99377557a33a4129c9194e60a97a685fab21e0",
+                "reference": "9b99377557a33a4129c9194e60a97a685fab21e0",
                 "shasum": ""
             },
             "require-dev": {
@@ -46,7 +46,7 @@
                 "hashing",
                 "password"
             ],
-            "time": "2015-02-04 19:29:18"
+            "time": "2014-11-20 19:18:42"
         }
     ],
     "packages-dev": [
@@ -1306,7 +1306,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "ircmaxell/password-compat": 20,
         "phpspec/phpspec": 20
     },
     "prefer-stable": false,
