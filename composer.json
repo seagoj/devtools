@@ -1,5 +1,5 @@
 {
-    "name": "devtools",
+    "name": "seagoj/devtools",
     "description": "Tools for PHP development",
     "license": "MIT",
     "require": {
