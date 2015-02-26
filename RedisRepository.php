@@ -9,11 +9,6 @@ class RedisRepository
         $this->connection = $connection;
     }
 
-    public static function connect()
-    {
-        return $this->connection->connect('127.0.0.1', 6379);
-    }
-
     public function get($key, $collection = null)
     {
         return is_null($collection) ?
