@@ -12,8 +12,8 @@ class Log extends BaseObserver
     {
         error_reporting(-1);
         /* ini_set('display_errors', 'On'); */
-        set_exception_handler(array('Devtools\Log', 'exception_handler'));
-        set_error_handler(array('Devtools\Log', 'error_handler'));
+        set_exception_handler(array('Devtools\Log', 'exceptionHandler'));
+        set_error_handler(array('Devtools\Log', 'errorHandler'));
 
         $defaults = array(
             'type' => 'stdout',
@@ -125,7 +125,7 @@ class Log extends BaseObserver
         print '<script>console.log('.json_encode($var).');</script>';
     }
 
-    public static function exception_handler($e)
+    public static function exceptionHandler($e)
     {
         self::output(
             $e->getMessage() . "\n"
@@ -133,7 +133,7 @@ class Log extends BaseObserver
         );
     }
 
-    public static function error_handler($errno, $errstr, $errfile, $errline)
+    public static function errorHandler($errno, $errstr, $errfile, $errline)
     {
         throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
     }

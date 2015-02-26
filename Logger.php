@@ -9,10 +9,10 @@ abstract class Logger extends BaseObserver
         error_reporting(-1);
         /* ini_set('display_errors', 'On'); */
         set_exception_handler(
-            array($this, 'exception_handler')
+            array($this, 'exceptionHandler')
         );
         set_error_handler(
-            array($this, 'error_handler')
+            array($this, 'errorHandler')
         );
     }
 
@@ -20,14 +20,14 @@ abstract class Logger extends BaseObserver
         $content, $result = null
     );
 
-    public static function exception_handler($e)
+    public static function exceptionHandler($e)
     {
         self::output(
             $e->getMessage() . "\n" . self::getExceptionTraceAsString($e)
         );
     }
 
-    public static function error_handler($errno, $errstr, $errfile, $errline)
+    public static function errorHandler($errno, $errstr, $errfile, $errline)
     {
         throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
     }
