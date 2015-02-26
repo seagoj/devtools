@@ -99,12 +99,13 @@ class Rest
         $first_dir = $first_dir[1];
         $path_array = explode('/', getCWD());
         $path = array();
-        for ($p = 0; $p<count($path_array); $p++) {
+        $count = count($path_array);
+        for ($p = 0; $p < $count; $p++) {
             if ($path_array[$p] === $first_dir) {
                 break;
             }
         }
-        for ($p; $p<count($path_array); $p++) {
+        for ($p; $p < $count; $p++) {
             array_push($path, $path_array[$p]);
         }
         return '/'.implode('/', $path).'/';
@@ -113,11 +114,12 @@ class Rest
     private function getCols()
     {
         if (!empty($this->request)) {
+            $count = count($this->request);
             if (is_numeric($this->request[0])) {
                 $this->id = $this->request[0];
             } else {
                 $cols = array();
-                for ($i=0; $i<count($this->request); $i++) {
+                for ($i=0; $i < $count; $i++) {
                     array_push($cols, $this->request[$i]);
                 }
                 $cols = implode(',', $cols);
