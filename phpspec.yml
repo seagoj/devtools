@@ -1,15 +1,15 @@
 suites:
-    UniqueIndicator:
-        namespace: Devtools
-        spec_path:
-        src_path:
+  UniqueIndicator:
+      namespace: Devtools
+      spec_path:
+      src_path:
+
 extensions:
-    PhpSpec\Extension\CodeCoverageExtension
-code-coverage:
+  - PhpSpec\Extension\CodeCoverageExtension
+
+code_coverage:
     format:
-        - html
         - clover
     output:
-        html: coverage
-        clover: coverage.clover
+        clover: coverage.xml
 
