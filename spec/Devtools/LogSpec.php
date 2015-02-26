@@ -72,13 +72,13 @@ class LogSpec extends ObjectBehavior
             ->duringWrite(['Test', true]);
     }
 
-    function it_creates_errorLog()
-    {
-        $this::errorLog()->shouldHaveType('\Devtools\Log');
-    }
+    /* function it_creates_errorLog() */
+    /* { */
+    /*     $this::errorLog()->shouldHaveType('\Devtools\Log'); */
+    /* } */
 
-    function it_creates_debugLog()
-    {
-        $this::debugLog()->shouldHaveType('\Devtools\Log');
-    }
+    /* function it_creates_debugLog() */
+    /* { */
+    /*     $this::debugLog()->shouldHaveType('\Devtools\Log'); */
+    /* } */
 }

@@ -196,25 +196,25 @@ class Log extends BaseObserver
     /*     } */
     /* } */
 
-    public static function debugLog($path = '/home/www/Debug.log')
-    {
-        return self::newLog(
-            array(
-                'name' => 'debugLog',
-                'path' => $path
-            )
-        );
-    }
+    /* public static function debugLog($path = '/home/www/Debug.log') */
+    /* { */
+    /*     return self::newLog( */
+    /*         array( */
+    /*             'name' => 'debugLog', */
+    /*             'path' => $path */
+    /*         ) */
+    /*     ); */
+    /* } */
 
-    public static function errorLog($path = '/home/www/Error.log')
-    {
-        return self::newLog(
-            array(
-                'name' => 'errorLog',
-                'path' => $path
-            )
-        );
-    }
+    /* public static function errorLog($path = '/home/www/Error.log') */
+    /* { */
+    /*     return self::newLog( */
+    /*         array( */
+    /*             'name' => 'errorLog', */
+    /*             'path' => $path */
+    /*         ) */
+    /*     ); */
+    /* } */
 
     /* private static function newLog($log) */
     /* { */
