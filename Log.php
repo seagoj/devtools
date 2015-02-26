@@ -11,7 +11,7 @@ class Log extends BaseObserver
     public function __construct($options = array())
     {
         error_reporting(-1);
-        ini_set('display_errors', 'On');
+        /* ini_set('display_errors', 'On'); */
         set_exception_handler(array('Devtools\Log', 'exception_handler'));
         set_error_handler(array('Devtools\Log', 'error_handler'));
 
