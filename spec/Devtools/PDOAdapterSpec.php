@@ -39,19 +39,19 @@ class PDOAdapterSpec extends ObjectBehavior
         );
     }
 
-    function it_should_create_a_pdo_connection()
-    {
-        /* Exception thrown on attempted connection to non-existent datastore */
-        $this->shouldThrow(
-            new \PDOException("SQLSTATE[HY000] [2002] No such file or directory", 2002)
-        )->duringConnect(
-            [
-                'type'     => 'mysql',
-                'host'     => 'localhost',
-                'db'       => 'db',
-                'username' => 'username',
-                'password' => 'password'
-            ]
-        );
-    }
+    /* function it_should_create_a_pdo_connection() */
+    /* { */
+    /*     /1* Exception thrown on attempted connection to non-existent datastore *1/ */
+    /*     $this->shouldThrow( */
+    /*         new \PDOException("SQLSTATE[HY000] [2002] No such file or directory", 2002) */
+    /*     )->duringConnect( */
+    /*         [ */
+    /*             'type'     => 'mysql', */
+    /*             'host'     => 'localhost', */
+    /*             'db'       => 'db', */
+    /*             'username' => 'username', */
+    /*             'password' => 'password' */
+    /*         ] */
+    /*     ); */
+    /* } */
 }
