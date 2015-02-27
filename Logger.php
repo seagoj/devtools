@@ -1,6 +1,7 @@
 <?php namespace Devtools;
 
 use ErrorException;
+use Exception;
 use Closure;
 
 abstract class Logger extends BaseObserver
@@ -55,10 +56,9 @@ abstract class Logger extends BaseObserver
                     } elseif (is_bool($arg)) {
                         $args[] = ($arg) ? "true" : "false";
                     } elseif (!($arg instanceof Closure) && (is_object($arg) || is_array($arg))) {
-                        var_dump($arg);
                         try {
                             $args[] = serialize($arg);
-                        } catch (\PDOException $e) {
+                        } catch (Exception $e) {
                             $args[] = var_export($arg, true);
                         }
                     } elseif (is_resource($arg)) {
