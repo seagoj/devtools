@@ -53,7 +53,7 @@ abstract class Logger extends BaseObserver
                         $args[] = 'NULL';
                     } elseif (is_bool($arg)) {
                         $args[] = ($arg) ? "true" : "false";
-                    } elseif (is_object($arg) || is_array($arg)) {
+                    } elseif (!is_a('Closure') && (is_object($arg) || is_array($arg))) {
                         try {
                             $args[] = serialize($arg);
                         } catch (\PDOException $e) {
