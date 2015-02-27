@@ -7,7 +7,7 @@ abstract class BaseEntity
 
     public function __construct(
         Repository $repository,
-        Log $log
+        Logger $log
     ) {
         $this->repository = $repository;
         $this->log = $log;
