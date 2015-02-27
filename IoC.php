@@ -62,6 +62,7 @@ abstract class IoC
 
         $reflection = new ReflectionClass($objectName);
         $dependencies = $reflection->getMethod('__construct')->getParameters();
+        var_dump($dependencies);
         $params = array();
         foreach ($dependencies as $dependency) {
             array_push(
