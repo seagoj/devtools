@@ -6,7 +6,6 @@ cookbooks
 vendor
 *.log
 *.tap
-.DS_Store
 coverage.xml
 report/
 node_modules
