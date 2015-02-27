@@ -15,7 +15,7 @@ abstract class IoC
         return true;
     }
 
-    public static function make(Callable $objectName, $singleton = true)
+    public static function make($objectName, $singleton = true)
     {
         if ($singleton && self::isInstantiated($objectName)) {
             return self::$registryOfCreatedObjects[$objectName];
