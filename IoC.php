@@ -62,9 +62,9 @@ abstract class IoC
 
         $reflection = new ReflectionClass($objectName);
         $dependencies = $reflection->getMethod('__construct')->getParameters();
-        var_dump($dependencies);
         $params = array();
         foreach ($dependencies as $dependency) {
+            var_dump($dependency);
             array_push(
                 $params,
                 self::make(
