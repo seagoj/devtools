@@ -56,6 +56,10 @@ abstract class IoC
 
     private static function makeWithReflection($objectName)
     {
+        if (!class_exists($objectName)) {
+            return false;
+        }
+
         $reflection = new ReflectionClass($objectName);
         $dependencies = $reflection->getMethod('__construct')->getParameters();
         $params = array();
