@@ -19,7 +19,7 @@ abstract class Logger extends BaseObserver
 
     public function log($content, $result = null)
     {
-        $this->write($content, $resul);
+        $this->write($content, $result);
     }
 
     public abstract function write(
@@ -83,5 +83,16 @@ abstract class Logger extends BaseObserver
             $count++;
         }
         return $rtn;
+    }
+
+
+    static function output($msg)
+    {
+        global $errorLog;
+        if (isset($errorLog) && get_class($errorLog)==='Devtools\Log') {
+            $errorLog->write($msg, false);
+        } else {
+            echo $msg;
+        }
     }
 }
