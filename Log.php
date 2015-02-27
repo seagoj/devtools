@@ -11,7 +11,6 @@ class Log extends BaseObserver
     public function __construct($options = array())
     {
         error_reporting(-1);
-        /* ini_set('display_errors', 'On'); */
         set_exception_handler(array('Devtools\Log', 'exceptionHandler'));
         set_error_handler(array('Devtools\Log', 'errorHandler'));
 
@@ -184,53 +183,6 @@ class Log extends BaseObserver
         }
         return $rtn;
     }
-
-    /* private static function output($msg) */
-    /* { */
-    /*     global $errorLog; */
-
-    /*     if (isset($errorLog) && get_class($errorLog) === 'Devtools\Log') { */
-    /*         $errorLog->write($msg, false); */
-    /*     } else { */
-    /*         echo $msg; */
-    /*     } */
-    /* } */
-
-    /* public static function debugLog($path = '/home/www/Debug.log') */
-    /* { */
-    /*     return self::newLog( */
-    /*         array( */
-    /*             'name' => 'debugLog', */
-    /*             'path' => $path */
-    /*         ) */
-    /*     ); */
-    /* } */
-
-    /* public static function errorLog($path = '/home/www/Error.log') */
-    /* { */
-    /*     return self::newLog( */
-    /*         array( */
-    /*             'name' => 'errorLog', */
-    /*             'path' => $path */
-    /*         ) */
-    /*     ); */
-    /* } */
-
-    /* private static function newLog($log) */
-    /* { */
-    /*     $name = $log['name']; */
-    /*     $path = $log['path']; */
-
-    /*      global $$name; */
-    /*     return isset($$name) */
-    /*         ? $$name */
-    /*         : new self( */
-    /*             array( */
-    /*                 'type'  => 'file', */
-    /*                 'file'  => $path */
-    /*             ) */
-    /*         ); */
-    /* } */
 
     public function assert($term)
     {

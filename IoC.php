@@ -15,18 +15,6 @@ abstract class IoC
         return true;
     }
 
-    /* public static function make($objectName, $singleton = true) */
-    /* { */
-    /*     if ($singleton && isset(self::$registryOfCreatedObjects[$objectName])) { */
-    /*         return self::$registryOfCreatedObjects[$objectName]; */
-    /*     } */
-    /*     if (!array_search($objectName, self::$objectDefinitions)) { */
-    /*         $objectName::register(); */
-    /*     } */
-    /*     $func = self::$objectDefinitions[$objectName]; */
-    /*     return self::$registryOfCreatedObjects[$objectName] = $func(); */
-    /* } */
-
     public static function make(Callable $objectName, $singleton = true)
     {
         if ($singleton && self::isInstantiated($objectName)) {

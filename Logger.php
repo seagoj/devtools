@@ -7,7 +7,6 @@ abstract class Logger extends BaseObserver
     public function __construct()
     {
         error_reporting(-1);
-        /* ini_set('display_errors', 'On'); */
         set_exception_handler(
             array($this, 'exceptionHandler')
         );
@@ -78,15 +77,4 @@ abstract class Logger extends BaseObserver
         }
         return $rtn;
     }
-
-    /* private static function output($msg) */
-    /* { */
-    /*     global $errorLog; */
-
-    /*     if (isset($errorLog) && get_class($errorLog) === 'Devtools\Log') { */
-    /*         $errorLog->write($msg, false); */
-    /*     } else { */
-    /*         echo $msg; */
-    /*     } */
-    /* } */
 }
