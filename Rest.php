@@ -93,7 +93,7 @@ class Rest
         }
     }
 
-    private static function getRoot()
+    public static function getRoot()
     {
         $first_dir = explode('/', $_SERVER['REQUEST_URI']);
         $first_dir = $first_dir[1];
