@@ -110,12 +110,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "5a87e6edaa9927e301ed6b16d230d977d14f1386"
+                "reference": "d1da796ba5565789a623052eb9f2cf59d57fec60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/5a87e6edaa9927e301ed6b16d230d977d14f1386",
-                "reference": "5a87e6edaa9927e301ed6b16d230d977d14f1386",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/d1da796ba5565789a623052eb9f2cf59d57fec60",
+                "reference": "d1da796ba5565789a623052eb9f2cf59d57fec60",
                 "shasum": ""
             },
             "require": {
@@ -152,7 +152,7 @@
                     "email": "mike.vanriel@naenius.com"
                 }
             ],
-            "time": "2015-02-25 17:26:05"
+            "time": "2015-02-27 09:28:18"
         },
         {
             "name": "phpspec/php-diff",
