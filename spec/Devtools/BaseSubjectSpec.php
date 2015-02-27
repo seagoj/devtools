@@ -60,9 +60,9 @@ class BaseSubjectSpec extends ObjectBehavior
         $observer, $observer2, $observer3
     ) {
         $this->attach([$observer, $observer2, $observer3]);
-        $observer->handle('Event1')->shouldBeCalled();
-        $observer2->handle('Event1')->shouldBeCalled();
-        $observer3->handle('Event1')->shouldBeCalled();
+        $observer->handle('Event1', null)->shouldBeCalled();
+        $observer2->handle('Event1', null)->shouldBeCalled();
+        $observer3->handle('Event1', null)->shouldBeCalled();
         $this->fire('Event1');
     }
 
@@ -70,12 +70,12 @@ class BaseSubjectSpec extends ObjectBehavior
         $observer, $observer2, $observer3
     ) {
         $this->attach([$observer, $observer2, $observer3]);
-        $observer->handle('Event1')->shouldBeCalled();
-        $observer2->handle('Event1')->shouldBeCalled();
-        $observer3->handle('Event1')->shouldBeCalled();
-        $observer->handle('Event2')->shouldBeCalled();
-        $observer2->handle('Event2')->shouldBeCalled();
-        $observer3->handle('Event2')->shouldBeCalled();
+        $observer->handle('Event1', null)->shouldBeCalled();
+        $observer2->handle('Event1', null)->shouldBeCalled();
+        $observer3->handle('Event1', null)->shouldBeCalled();
+        $observer->handle('Event2', null)->shouldBeCalled();
+        $observer2->handle('Event2', null)->shouldBeCalled();
+        $observer3->handle('Event2', null)->shouldBeCalled();
         $this->fire(['Event1', 'Event2']);
     }
 }

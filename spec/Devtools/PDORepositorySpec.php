@@ -3,10 +3,11 @@
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Devtools;
+use PDO;
 
 class PDORepositorySpec extends ObjectBehavior
 {
-    function let(\PDO $connection, Devtools\Log $log)
+    function let(PDO $connection, Devtools\Logger $log)
     {
         $this->beAnInstanceOf(
             'spec\Devtools\TestPDORepository'
@@ -400,6 +401,11 @@ class PDORepositorySpec extends ObjectBehavior
         $this->testvalue->shouldReturn('Test 1');
         $this->reset();
         $this->testvalue->shouldReturn(null);
+    }
+
+    function it_attaches_logger($log)
+    {
+        $this->attach($log);
     }
 }
 

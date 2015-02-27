@@ -1,6 +1,6 @@
 <?php namespace Devtools;
 
-abstract class BaseRepository
+abstract class BaseRepository extends BaseSubject
 {
     protected $connection;
     protected $log;

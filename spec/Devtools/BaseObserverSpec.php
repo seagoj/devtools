@@ -18,32 +18,48 @@ class BaseObserverSpec extends ObjectBehavior
 
     function it_binds_event_listeners()
     {
-        $this->listen('Event1', array($this, 'callback'));
-        $this->events()->shouldBe(['Event1' => array($this, 'callback')]);
+        $this->listen('Event1');
+        $this->events()->shouldBe(['Event1']);
     }
 
     function it_binds_event_listeners_from_array()
     {
         $this->listen(
             [
-                'Event1' => array($this, 'callback'),
-                'Event2' => array($this, 'callback')
+                'Event1',
+                'Event2'
             ]
         );
 
         $this->events()->shouldBe(
             [
-                'Event1' => array($this, 'callback'),
-                'Event2' => array($this, 'callback')
+                'Event1',
+                'Event2'
             ]
         );
     }
 
-    function callback()
+    function it_calls_bound_event_listeners()
     {
+        $this->listen('Event1');
+
+        $this->handle('Event1');
+        $this->Event1(null)->shouldReturn(7);
+
+        $this->handle('Event1', 7);
+        $this->Event1(7)->shouldReturn(true);
     }
 }
 
 class BaseObserverMock extends Devtools\BaseObserver
 {
+    public function Event1($state)
+    {
+        switch($state) {
+        case 7:
+            return true;
+        default:
+            return 7;
+        }
+    }
 }

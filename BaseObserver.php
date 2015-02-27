@@ -2,41 +2,31 @@
 
 use Exception;
 
-abstract class BaseObserver implements Observer
+abstract class BaseObserver extends Collection implements Observer
 {
     private $events = array();
 
-    public function listen($event, $callback = null)
+    public function listen($event)
     {
-        if (is_array($event) && is_null($callback)) {
-            foreach ($event as $name => $callback) {
-                $this->validateCallback($name, $callback);
-            }
-            $this->events = array_merge($this->events, $event);
-        } else {
-            $this->validateCallback($event, $callback);
-            $this->events[$event] = $callback;
+        if (is_array($event)) {
+            $this->processEach($event, null, 'listen');
+            return;
         }
+
+        array_push($this->events, $event);
     }
 
-    public function handle($event)
+    public function handle($event, $state = null)
     {
         if (array_search($event, $this->events)
             && method_exists($this, $event)
         ) {
-            $this->$event();
+            return $this->$event($state);
         }
     }
 
     public function events()
     {
         return $this->events;
-    }
-
-    private function validateCallback($name, $callback)
-    {
-        if (!is_callable($callback, true)) {
-            throw new Exception("{$name} is not callable.");
-        }
     }
 }

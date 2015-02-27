@@ -121,7 +121,8 @@ class Log extends BaseObserver
 
     public static function consoleLog($var)
     {
-        print '<script>console.log('.json_encode($var).');</script>';
+        $var = json_encode($var);
+        print "<script>console.log({$var});</script>";
     }
 
     public static function exceptionHandler($e)

@@ -13,6 +13,13 @@ abstract class Logger extends BaseObserver
         set_error_handler(
             array($this, 'errorHandler')
         );
+
+        $this->listen('log');
+    }
+
+    public function log($content, $result = null)
+    {
+        $this->write($content, $resul);
     }
 
     public abstract function write(

@@ -2,5 +2,5 @@
 
 interface Observer
 {
-    public function handle($event);
+    public function handle($event, $state = null);
 }

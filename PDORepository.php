@@ -1,11 +1,13 @@
 <?php namespace Devtools;
 
+use PDO;
+
 abstract class PDORepository extends BaseRepository implements Repository
 {
     protected $params;
     protected $position;
 
-    public function __construct(\PDO $connection, Log $log)
+    public function __construct(PDO $connection, Logger $log)
     {
         $this->connection = $connection;
         $this->log = $log;
