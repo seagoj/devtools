@@ -30,7 +30,9 @@ abstract class IoC
             return self::make($objectName, $singleton);
         }
 
-        return self::makeWithReflection($objectName);
+        /* return self::makeWithReflection($objectName); */
+
+        return false;
     }
 
     private static function isInstantiated($objectName)
@@ -57,7 +59,7 @@ abstract class IoC
     private static function makeWithReflection($objectName)
     {
         if (!class_exists($objectName)) {
-            return false;
+            return;
         }
 
         $reflection = new ReflectionClass($objectName);
