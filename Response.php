@@ -7,14 +7,12 @@ class Response implements IService// , \Serializable
     public $status;
     public $request;
     public $message;
-    private $suppressHeader;
     private $data;
     private $publicProperties;
     private $repository;
 
     public function __construct(Repository $repository = null)
     {
-        $this->suppressHeader = $this->isSuppressHeader();
         $this->status = 'OK';
         $this->request = $this->getRequest();
         $this->message = $this->status ? "" : "Data could not be set\n";

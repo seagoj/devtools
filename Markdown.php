@@ -104,7 +104,7 @@ class Markdown
                     && ($pivot = strpos($line, ':', 1)) !==false
                     && ($label = substr($line, 0, $pivot)) !==false
                     && ($value = substr($line, $pivot+1)) !==false
-                    && ($link = strpos($label, 'http')) === false
+                    && (strpos($label, 'http')) === false
                 ) {
                     $md = $first ? "<head>\n" : "";
                     $first = false;
@@ -160,7 +160,7 @@ class Markdown
         $block = false;
         foreach ($this->code as $line) {
             if ($line!=='' && $line[0]==='<') {
-                $tag = substr($line, 1, ($end = strpos($line, '>', 1))-1);
+                $tag = substr($line, 1, (strpos($line, '>', 1))-1);
                 if (($space = strpos($tag, ' ')) !== false) {
                     $tag = substr($tag, 0, $space);
                 }
@@ -315,7 +315,7 @@ class Markdown
         $triggered = false;
         foreach ($this->code as $line) {
             if (($pivot=strpos($line, '. '))!==false) {
-                if (is_numeric(trim($prefix = substr($line, 0, $pivot)))) {
+                if (is_numeric(trim(substr($line, 0, $pivot)))) {
                     $triggered = true;
                     if ($first) {
                         array_push($result, "<ol>");
