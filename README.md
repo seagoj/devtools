@@ -1,4 +1,6 @@
-## Devtools ![Build Status](https://codeship.com/projects/e802aba0-bc45-0131-50bf-127f5dbe26ea/status?branch=master)
+## Devtools 
+
+![Build Status](https://codeship.com/projects/e802aba0-bc45-0131-50bf-127f5dbe26ea/status?branch=master)
 
 Devtools is a collection of PHP libraries designed for rapid development and debugging.
 
