@@ -1,13 +1,14 @@
 <?php namespace Devtools;
 
 use ReflectionClass;
+use Closure;
 
 abstract class IoC
 {
     protected static $objectDefinitions = array();
     protected static $registryOfCreatedObjects = array();
 
-    public static function bind($objectName, \Closure $callable)
+    public static function bind($objectName, Closure $callable)
     {
         self::$objectDefinitions[$objectName] = $callable;
 
@@ -26,7 +27,7 @@ abstract class IoC
     /*     return self::$registryOfCreatedObjects[$objectName] = $func(); */
     /* } */
 
-    public static function make($objectName, $singleton = true)
+    public static function make(Callable $objectName, $singleton = true)
     {
         if ($singleton && self::isInstantiated($objectName)) {
             return self::$registryOfCreatedObjects[$objectName];
