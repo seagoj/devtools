@@ -1,53 +1,10 @@
 <?php namespace Devtools;
 
-/**
- * Class Markdown
- *
- * @category Seagoj
- * @package  Markdown
- * @author   Jeremy Seago <seagoj@gmail.com>
- * @license  http://github.com/seagoj/Devtools/LICENSE MIT
- * @link     http://github.com/seagoj/Devtools
- *
- * Converts markdown to html in the following flavors:
- *  Standard: http:// daringfireball.net/projects/markdown/syntax
- *  GitHub: https://help.github.com/articles/github-flavored-markdown
- *
- **/
 class Markdown
 {
-    /**
-     * Configuration array for the class
-     *
-     * Sets the flavor of Markdown and logType to be used with Devtools\Log
-     **/
     private $config;
-    /**
-     * Log object for the class. Devtools\Log
-     *
-     * An instance of Devtools\Log of type this.config['logType']
-     **/
-    private $log;
-    /**
-     * Array of lines to be parsed
-     *
-     * An array of the string or file contents exploded by the linefeed. So that
-     * each line becomes an entry in the array.
-     **/
     private $code;
 
-    /**
-     * Markdown::__construct()
-     *
-     * Constructor for Markdown class
-     *
-     * @param array $options Array of options for class
-     *
-     * @option  string  flavor      Type of Markdown to be used in the
-     * @option  string  logType     Type of log to write
-     *
-     * @return void
-     **/
     public function __construct($options = [])
     {
         $defaults = [
@@ -61,13 +18,6 @@ class Markdown
         $this->log = new \Devtools\Log($logOptions);
     }
 
-    /**
-     * Markdown::validateConfig()
-     *
-     * Validates Configuration
-     *
-     * @return boolean
-     **/
     private function validateConfig()
     {
         $valid = [
@@ -94,22 +44,12 @@ class Markdown
         return true;
     }
 
-    /**
-     * Markdown::convert()
-     *
-     * Converts Markdown syntax into HTML and returns as string
-     *
-     * @param string $input Filename or string to be converted
-     *
-     * @return string Formatted string
-     **/
     public function convert($input)
     {
         if (!is_string($input)) {
             throw new \InvalidArgumentException('Input is not a string or path.');
         }
 
-        // Pull contents of file if input is a path to a file
         if (is_file($input)) {
             $code = file_get_contents($input);
         } else {
@@ -141,13 +81,6 @@ class Markdown
             $html;
     }
 
-    /**
-     * Markdown::formatMetadata()
-     *
-     * Adds metadata tags from Multimarkdown compatible files
-     *
-     * @return void
-     **/
     private function formatMetadata()
     {
         $syntax = [
@@ -171,7 +104,7 @@ class Markdown
                     && ($pivot = strpos($line, ':', 1)) !==false
                     && ($label = substr($line, 0, $pivot)) !==false
                     && ($value = substr($line, $pivot+1)) !==false
-                    && ($link = strpos($label, 'http'))===false
+                    && ($link = strpos($label, 'http')) === false
                 ) {
                     $md = $first ? "<head>\n" : "";
                     $first = false;
@@ -205,14 +138,6 @@ class Markdown
         }
     }
 
-    /**
-     * Markdown::formatParagraph()
-     *
-     * Adds paragraph tags in the proper locations and stores result in
-     * this.code
-     *
-     * @return void
-     **/
     private function formatParagraph()
     {
         $rootElements = array('h1', 'h2', 'h3', 'h4', 'h5', 'h6',
@@ -268,19 +193,6 @@ class Markdown
         $this->code = $result;
     }
 
-    /**
-     * Markdown::tagReplace()
-     *
-     * Replaces Markdown syntax with tags
-     *
-     * @param string $line     String to have items replaced
-     * @param string $tag      HTML tag to replace the Markdown syntax
-     * @param string $startTag Initial Markdown tag
-     * @param string $endTag   Ending Markdown tag (assumed to be the same
-     *                              as $startTag if not passed
-     *
-     * @return string Formatted line
-     **/
     private function tagReplace($line, $tag, $startTag, $endTag = null)
     {
         if ($startTag===$endTag || $endTag===null) {
@@ -292,12 +204,10 @@ class Markdown
             }
 
             $tagLength = strlen($startTag);
-            // Check for leading tag */
             if (substr($line, 0, $tagLength)==$startTag) {
                 $line = "<$tag>".substr($line, $tagLength);
             }
 
-            // Check for ending tag */
             if (substr($line, -$tagLength)==$startTag) {
                 $line = substr($line, 0, strlen($line)-$tagLength)."</$tag>";
             }
@@ -306,13 +216,6 @@ class Markdown
         return $line;
     }
 
-    /**
-     * Markdown::formatInline
-     *
-     * Formats inline Markdown to HTML and stores result in this.code
-     *
-     * @return void
-     **/
     private function formatInline()
     {
         $syntaxMap = [
@@ -342,13 +245,6 @@ class Markdown
         }
     }
 
-    /**
-     * Markdown::formatHR
-     *
-     * converts Markdown HR to HTML and stores result in this.code
-     *
-     * @return void
-     **/
     private function formatHR()
     {
         $result = array();
@@ -363,13 +259,6 @@ class Markdown
         $this->code = $result;
     }
 
-    /**
-     * Markdown::formatHeader
-     *
-     * Converts Markdown headers into HTML and stores result in this.code
-     *
-     * @return void
-     **/
     private function formatHeader()
     {
         $result = array();
@@ -393,13 +282,6 @@ class Markdown
         $this->code = $result;
     }
 
-    /**
-     * Markdown::formatUnorderedList
-     *
-     * Converts Markdown UL into HTML and stores reult in this.code
-     *
-     * @return void
-     **/
     private function formatUnorderedList()
     {
         $result = array();
@@ -426,13 +308,6 @@ class Markdown
         $this->code = $result;
     }
 
-    /**
-     * Markdown::formatOrderedList
-     *
-     * Converts Markdown OL into HTML and stores result in this.code
-     *
-     * @return void
-     **/
     private function formatOrderedList()
     {
         $result = array();
@@ -452,8 +327,8 @@ class Markdown
                 }
             } else {
                 $state = $this->endTag(
-                        'ol',
-                        compact('triggered', 'result', 'line')
+                    'ol',
+                    compact('triggered', 'result', 'line')
                 );
                 extract($state);
                 $first = true;
@@ -462,9 +337,6 @@ class Markdown
         $this->code = $result;
     }
 
-    /**
-     * @param string $tag
-     */
     private function endTag($tag, $state)
     {
         if ($state['triggered']) {
@@ -477,34 +349,16 @@ class Markdown
         return $state;
     }
 
-    /**
-     * Markdown::formatCode
-     *
-     * Converts Markdown code blocks into HTML and stores result in this.code
-     *
-     * @return void
-     **/
     private function formatCode()
     {
         return $this->formatBlock('    ', 'code');
     }
 
-    /**
-     * Markdown::formatBlockquote
-     *
-     * Converts Markdown blockquote into HTML and stores result in this.code
-     *
-     * @return void
-     **/
     private function formatBlockquote()
     {
         return $this->formatBlock('> ', 'blockquote');
     }
 
-    /**
-     * @param string $symbol
-     * @param string $tag
-     */
     private function formatBlock($symbol, $tag)
     {
         $first = true;
@@ -518,7 +372,6 @@ class Markdown
                     array_push($result, "<".$tag.">");
                     $first = false;
                 }
-                /* array_push($result, "\t".$string); */
                 array_push($result, "    ".$string);
                 $triggered = true;
             } else {
@@ -531,13 +384,6 @@ class Markdown
         return $this->code = $result;
     }
 
-    /**
-     * Markdown::formatLink
-     *
-     * Converts Markdown links into HTML and stores result in this.code
-     *
-     * @return void
-     **/
     private function formatLink()
     {
         $result = array();
@@ -549,13 +395,6 @@ class Markdown
         $this->code = $result;
     }
 
-    /**
-     * Markdown::formatImage
-     *
-     * Converts Markdown images into HTML and stores result in this.code
-     *
-     * @return void
-     **/
     private function formatImage()
     {
         $result = array();
@@ -567,20 +406,6 @@ class Markdown
         $this->code = $result;
     }
 
-    /**
-     * Markdown::_getTextPath
-     *
-     * Collects text and path for image and link for a line of Markdown and
-     * return as string
-     *
-     * @param string $line Line of raw Markdown to be converted
-     * @param string $type Type of element to look for and return values
-     *                          formatted accordingly
-     * @param string $type Type of element to look for and return values
-     *                          formatted accordingly
-     *
-     * @return string Formatted line
-     **/
     private function getTextPath($line, $type)
     {
         switch ($type) {

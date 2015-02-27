@@ -7,28 +7,11 @@ abstract class PDORepository extends BaseRepository implements Repository
 
     public function __construct(\PDO $connection, Log $log)
     {
-        $this->validateObject();
-
         $this->connection = $connection;
         $this->log = $log;
         $this->params = null;
         $this->position = 1;
         $this->count = null;
-    }
-
-    private function validateObject()
-    {
-        /* if (!isset($this->table)) { */
-        /*     throw new \Exception('Missing table.'); */
-        /* } */
-
-        /* if (!isset($this->primaryKey)) { */
-        /*     throw new \Exception('Missing Primary Key.'); */
-        /* } */
-
-        /* if (!isset($this->required)) { */
-        /*     throw new \Exception('Missing required creation fields.'); */
-        /* } */
     }
 
     public function reset()
@@ -278,7 +261,6 @@ abstract class PDORepository extends BaseRepository implements Repository
         if (empty($data)) {
             switch($this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME)) {
             case 'firebird':
-                /* $data = array(); */
                 break;
             default:
                 $isInsertStatement = $executionResult

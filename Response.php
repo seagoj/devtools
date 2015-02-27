@@ -88,7 +88,6 @@ class Response implements IService// , \Serializable
         $this->message .= "$msg\n";
         if ($error) {
             $this->status = 'FAILED';
-            /* trigger_error($msg); */
         }
     }
 

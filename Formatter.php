@@ -13,7 +13,7 @@ abstract class Formatter
         return '';
     }
 
-    private function stringify($content)
+    public function stringify($content)
     {
         return (is_array($content) || is_object($content))
             ? serialize($content)
