@@ -13,7 +13,7 @@ class ComponentSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Devtools\Component');
+        $this->shouldHaveType('Devtools\ComponentInterface');
     }
 
     function it_should_register_the_component()
@@ -22,7 +22,7 @@ class ComponentSpec extends ObjectBehavior
     }
 }
 
-class ComponentMock implements Devtools\Component
+class ComponentMock implements Devtools\ComponentInterface
 {
     public static function register()
     {

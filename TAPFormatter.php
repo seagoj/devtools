@@ -47,7 +47,7 @@ class TAPFormatter extends Formatter
         return $content;
     }
 
-    private function stringify($content)
+    public function stringify($content)
     {
         return (is_array($content) || is_object($content)) ?
             serialize($content) :

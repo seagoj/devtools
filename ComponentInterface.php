@@ -1,6 +1,6 @@
 <?php namespace Devtools;
 
-interface Component
+interface ComponentInterface
 {
     public static function register();
 }
