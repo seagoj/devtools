@@ -64,7 +64,9 @@ abstract class Logger extends BaseObserver
                     } elseif (is_resource($arg)) {
                         $args[] = get_resource_type($arg);
                     } else {
-                        $args[] = $arg;
+                        if (!($arg instanceof Closure)) {
+                            $args[] = $arg;
+                        }
                     }
                 }
                 $args = join(", ", $args);
