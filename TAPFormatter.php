@@ -16,7 +16,7 @@ class TAPFormatter extends Formatter
     {
         date_default_timezone_set('America/Chicago');
         $this->timestamp = date("m-d-Y H:i:s");
-        $content = $this->timestamp . PHP_EOL . $content;
+        $content = $this->timestamp . PHP_EOL;
         $this->first = false;
         return $content;
     }
