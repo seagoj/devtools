@@ -132,6 +132,16 @@ class Log extends BaseObserver
         );
     }
 
+    private static function output($msg)
+    {
+        global $errorLog;
+        if (isset($errorLog) && get_class($errorLog) === 'Devtools\Log') {
+            $errorLog->write($msg, false);
+        } else {
+            echo $msg;
+        }
+    }
+
     public static function errorHandler($errno, $errstr, $errfile, $errline)
     {
         throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
