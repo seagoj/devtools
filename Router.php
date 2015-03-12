@@ -45,7 +45,7 @@ class Router
         return substr($element, 0, 1) === ':';
     }
 
-    private static function validateRouteWithOptional($pattern, $path)
+    private static function validateRoute($pattern, $path)
     {
         $patternArray = explode('/', $pattern);
         $path    = explode('/', $path);
@@ -101,7 +101,7 @@ class Router
     public static function parseRequest($path)
     {
         foreach (array_keys(self::$resources) as $potentialRoute) {
-            if ($route = self::validateRouteWithOptional($potentialRoute, $path)) {
+            if ($route = self::validateRoute($potentialRoute, $path)) {
                 return $route;
             }
         }
