@@ -45,6 +45,9 @@ class PDOAdapter
         case 'firebird':
             return '%s:dbname=%s:%s';
             break;
+        case 'dblib':
+            return '%s:host=%s;%s';
+            break;
         }
     }
 }
