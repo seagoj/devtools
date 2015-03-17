@@ -4,6 +4,7 @@ class PDOAdapter
 {
     public static function getConnectionString($parameters)
     {
+        var_dump($parameters);
         return sprintf(
             self::getConnectionStringByType($parameters['type']),
             $parameters['type'],
