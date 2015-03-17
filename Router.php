@@ -4,7 +4,7 @@ use Exception;
 
 class Router
 {
-    protected static $resources = array();
+    private static $resources = array();
 
     public static function resource($path, RestInterface $controller = null)
     {
@@ -17,6 +17,11 @@ class Router
         if (!is_null($controller)) {
             self::$resources[$path] = $controller;
         }
+    }
+
+    public static function resources()
+    {
+        return self::$resources;
     }
 
     public static function call($uri)
@@ -45,6 +50,11 @@ class Router
         return substr($element, 0, 1) === ':';
     }
 
+    private static function isNotAtEndOfPath($path, $checkIndex)
+    {
+        return count($path)-1 >= $checkIndex;
+    }
+
     private static function validateRoute($pattern, $path)
     {
         $patternArray = explode('/', $pattern);
@@ -64,12 +74,11 @@ class Router
                 return false;
             }
 
-            if (count($path)-1 >= $checkIndex) {
+            if (self::isNotAtEndOfPath($path, $checkIndex)) {
                 if ($element === $path[$checkIndex]) {
                     ++$checkIndex;
                     continue;
                 }
-
 
                 if (!empty($element) && self::isParameter($element)) {
                     $params[substr($element, 1)] = self::formatValue($path[$checkIndex]);
