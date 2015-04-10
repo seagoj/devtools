@@ -68,10 +68,10 @@ abstract class PDORepository extends BaseRepository implements Repository
                     'file' => 'Firebird.log'
                 )
             );
-            $firebirdLOg->write('==========');
+            $firebirdLog->write('==========');
             $firebirdLog->write($query);
             $firebirdLog->write($params);
-            $firebirdLOg->write('==========');
+            $firebirdLog->write('==========');
         }
 
         $stmt = $this->connection->prepare($query);
