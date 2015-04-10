@@ -62,7 +62,7 @@ abstract class PDORepository extends BaseRepository implements Repository
         }
 
         if ('firebird' == $this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME)) {
-            $firebirdLog = new Devtools\Log(
+            $firebirdLog = new Log(
                 array(
                     'type' => 'file',
                     'file' => 'Firebird.log'
