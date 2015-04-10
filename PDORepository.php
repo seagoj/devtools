@@ -68,7 +68,7 @@ abstract class PDORepository extends BaseRepository implements Repository
             )
         );
 
-        $firebirdLog->write($this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME));
+        $this->log->write($this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME));
 
         if ('firebird' == $this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME)) {
             $firebirdLog->write('==========');
