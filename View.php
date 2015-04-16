@@ -18,20 +18,20 @@ abstract class View
             $result = '';
             if (is_array($this->stylesheets)) {
                 foreach ($this->stylesheets as $stylesheet) {
-                    $result .= $this->stylesheet($stylesheet);
+                    $result .= self::stylesheet($stylesheet);
                 }
             } else {
-                $result .= $this->stylesheet($this->stylesheets);
+                $result .= self::stylesheet($this->stylesheets);
             }
             return $result;
         case 'script':
             $result = '';
             if (is_array($this->scripts)) {
                 foreach ($this->scripts as $scripts) {
-                    $result .= $this->script($script);
+                    $result .= self::script($script);
                 }
             } else {
-                $result .= $this->script($this->scripts);
+                $result .= self::script($this->scripts);
             }
             return $result;
         default:
