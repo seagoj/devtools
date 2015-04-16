@@ -266,6 +266,8 @@ abstract class PDORepository extends BaseRepository implements Repository
     {
         if (empty($data)) {
             switch($this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME)) {
+            case 'mssql':
+            case 'dblib':
             case 'firebird':
                 break;
             default:
