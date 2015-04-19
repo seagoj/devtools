@@ -4,7 +4,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Devtools;
 
-class BaseSubjectSpec extends ObjectBehavior
+class BaseObservableSpec extends ObjectBehavior
 {
     function let(
         Devtools\Observer $observer,
@@ -12,12 +12,12 @@ class BaseSubjectSpec extends ObjectBehavior
         Devtools\Observer $observer3
     ) {
         $observer; $observer2; $observer3;
-        $this->beAnInstanceOf('spec\Devtools\BaseSubjectMock');
+        $this->beAnInstanceOf('spec\Devtools\BaseObservableMock');
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Devtools\BaseSubject');
+        $this->shouldHaveType('Devtools\BaseObservable');
     }
 
     function it_attaches_observers($observer)
@@ -80,6 +80,6 @@ class BaseSubjectSpec extends ObjectBehavior
     }
 }
 
-class BaseSubjectMock extends Devtools\BaseSubject
+class BaseObservableMock extends Devtools\BaseObservable
 {
 }

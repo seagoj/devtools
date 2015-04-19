@@ -1,6 +1,6 @@
 <?php namespace Devtools;
 
-abstract class BaseSubject extends Collection implements Subject
+abstract class BaseObservable extends Collection implements Observable
 {
     private $observers;
 

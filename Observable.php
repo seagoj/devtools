@@ -1,6 +1,6 @@
 <?php namespace Devtools;
 
-interface Subject
+interface Observable
 {
     public function attach($observer);
     public function detach($observer);

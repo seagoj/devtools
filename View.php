@@ -6,37 +6,10 @@ abstract class View
 {
     protected $stylesheets;
     protected $scripts;
+    protected $body;
 
-    public function __get($property)
-    {
-        if (isset($this->$property)) {
-            return $this->$property;
-        }
-
-        switch($property) {
-        case 'stylesheet':
-            $result = '';
-            if (is_array($this->stylesheets)) {
-                foreach ($this->stylesheets as $stylesheet) {
-                    $result .= self::stylesheet($stylesheet);
-                }
-            } else {
-                $result .= self::stylesheet($this->stylesheets);
-            }
-            return $result;
-        case 'script':
-            $result = '';
-            if (is_array($this->scripts)) {
-                foreach ($this->scripts as $scripts) {
-                    $result .= self::script($script);
-                }
-            } else {
-                $result .= self::script($this->scripts);
-            }
-            return $result;
-        default:
-            throw new Exception("Undefined property: {$property}");
-        }
+    public function __get($property) {
+        return $this->$property;
     }
 
     public static function stylesheet($path)
