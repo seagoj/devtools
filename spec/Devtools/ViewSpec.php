@@ -33,6 +33,6 @@ class ViewSpec extends ObjectBehavior
 
 class MockView extends Devtools\View
 {
-    protected $stylesheets = ['sheet1.css', 'sheet2.css'];
-    protected $scripts     = 'script1.js';
+    protected $stylesheetCollection = ['sheet1.css', 'sheet2.css'];
+    protected $scriptCollection     = 'script1.js';
 }
