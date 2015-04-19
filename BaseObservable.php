@@ -4,22 +4,22 @@ abstract class BaseObservable extends Collection implements Observable
 {
     private $observers;
 
-    public function attach($observable)
+    public function attach($observer)
     {
-        if (is_array($observable)) {
-            $this->processEach($observable, 'attach', 'Devtools\Observer');
+        if (is_array($observer)) {
+            $this->processEach($observer, 'attach', 'Devtools\Observer');
             return;
         }
-        $this->observers[] = $observable;
+        $this->observers[] = $observer;
     }
 
-    public function detach($observable)
+    public function detach($observer)
     {
-        if (is_array($observable)) {
-            $this->processEach($observable, 'detach', 'Devtools\Observer');
+        if (is_array($observer)) {
+            $this->processEach($observer, 'detach', 'Devtools\Observer');
             return;
         }
-        $this->removeObserver($observable);
+        $this->removeObserver($observer);
     }
 
     public function fire($event)
