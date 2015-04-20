@@ -7,7 +7,11 @@ class Query
 
     public function __construct($sql, $params = null)
     {
-        $this->sql = $sql;
+        if (empty($params)) {
+            $params = null;
+        }
+
+        $this->sql    = $sql;
         $this->params = $params;
     }
 }
