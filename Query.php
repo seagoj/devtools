@@ -1,7 +1,5 @@
 <?php namespace Devtools;
 
-use SqlStatement;
-
 class Query
 {
     public $sql;

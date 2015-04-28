@@ -30,7 +30,25 @@ class Format
         return "$tmpYear/$tmpMonth/$tmpDay";
     }
 
-    public static function stripWhitespace($dirty) {
+    public static function stripWhitespace($dirty)
+    {
         return preg_replace("/[ \\t\\n]+/u", " ", $dirty);
+    }
+
+    public static function stringify($array, $force = false, $quotation="'")
+    {
+        $ret = "";
+        if (!is_array($array)) {
+            $array = array($array);
+        }
+        foreach ($array as $element) {
+            if (!empty($ret)) {
+                $ret .= ",";
+            }
+            $ret .= (!$force && is_numeric($element))
+                ? $element
+                : $quotation.$element.$quotation;
+        }
+        return $ret;
     }
 }
