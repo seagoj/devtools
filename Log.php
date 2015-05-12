@@ -169,7 +169,7 @@ class Log extends BaseObserver
                             $args[] = serialize($arg);
                         } catch (PDOException $e) {
                             $args[] = $e->getMessage();
-                            /* $args[] = var_export($arg, true); */
+                            $args[] = var_export($arg, true);
                         }
                     } elseif (is_resource($arg)) {
                         $args[] = get_resource_type($arg);
