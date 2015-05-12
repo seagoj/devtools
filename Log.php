@@ -1,5 +1,7 @@
 <?php namespace Devtools;
 
+use PDOException;
+
 class Log extends BaseObserver
 {
     public $first;
@@ -165,7 +167,7 @@ class Log extends BaseObserver
                     } elseif (is_object($arg) || is_array($arg)) {
                         try {
                             $args[] = serialize($arg);
-                        } catch (\PDOException $e) {
+                        } catch (PDOException $e) {
                             $args[] = var_export($arg, true);
                         }
                     } elseif (is_resource($arg)) {
