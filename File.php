@@ -8,7 +8,14 @@ class File
     public $contents;
     public $name;
 
-    public function __construct($path)
+    public function __construct($path = null)
+    {
+        if (!is_null($path)) {
+            $this->open($path);
+        }
+    }
+
+    public function open($path)
     {
         $this->path = $path;
         $this->name();
