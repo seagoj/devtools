@@ -22,12 +22,16 @@ class File
         if ($this->exists()) {
             $this->read();
         }
+        return $this;
     }
 
-    public function contents($contents)
+    public function contents($contents, $doNotOverwrite = true)
     {
-        if (!file_put_contents($this->path, $contents)) {
+        if (!$doNotOverwrite && !file_put_contents($this->path, $contents)) {
             throw new Exception('Contents could not be written to file.');
+        } else {
+            $this->contents = $contents;
+            $this->safePersist($this->path);
         }
 
         $this->contents = $contents;
@@ -66,5 +70,33 @@ class File
         $this->path = $newPath;
         $this->name();
         $this->contents($this->contents);
+    }
+
+    public function parsePath($path)
+    {
+        $extensionStarts = strrpos($path, '.');
+
+        return array(
+            'prefix' => substr($path, 0, $extensionStarts),
+            'extension' => substr($path, $extensionStarts)
+        );
+    }
+
+    public function safePersist($path)
+    {
+        if (!file_exists($path)) {
+            file_put_contents($path, $this->contents);
+        } else {
+            extract($this->parsePath($path));
+            $revision = 0;
+
+            while (file_exists("{$prefix}.rev{$revision}{$extension}")) {
+                $revision++;
+            }
+            file_put_contents("{$prefix}.rev{$revision}{$extension}", file_get_contents($path));
+            file_put_contents($path, $this->contents);
+        }
+
+        return isset($revision) ? $revision : 'new';
     }
 }

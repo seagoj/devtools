@@ -16,6 +16,10 @@ class FileSpec extends ObjectBehavior
             unlink('./test.log');
         }
 
+        if (file_exists('./test.rev0.log')) {
+            unlink('./test.rev0.log');
+        }
+
         if (file_exists('./testCopy.log')) {
             unlink('./testCopy.log');
         }
@@ -61,5 +65,23 @@ class FileSpec extends ObjectBehavior
         $this->copyTo('testCopy.log');
         $this->name->shouldReturn('testCopy.log');
         $this->contents->shouldReturn('TEST');
+    }
+
+    function it_correctly_parses_a_path()
+    {
+        $this->parsePath('./test.log')->shouldReturn(
+            ['prefix' => './test', 'extension' => '.log']
+        );
+    }
+
+    function it_safely_persists_files()
+    {
+        $this->open('./test.log')->exists()->shouldReturn(false);
+        $this->open('./test.rev0.log')->exists()->shouldReturn(false);
+        $this->open('./test.log')->contents('TEST');
+        $this->exists()->shouldReturn(true);
+        $this->open('./test.rev0.log')->exists()->shouldReturn(false);
+        $this->open('./test.log')->contents('TEST2');
+        $this->open('./test.rev0.log')->exists()->shouldReturn(true);
     }
 }
