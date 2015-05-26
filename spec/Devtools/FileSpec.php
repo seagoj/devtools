@@ -15,6 +15,10 @@ class FileSpec extends ObjectBehavior
         if (file_exists('./test.log')) {
             unlink('./test.log');
         }
+
+        if (file_exists('./testCopy.log')) {
+            unlink('./testCopy.log');
+        }
     }
 
     function it_is_initializable()
@@ -48,5 +52,14 @@ class FileSpec extends ObjectBehavior
         $this->exists()->shouldReturn(true);
         $this->delete();
         $this->exists()->shouldReturn(false);
+    }
+
+    function it_copies_to_new_path()
+    {
+        file_put_contents('./test.log', 'TEST');
+        $this->name->shouldReturn('test.log');
+        $this->copyTo('testCopy.log');
+        $this->name->shouldReturn('testCopy.log');
+        $this->contents->shouldReturn('TEST');
     }
 }

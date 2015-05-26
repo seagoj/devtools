@@ -53,4 +53,11 @@ class File
 
         $this->contents = $contents;
     }
+
+    public function copyTo($newPath)
+    {
+        $this->path = $newPath;
+        $this->name();
+        $this->contents($this->contents);
+    }
 }
