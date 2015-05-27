@@ -85,8 +85,6 @@ class File
 
     public function safePersist($path)
     {
-        var_dump($path);
-        var_dump(file_exists($path));
         if (!file_exists($path)) {
             file_put_contents($path, $this->contents);
         } else {
