@@ -32,7 +32,7 @@ class File
             throw new Exception('Contents could not be written to file.');
         } else {
             $this->contents = $contents;
-            $this->safePersist($this->path);
+            return $this->safePersist($this->path);
         }
 
         $this->contents = $contents;
