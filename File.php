@@ -18,6 +18,7 @@ class File
     public function open($path)
     {
         $this->path = $path;
+        $this->contents = '';
         $this->name();
         if ($this->exists()) {
             $this->read();
