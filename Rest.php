@@ -1,6 +1,8 @@
 <?php namespace Devtools;
 
-class Rest
+use Exception;
+
+class Rest extends Response
 {
     public $method;
     public $request;
@@ -8,22 +10,20 @@ class Rest
     public $response;
     private $options;
     private $id;
-    private $debugLog;
+    private $log;
 
-    public function __construct($options)
-    {
-        $this->debugLog = \Devtools\Log::debugLog();
-        $this->response = new \Devtools\Response;
-        $this->options = array_merge(
-            array(
-                'type' => null
-            ),
-            $options
-        );
+    public function __construct(
+        PDORepository $repository,
+        Log $log
+    ) {
+        $this->repository = $repository;
+        $this->log        = $log;
+
         $this->setMethod();
         $this->setRequest();
         $this->setParameters();
-        if (!empty($this->options['type'])) {
+
+        if (!isset($_SERVER['phpspec'])) {
             $this->process();
         }
     }
@@ -50,7 +50,9 @@ class Rest
                     foreach ($value as $v) {
                         array_push($temp2, $this->quote($v));
                     }
-                    $value = $temp2;
+                    $value = count($temp2) > 1
+                        ? $temp2
+                        : $temp2[0];
                 }
                 $temp[$key] = $value;
             }
@@ -58,46 +60,49 @@ class Rest
         $this->parameters = $temp;
     }
 
-    private function process()
+    public function process()
     {
-        switch ($this->options['type']) {
-        case 'mysql':
-            if (!empty($this->request)) {
-                switch ($this->method) {
-                case 'GET':
-                    $table = array_shift($this->request);
-                    $sql = $this->buildSQL($table);
-                    if ($q=mysql_query($sql)) {
-                        $this->response->data(\Devtools\Model::mysql_fetch_all($q));
-                    } else {
-                        $this->response->fail('Data not found.');
-                    }
-                    break;
-                }
-            } else {
-                $this->response->fail('Invalid request.');
+        if (empty($this->request)) {
+            throw new Exception('Invalid request.');
+        }
+
+        switch ($this->method) {
+        case 'GET':
+            $table = array_shift($this->request);
+            extract($this->buildGetSQL($table));
+
+            $result = $this->repository->query($sql, $params, true);
+            if (!$result) {
+                throw new Exception('Data not found.');
             }
-            break;
-        case 'firebird':
-            if (!empty($this->request) && count($this->request)>=2) {
-                $pharmacy = array_shift($this->request);
-                $table = array_shift($this->request);
-                $sql = $this->buildSQL($table);
-                $this->debugLog->write($sql);
-                $fb = getFirebirdModel($pharmacy);
-                $this->response->data($fb->query($sql));
-            } else {
-                $this->response->fail('Invalid request.');
-            }
+
+            $this->data($result);
+            return $result;
             break;
         }
+        /* case 'firebird': */
+        /*     if (!empty($this->request) && count($this->request)>=2) { */
+        /*         $pharmacy = array_shift($this->request); */
+        /*         $table = array_shift($this->request); */
+        /*         $sql = $this->buildSQL($table); */
+        /*         $this->log->write($sql); */
+        /*         $fb = getFirebirdModel($pharmacy); */
+        /*         $this->data($fb->query($sql)); */
+        /*         return $fb->query($sql); */
+        /*     } else { */
+        /*         $this->fail('Invalid request.'); */
+        /*     } */
+        /*     break; */
+        /* } */
     }
 
     public static function getRoot()
     {
+        $cwd = isset($_SERVER['phpspec']) ? 'api' : getCWD();
+
         $first_dir = explode('/', $_SERVER['REQUEST_URI']);
         $first_dir = $first_dir[1];
-        $path_array = explode('/', getCWD());
+        $path_array = explode('/', $cwd);
         $path = array();
         $count = count($path_array);
         for ($p = 0; $p < $count; $p++) {
@@ -108,6 +113,7 @@ class Rest
         for ($p; $p < $count; $p++) {
             array_push($path, $path_array[$p]);
         }
+
         return '/'.implode('/', $path).'/';
     }
 
@@ -128,21 +134,17 @@ class Rest
         return !empty($cols) ? $cols : '*';
     }
 
-    private function buildSQL($table)
+    private function buildGetSQL($table)
     {
         $cols = $this->getCols();
-        $sql = sprintf(
-            "SELECT %s
-            FROM %s",
-            mysql_real_escape_string($cols),
-            mysql_real_escape_string($table)
-        );
+
+        $sql = "SELECT {$cols}
+            FROM {$table}";
+        $params = array();
+
         if (isset($this->id)) {
-            $sql .= sprintf(
-                " WHERE %s=%s",
-                mysql_real_escape_string($table.'_id'),
-                mysql_real_escape_string($this->id)
-            );
+            $sql .= " WHERE {$table}_id=:id";
+            $params['id'] = $this->id;
         } else if (!empty($this->parameters)) {
             $sql .= " WHERE ";
             $first = true;
@@ -159,10 +161,11 @@ class Rest
                 } else {
                     $operand = '=';
                 }
-                $sql .= $operand.$value;
+                $sql .= $operand.':'.$key;
             }
         }
-        return $sql;
+
+        return array('sql' => Format::stripWhitespace($sql), 'params' => $params);;
     }
 
     private function quote($data)
@@ -187,6 +190,6 @@ class Rest
     public static function getRequest()
     {
         $requestURI = explode('?', $_SERVER['REQUEST_URI']);
-        return explode('/', substr($requestURI[0], strlen(\Devtools\Rest::getRoot())));
+        return explode('/', substr($requestURI[0], strlen(Rest::getRoot())));
     }
 }
