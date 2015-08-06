@@ -48,7 +48,7 @@ class Rest extends Response
                 if (is_array($value)) {
                     $temp2 = array();
                     foreach ($value as $v) {
-                        array_push($temp2, $this->quote($v));
+                        array_push($temp2, count($value)>1 ? $this->quote($v) : $v);
                     }
                     $value = count($temp2) > 1
                         ? $temp2
@@ -156,12 +156,11 @@ class Rest extends Response
                 }
                 $sql .= $key;
                 if (is_array($value)) {
-                    $operand = ' IN ';
-                    $value = '('.implode(',', $value).')';
+                    $sql .= ' IN ('.implode(',', $value).')';
                 } else {
-                    $operand = '=';
+                    $sql .= '=:'.$key;
+                    $params[$key] = $value;
                 }
-                $sql .= $operand.':'.$key;
             }
         }
 

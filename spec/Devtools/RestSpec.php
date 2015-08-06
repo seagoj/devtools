@@ -42,11 +42,13 @@ class RestSpec extends ObjectBehavior
                 ),
                 [ 'id' => '1' ],
                 true
-            )->willReturn([
-                'test_id' => 1,
-                'name'   => 'Jim',
-                'role'   => 'sorter'
-            ]);
+            )->willReturn(
+                [
+                    'test_id' => 1,
+                    'name'   => 'Jim',
+                    'role'   => 'sorter'
+                ]
+            );
             break;
         }
 
@@ -56,6 +58,28 @@ class RestSpec extends ObjectBehavior
     function withParameters(&$repository)
     {
         $_REQUEST['name'] = 'Jim';
+
+        $_SERVER['REQUEST_URI'] = '/api/test';
+
+        switch($_SERVER['REQUEST_METHOD']) {
+        case 'GET':
+            $repository->query(
+                Format::stripWhitespace(
+                    "SELECT *
+                    FROM test
+                    WHERE name=:name"
+                ),
+                [ 'name' => 'Jim' ],
+                true
+            )->willReturn(
+                [
+                    'test_id' => 1,
+                    'name'   => 'Jim',
+                    'role'   => 'sorter'
+                ]
+            );
+            break;
+        }
 
         return $this;
     }
@@ -91,17 +115,32 @@ class RestSpec extends ObjectBehavior
     {
         $this->mockValidGet()->withParameters($repository);
 
-        $this->parameters->shouldBe(['name' => "'Jim'"]);
+        $this->parameters->shouldBe(['name' => "Jim"]);
     }
 
     function it_performs_a_database_call_based_on_the_request($repository)
     {
         $this->mockValidGet()->withId($repository);
 
-        $this->process()->shouldReturn([
-            'test_id' => 1,
-            'name'   => 'Jim',
-            'role'   => 'sorter'
-        ]);
+        $this->process()->shouldReturn(
+            [
+                'test_id' => 1,
+                'name'   => 'Jim',
+                'role'   => 'sorter'
+            ]
+        );
+    }
+
+    function it_performs_a_database_call_using_parameters_as_where_clause($repository)
+    {
+        $this->mockValidGet()->withParameters($repository);
+
+        $this->process()->shouldReturn(
+            [
+                'test_id' => 1,
+                'name' => 'Jim',
+                'role' => 'sorter'
+            ]
+        );
     }
 }
