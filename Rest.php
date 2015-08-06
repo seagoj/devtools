@@ -8,7 +8,6 @@ class Rest extends Response
     public $request;
     public $parameters;
     public $response;
-    private $options;
     private $id;
     private $log;
 
@@ -80,20 +79,6 @@ class Rest extends Response
             return $result;
             break;
         }
-        /* case 'firebird': */
-        /*     if (!empty($this->request) && count($this->request)>=2) { */
-        /*         $pharmacy = array_shift($this->request); */
-        /*         $table = array_shift($this->request); */
-        /*         $sql = $this->buildSQL($table); */
-        /*         $this->log->write($sql); */
-        /*         $fb = getFirebirdModel($pharmacy); */
-        /*         $this->data($fb->query($sql)); */
-        /*         return $fb->query($sql); */
-        /*     } else { */
-        /*         $this->fail('Invalid request.'); */
-        /*     } */
-        /*     break; */
-        /* } */
     }
 
     public static function getRoot()

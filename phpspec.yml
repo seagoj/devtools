@@ -1,5 +1,6 @@
 suites:
-  UniqueIndicator:
+  Devtools:
       namespace: Devtools
-      spec_path:
-      src_path:
+      spec_path: '.'
+      src_path: '.'
+      formatter: pretty
