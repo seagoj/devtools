@@ -3,7 +3,7 @@
 abstract class Formatter
 {
     abstract public function format($content, $result);
-    public function header()
+    public function header($content = '')
     {
         return '';
     }
