@@ -1,6 +1,6 @@
 <?php namespace Devtools;
 
-abstract class BaseEntity
+abstract class BaseEntity extends Observer\BaseSubject
 {
     protected $repository;
     protected $log;
