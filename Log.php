@@ -2,7 +2,7 @@
 
 use PDOException;
 
-class Log extends BaseObserver
+class Log implements \SplObserver
 {
     public $first;
     public $type;
@@ -215,5 +215,10 @@ class Log extends BaseObserver
     public function __get($property)
     {
         return $this->$property;
+    }
+
+    public function update(\SplSubject $subject)
+    {
+        $this->write($subject->getStatus());
     }
 }

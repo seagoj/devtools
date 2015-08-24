@@ -14,7 +14,8 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "Devtools\\": "./"
+            "Devtools\\": "./",
+            "Devtools\\Observer": "./Observer"
         }
     }
 }

@@ -17,4 +17,10 @@ class FileLogger extends Logger
             FILE_APPEND
         );
     }
+
+    public function update(\SplSubject $subject)
+    {
+        $status = $subject->getStatus();
+        $this->write($status);
+    }
 }

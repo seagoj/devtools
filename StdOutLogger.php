@@ -12,4 +12,10 @@ class StdOutLogger extends Logger
     {
         echo $this->formatter->format($content, $result) . PHP_EOL;
     }
+
+    public function update(\SplSubject $subject)
+    {
+        $status = $subject->getStatus();
+        $this->write($status);
+    }
 }
