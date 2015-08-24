@@ -3,6 +3,7 @@
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Devtools;
+use Devtools\Observer;
 
 class FileLoggerSpec extends ObjectBehavior
 {

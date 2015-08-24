@@ -8,6 +8,7 @@ class BaseSubject implements \SplSubject
     public function attach(\SplObserver $observer)
     {
         $this->observers[] = $observer;
+        $this->statuses = new StatusCollection;
         return $this;
     }
 
@@ -25,6 +26,7 @@ class BaseSubject implements \SplSubject
         foreach ($this->observers as $observer) {
             $observer->update($this);
         }
+        $this->statuses->remove();
     }
 
     public function observers()
@@ -34,11 +36,31 @@ class BaseSubject implements \SplSubject
 
     public function getStatus()
     {
-        return $this->statuses;
+        return $this->statuses->current();
+    }
+}
+
+class StatusCollection
+{
+    private $collection;
+
+    public function __construct()
+    {
+        $this->collection = array();
     }
 
-    protected function status($status)
+    public function add($status)
     {
-        $this->statuses[] = $status;
+        $this->collection[] = $status;
+    }
+
+    public function current()
+    {
+        $this->collection[0];
+    }
+
+    public function remove()
+    {
+        array_shift($this->collection);
     }
 }
