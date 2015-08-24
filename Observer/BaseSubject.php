@@ -31,6 +31,7 @@ class BaseSubject implements \SplSubject
     {
         foreach ($this->observers as $observer) {
             $observer->update($this);
+            var_dump($observer);
         }
         $this->statuses->remove();
     }
@@ -57,7 +58,7 @@ class StatusCollection
 
     public function add($status)
     {
-        array_push($this->collection, $status);
+        $this->collection[] = $status;
     }
 
     public function current()
