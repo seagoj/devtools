@@ -15,18 +15,18 @@ abstract class Logger extends Observer\BaseObserver
         );
     }
 
-    /* public abstract function write( */
-    /*     $content, $result = null */
-    /* ); */
+    public abstract function write(
+        $content, $result = null
+    );
 
-    public static function exceptionHandler($e)
+    public function exceptionHandler($e)
     {
-        self::write(
+        $this->write(
             $e->getMessage() . "\n" . self::getExceptionTraceAsString($e)
         );
     }
 
-    public static function errorHandler($errno, $errstr, $errfile, $errline)
+    public function errorHandler($errno, $errstr, $errfile, $errline)
     {
         throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
     }

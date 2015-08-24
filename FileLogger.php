@@ -17,7 +17,7 @@ class FileLogger extends Logger
     /*     return self::output($content, $result); */
     /* } */
 
-    public static function write($content, $result = null)
+    public function write($content, $result = null)
     {
         return file_put_contents(
             self::$filename,
