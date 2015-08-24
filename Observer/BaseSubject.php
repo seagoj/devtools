@@ -3,7 +3,7 @@
 class BaseSubject implements \SplSubject
 {
     private $observers;
-    private $statuses;
+    protected $statuses;
 
     public function attach(\SplObserver $observer)
     {
