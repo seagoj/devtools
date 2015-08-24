@@ -57,7 +57,7 @@ class StatusCollection
 
     public function add($status)
     {
-        $this->collection[] = $status;
+        array_push($this->collection, $status);
     }
 
     public function current()
