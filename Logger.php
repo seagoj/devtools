@@ -21,7 +21,7 @@ abstract class Logger extends Observer\BaseObserver
 
     public static function exceptionHandler($e)
     {
-        self::output(
+        self::write(
             $e->getMessage() . "\n" . self::getExceptionTraceAsString($e)
         );
     }
