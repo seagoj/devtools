@@ -17,6 +17,7 @@ class StdOutLogger extends Logger
 
     public function write($content, $result = null)
     {
+        var_dump(__METHOD__.": {$content}");
         echo self::$formatter->format($content, $result) . PHP_EOL;
     }
 }
