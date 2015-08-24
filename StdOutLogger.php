@@ -10,11 +10,6 @@ class StdOutLogger extends Logger
         parent::__construct();
     }
 
-    /* public function write($content, $result = null) */
-    /* { */
-    /*     self::output($content, $result); */
-    /* } */
-
     public function write($content, $result = null)
     {
         var_dump(__METHOD__.": {$content}");

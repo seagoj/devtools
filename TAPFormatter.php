@@ -12,11 +12,11 @@ class TAPFormatter extends Formatter
         $this->first = true;
     }
 
-    public function header()
+    public function header($content)
     {
         date_default_timezone_set('America/Chicago');
         $this->timestamp = date("m-d-Y H:i:s");
-        $content = $this->timestamp . PHP_EOL;
+        $content = $this->timestamp . PHP_EOL . $content;
         $this->first = false;
         return $content;
     }
