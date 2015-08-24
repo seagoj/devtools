@@ -27,7 +27,7 @@ class BaseSubject implements \SplSubject
         $this->notify();
     }
 
-    protected function notify()
+    public function notify()
     {
         foreach ($this->observers as $observer) {
             $observer->update($this);
