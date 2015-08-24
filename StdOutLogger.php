@@ -2,11 +2,11 @@
 
 class StdOutLogger extends Logger
 {
-    private static $formatter;
+    private $formatter;
 
     public function __construct(Formatter $formatter)
     {
-        self::$formatter = $formatter;
+        $this->formatter = $formatter;
         parent::__construct();
     }
 
@@ -18,6 +18,6 @@ class StdOutLogger extends Logger
     public function write($content, $result = null)
     {
         var_dump(__METHOD__.": {$content}");
-        echo self::$formatter->format($content, $result) . PHP_EOL;
+        echo $this->formatter->format($content, $result) . PHP_EOL;
     }
 }

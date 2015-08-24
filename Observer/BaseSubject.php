@@ -31,7 +31,6 @@ class BaseSubject implements \SplSubject
     {
         foreach ($this->observers as $observer) {
             $observer->update($this);
-            var_dump($observer);
         }
         $this->statuses->remove();
     }
