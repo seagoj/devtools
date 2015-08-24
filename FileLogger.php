@@ -2,18 +2,26 @@
 
 class FileLogger extends Logger
 {
+    private static $filename;
+    private static $formatter;
+
     public function __construct($filename, Formatter $formatter)
     {
         parent::__construct();
-        $this->filename = $filename;
-        $this->formatter = $formatter;
+        self::$filename = $filename;
+        self::$formatter = $formatter;
     }
 
     public function write($content, $result = null)
     {
+        return self::output($content, $result);
+    }
+
+    public static function output($content, $result = null)
+    {
         return file_put_contents(
-            $this->filename,
-            $this->formatter->format($content, $result) . PHP_EOL,
+            self::$filename,
+            self::$formatter->format($content, $result) . PHP_EOL,
             FILE_APPEND
         );
     }
