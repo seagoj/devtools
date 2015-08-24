@@ -10,12 +10,12 @@ class StdOutLogger extends Logger
         parent::__construct();
     }
 
-    public function write($content, $result = null)
-    {
-        self::output($content, $result);
-    }
+    /* public function write($content, $result = null) */
+    /* { */
+    /*     self::output($content, $result); */
+    /* } */
 
-    public function output($content, $result = null)
+    public static function write($content, $result = null)
     {
         echo self::$formatter->format($content, $result) . PHP_EOL;
     }

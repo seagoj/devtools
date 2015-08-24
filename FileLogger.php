@@ -12,12 +12,12 @@ class FileLogger extends Logger
         self::$formatter = $formatter;
     }
 
-    public function write($content, $result = null)
-    {
-        return self::output($content, $result);
-    }
+    /* public function write($content, $result = null) */
+    /* { */
+    /*     return self::output($content, $result); */
+    /* } */
 
-    public static function output($content, $result = null)
+    public static function write($content, $result = null)
     {
         return file_put_contents(
             self::$filename,

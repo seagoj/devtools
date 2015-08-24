@@ -20,8 +20,8 @@ class FileLoggerSpec extends ObjectBehavior
     function it_writes_to_file($formatter)
     {
         $this->write('Log1')->shouldNotReturn(false);
-        $this::output('Log2', true)->shouldNotReturn(false);
-        $this::output('Log3', false)->shouldNotReturn(false);
+        $this::write('Log2', true)->shouldNotReturn(false);
+        $this::write('Log3', false)->shouldNotReturn(false);
 
         $formatter->format('Log1', null)->shouldBeCalled();
         $formatter->format('Log2', true)->shouldBeCalled();
