@@ -62,6 +62,7 @@ class StatusCollection
 
     public function current()
     {
+        var_dump($this->collection);
         $this->collection[0];
     }
 
