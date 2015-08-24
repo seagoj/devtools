@@ -77,4 +77,9 @@ abstract class Logger extends Observer\BaseObserver
         }
         return $rtn;
     }
+
+    public function update(\SplSubject $subject)
+    {
+        $this->write($subject->getStatus());
+    }
 }
