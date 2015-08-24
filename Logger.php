@@ -81,7 +81,6 @@ abstract class Logger extends Observer\BaseObserver
     public function update(\SplSubject $subject)
     {
         $status = $subject->getStatus();
-        var_dump($status);
         $this->write($status);
     }
 }
