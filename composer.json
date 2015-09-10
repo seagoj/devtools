@@ -16,7 +16,8 @@
         "psr-4": {
             "Devtools\\": "./",
             "Devtools\\Observer\\": "./Observer",
-            "Devtools\\Currency\\": "./Currency"
+            "Devtools\\Currency\\": "./Currency",
+            "Devtools\\DateFormat\\": "./DateFormat"
         }
     }
 }

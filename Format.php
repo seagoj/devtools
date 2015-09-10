@@ -1,5 +1,7 @@
 <?php namespace Devtools;
 
+use Devtools\DateFormat;
+
 class Format
 {
     public static function snakeToCamelCase($underscore)
@@ -22,12 +24,6 @@ class Format
             },
             $camelCase
         );
-    }
-
-    public static function mysqlDate($date)
-    {
-        list ($tmpMonth, $tmpDay, $tmpYear) = explode("/", $date);
-        return "$tmpYear/$tmpMonth/$tmpDay";
     }
 
     public static function stripWhitespace($dirty)
