@@ -23,7 +23,7 @@ gulp.task('test', function() {
 });
 
 gulp.task('watch', function() {
-    gulp.watch(['spec/**/*.php', '*.php'], ['test']);
+    gulp.watch(['spec/**/*.php', '*.php', '**/*.php'], ['test']);
 });
 
 gulp.task('default', ['test', 'watch']);

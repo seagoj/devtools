@@ -51,4 +51,26 @@ class Format
         }
         return $ret;
     }
+
+    public static function toCurrency($value, $options = null)
+    {
+        $defaults = array(
+            'symbol'     => '$',
+            'separation' => '.',
+            'sigfig'     => 2
+        );
+        $options = array_merge(
+            $defaults,
+            $options = is_null($options) ? array() : $options
+        );
+
+        $formatted = number_format(
+            (float)$value,
+            $options['sigfig'],
+            $options['separation'],
+            ''
+        );
+
+        return "{$options['symbol']}{$formatted}";
+    }
 }

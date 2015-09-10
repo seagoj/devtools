@@ -15,7 +15,8 @@
     "autoload": {
         "psr-4": {
             "Devtools\\": "./",
-            "Devtools\\Observer\\": "./Observer"
+            "Devtools\\Observer\\": "./Observer",
+            "Devtools\\Currency\\": "./Currency"
         }
     }
 }
