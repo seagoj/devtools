@@ -24,12 +24,4 @@ class FormatSpec extends ObjectBehavior
     {
         $this::mysqlDate('10/15/1982')->shouldReturn('1982/10/15');
     }
-
-    function it_converts_a_number_to_currency()
-    {
-        $this->toCurrency(12)->shouldReturn('$12.00');
-        $this::toCurrency(12.3456789)->shouldReturn('$12.35');
-        $this::toCurrency(12.3, array('separation' => ','))->shouldReturn('$12,30');
-
-    }
 }
