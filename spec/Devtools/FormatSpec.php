@@ -19,4 +19,9 @@ class FormatSpec extends ObjectBehavior
     {
         $this::camelToSnakeCase('testString')->shouldReturn('test_string');
     }
+
+    function it_converts_US_formatted_dates_to_mysql()
+    {
+        $this::mysqlDate('10/15/1982')->shouldReturn('1982/10/15');
+    }
 }

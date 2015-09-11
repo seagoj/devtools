@@ -47,4 +47,9 @@ class Format
         }
         return $ret;
     }
+
+    public static function mysqlDate($date)
+    {
+        return (new DateFormat\MySQL())->from(new DateFormat\US($date))->__toString();
+    }
 }

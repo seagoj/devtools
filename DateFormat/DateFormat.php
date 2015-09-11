@@ -15,7 +15,9 @@ class DateFormat
         }
         $dateTime = explode(' ', $date);
         $date = $dateTime[0];
-        $this->time = isset($dateTime[1]) ? $dateTime[1] : null;
+        $this->time = isset($dateTime[1])
+            ? $dateTime[1]
+            : '';
         $dateArray = explode($this->separator, $date);
         foreach (str_split($this->format) as $element) {
             switch($element) {
@@ -60,7 +62,7 @@ class DateFormat
         }
 
         $date = implode($this->separator, $output);
-        $time = is_null($this->time) ? '' : " {$this->time}";
+        $time = !empty($this->time) ? " {$this->time}" : '';
 
         return "{$date}{$time}";
     }
