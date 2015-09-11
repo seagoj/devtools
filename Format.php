@@ -50,6 +50,7 @@ class Format
 
     public static function mysqlDate($date)
     {
-        return (new DateFormat\MySQL())->from(new DateFormat\US($date))->__toString();
+        $mysql = new DateFormat\MySQL();
+        return $mysql->from(new DateFormat\US($date))->__toString();
     }
 }
