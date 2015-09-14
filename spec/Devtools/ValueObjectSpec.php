@@ -30,5 +30,5 @@ class ValueObjectSpec extends ObjectBehavior
 class MockValueObject extends Devtools\ValueObject
 {
     protected $required = ['param1', 'param2'];
-    protected $allowed  = ['param3'];
+    protected $allowed  = ['param3', 'param4'];
 }

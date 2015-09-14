@@ -15,7 +15,9 @@ abstract class ValueObject
         }
 
         foreach ($this->allowed as $parameter) {
-            $this->$parameter = $request[$parameter];
+            if (isset($request[$parameter])) {
+                $this->$parameter = $request[$parameter];
+            }
         }
     }
 
