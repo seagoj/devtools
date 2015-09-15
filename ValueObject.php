@@ -1,5 +1,7 @@
 <?php namespace Devtools;
 
+use Exception;
+
 abstract class ValueObject
 {
     protected $required = array();
@@ -9,7 +11,7 @@ abstract class ValueObject
     {
         foreach ($this->required as $parameter) {
             if (!isset($request[$parameter])) {
-                throw new Exception("Invalid {__CLASS__} request.");
+                throw new Exception("Invalid {__CLASS__} structure.");
             }
             $this->$parameter = $request[$parameter];
         }
