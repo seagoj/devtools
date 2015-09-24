@@ -86,10 +86,10 @@ abstract class Logger extends Observer\BaseObserver
             $this->write($status);
         }
 
-        if (is_a($status, 'Devtools\LogEntry')) {
+        if (is_a($status, 'Devtools\Assertion')) {
             $this->write(
                 $status->message,
-                $status->result
+                $status->test
             );
         }
     }
