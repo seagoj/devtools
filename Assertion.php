@@ -2,7 +2,7 @@
 
 class Assertion
 {
-    public __construct($test, $message)
+    public function __construct($test, $message)
     {
         $this->test    = $test;
         $this->message = $message;
