@@ -23,6 +23,9 @@ class BaseSubject implements \SplSubject
 
     protected function emit($status)
     {
+        if (!isset($this->statuses)) {
+            return;
+        }
         $this->statuses->add($status);
         $this->notify();
     }
