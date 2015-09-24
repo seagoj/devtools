@@ -82,11 +82,15 @@ abstract class Logger extends Observer\BaseObserver
     {
         $status = $subject->getStatus();
         if (!in_array(gettype($status), array("object", "resource"))
-            || get_class($status) == 'LogEntry'
         ) {
             $this->write($status);
-            $this->write(gettype($status));
-            $this->write(get_class($status));
+        }
+
+        if (is_a($status, 'Devtools\LogEntry')) {
+            $this->write(
+                $status->message,
+                $status->result
+            );
         }
     }
 }
