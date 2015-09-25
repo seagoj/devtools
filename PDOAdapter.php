@@ -2,14 +2,16 @@
 
 class PDOAdapter
 {
-    public static function getConnectionString($parameters)
+    public static function getConnectionString($params)
     {
-        return sprintf(
-            self::getConnectionStringByType($parameters['type']),
-            $parameters['type'],
-            $parameters['host'],
-            $parameters['db']
-        );
+        switch($params['type']) {
+        case 'mysql':
+            return "{$params['type']}:host={$params['host']};dbname={$params['db']}";
+        case 'firebird':
+            return "{$params['type']}:dbname={$params['host']}:{$params['db']}";
+        case 'dblib':
+            return "{$params['type']}:host={$params['host']};{$params['db']}";
+        };
     }
 
     public static function connect($parameters)
