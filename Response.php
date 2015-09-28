@@ -1,8 +1,9 @@
 <?php namespace Devtools;
 
 use Exception;
+use Devtools\Observer\BaseSubject;
 
-class Response implements IService// , \Serializable
+class Response extends BaseSubject implements IService// , \Serializable
 {
     public $status;
     public $request;
