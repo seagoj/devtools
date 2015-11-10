@@ -163,4 +163,15 @@ class ResponseSpec extends ObjectBehavior
         $_REQUEST['phpspec'] = true;
         $this::isApiCall()->shouldReturn(false);
     }
+
+    /* function it_performs_a_lookup_and_returns_the_response() */
+    /* { */
+    /*     $_SERVER['SERVER_NAME'] = 'bvbot.us'; */
+    /*     $this::ajaxNew('/secure/api/GetPharmacyId', ['key' => '1qaz2wsx', 'preorder_id' => 12345]) */
+    /*         ->shouldReturn( */
+    /*             [ */
+    /*                 'pharmacy_id' => 1 */
+    /*             ] */
+    /*         ); */
+    /* } */
 }

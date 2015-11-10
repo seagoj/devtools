@@ -2,6 +2,7 @@
 
 use Exception;
 use Devtools\Observer\BaseSubject;
+use Devtools\Request;
 
 class Response extends BaseSubject implements IService// , \Serializable
 {
@@ -11,6 +12,7 @@ class Response extends BaseSubject implements IService// , \Serializable
     private $data;
     private $publicProperties;
     private $repository;
+    private $requestValues;
 
     public function __construct(Repository $repository = null)
     {
@@ -19,6 +21,7 @@ class Response extends BaseSubject implements IService// , \Serializable
         $this->message = $this->status ? "" : "Data could not be set\n";
         $this->publicProperties = getProperties($this);
         $this->repository = $repository;
+        $this->requestValues = array();
     }
 
     public function __get($property)
@@ -26,6 +29,7 @@ class Response extends BaseSubject implements IService// , \Serializable
         return $this->data[$property];
     }
 
+    /* @todo - don't add non data values to data */
     public function __set($property, $value)
     {
         return $this->data[$property] = $value;
@@ -131,6 +135,33 @@ class Response extends BaseSubject implements IService// , \Serializable
             }
             return $data;
         }
+    }
+
+    public static function ajaxNew($url, $data = array(), $dataOnly = true)
+    {
+        $request = new Request;
+        $response = $request->get($url, $data);
+
+        if ($dataOnly
+            && in_array($response['status'], array('OK', 200))
+        ) {
+            $parametersToRemove = array(
+                'status',
+                'message',
+                'request',
+                'suppress_header',
+                'model',
+                'log'
+            );
+
+            foreach($parametersToRemove as $param) {
+                if (isset($response[$param])) {
+                    unset($response[$param]);
+                }
+            }
+        }
+
+        return $response;
     }
 
     /* DEPRECATED */
@@ -312,8 +343,10 @@ class Response extends BaseSubject implements IService// , \Serializable
     {
         $request = $this->getRequest($defaults);
         foreach ($request as $key => $value) {
+            array_push($this->requestValues, $key);
             $this->$key = $value;
         }
+        return $this;
     }
 }
 
