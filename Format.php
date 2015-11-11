@@ -26,6 +26,11 @@ class Format
         );
     }
 
+    public static function sql($dirty)
+    {
+        return self::stripWhitespace($dirty);
+    }
+
     public static function stripWhitespace($dirty)
     {
         return preg_replace("/[ \\t\\n]+/u", " ", $dirty);
