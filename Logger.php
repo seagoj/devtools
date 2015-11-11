@@ -81,6 +81,7 @@ abstract class Logger extends Observer\BaseObserver
     public function update(\SplSubject $subject)
     {
         $status = $subject->getStatus();
+        var_dump(gettype($status));
         if (!in_array(gettype($status), array("object", "resource"))
         ) {
             $this->write($status);
