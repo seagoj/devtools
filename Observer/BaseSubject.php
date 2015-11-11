@@ -24,6 +24,7 @@ class BaseSubject implements \SplSubject
     protected function emit($status)
     {
         var_dump($status);
+        var_dump(isset($this->statuses));
         if (!isset($this->statuses)) {
             return;
         }
