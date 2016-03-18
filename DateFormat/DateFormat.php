@@ -13,6 +13,7 @@ class DateFormat
         if ($date == null) {
             return;
         }
+
         $dateTime = explode(' ', $date);
         $date = $dateTime[0];
         $this->time = isset($dateTime[1])
@@ -79,6 +80,7 @@ class DateFormat
         $this->month = $originalFormat->month;
         $this->day   = $originalFormat->day;
         $this->year  = $originalFormat->year;
+
         return $this;
     }
 }
