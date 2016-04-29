@@ -1,25 +1,22 @@
 {
-    "name": "seagoj/devtools",
-    "description": "Tools for PHP development",
-    "license": "MIT",
-    "require": {
-        "ircmaxell/password-compat": "1.*",
-        "guzzle/guzzle": "^3.9@dev"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "3.7.*",
-        "phpunit/php-invoker": "1.1.*",
-        "phpunit/phpunit-selenium": "1.3.*",
-        "phpspec/phpspec": "~2.0",
-        "codeception/codeception": "*"
-    },
-    "minimum-stability": "dev",
-    "autoload": {
-        "psr-4": {
-            "Devtools\\": "./",
-            "Devtools\\Observer\\": "./Observer",
-            "Devtools\\Currency\\": "./Currency",
-            "Devtools\\DateFormat\\": "./DateFormat"
-        }
+  "name": "seagoj/devtools",
+  "description": "Tools for PHP development",
+  "license": "MIT",
+  "require": {
+    "ircmaxell/password-compat": "1.*",
+    "guzzle/guzzle": "^3.9@dev"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "3.7.*",
+    "phpspec/phpspec": "~2.0"
+  },
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "Devtools\\": "./",
+      "Devtools\\Observer\\": "./Observer",
+      "Devtools\\Currency\\": "./Currency",
+      "Devtools\\DateFormat\\": "./DateFormat"
     }
+  }
 }
